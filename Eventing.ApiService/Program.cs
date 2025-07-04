@@ -19,7 +19,12 @@ app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapScalarApiReference("/api-reference",
+        options => options
+            .WithTitle("Eventing Api Reference")
+            .WithFavicon("https://scalar.com/logo-light.svg")
+            .WithTheme(ScalarTheme.DeepSpace)
+            .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient));
 }
 
 string[] summaries =
