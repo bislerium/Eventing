@@ -76,12 +76,9 @@ public class UsersController : ApiBaseController
     public ActionResult<Entities.User> GetById(Guid id)
     {
         var user = Users.FirstOrDefault(x => x.Id == id);
-        if (user == null)
-        {
-            return NotFound();
-        }
+        if (user == null) return NotFound();
 
-        return user;
+        return Ok(user);
     }
 
     [HttpPost]
@@ -102,10 +99,7 @@ public class UsersController : ApiBaseController
     public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateUserRequestDto dto)
     {
         var user = Users.FirstOrDefault(x => x.Id == id);
-        if (user == null)
-        {
-            return NotFound();
-        }
+        if (user == null) return NotFound();
 
         user.Name = dto.Name;
         user.Email = dto.Email;
@@ -118,10 +112,7 @@ public class UsersController : ApiBaseController
     public IActionResult Delete(Guid id)
     {
         var user = Users.FirstOrDefault(x => x.Id == id);
-        if (user == null)
-        {
-            return NotFound();
-        }
+        if (user == null) return NotFound();
 
         Users.Remove(user);
 

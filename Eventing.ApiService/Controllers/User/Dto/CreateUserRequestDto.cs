@@ -2,17 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Eventing.ApiService.Controllers.User.Dto;
 
-public class CreateUserRequestDto
-{
-    [MaxLength(64)]
-    [Required]
-    public required string Name { get; set; }
-    
-    [Required]
-    [EmailAddress]
-    public required string Email { get; set; }
-    
-    [Required]
-    [MaxLength(128)]
-    public required string Address { get; set; }
-}
+public record CreateUserRequestDto(
+    [Required] [MaxLength(64)] string Name,
+    [Required] [EmailAddress] string Email,
+    [Required] [MaxLength(128)] string Address
+);
