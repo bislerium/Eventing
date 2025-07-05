@@ -1,10 +1,11 @@
+using System.ComponentModel;
 using Eventing.ApiService.Controllers.User.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Eventing.ApiService.Controllers.User;
 
 [ApiConventionType(typeof(DefaultApiConventions))]
-public class UsersController : ApiBaseController
+public sealed class UsersController : ApiBaseController
 {
     private static readonly List<Entities.User> Users =
     [
@@ -71,19 +72,40 @@ public class UsersController : ApiBaseController
     ];
 
     [HttpGet]
-    public List<Entities.User> GetAll() => Users;
+    [EndpointName("GetAllUsers")]
+    [EndpointSummary("Get all users")]
+    [EndpointDescription("Returns a list of all users.")]
+    public IEnumerable<UserResponse> GetAll() => Users.Select(x => new UserResponse
+    {
+        Id = x.Id,
+        Name = x.Name,
+        Email = x.Email,
+        Address = x.Address,
+    });
 
     [HttpGet("{id:guid}")]
-    public ActionResult<Entities.User> GetById(Guid id)
+    [EndpointName("GetUserById")]
+    [EndpointSummary("Get user by ID")]
+    [EndpointDescription("Returns a single user by their unique identifier.")]
+    public ActionResult<UserResponse> GetById([FromRoute, Description("The ID of the user to retrieve")] Guid id)
     {
         var user = Users.FirstOrDefault(x => x.Id == id);
         if (user == null) return NotFound();
 
-        return Ok(user);
+        return Ok(new UserResponse
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email,
+            Address = user.Address,
+        });
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CreateUserRequestDto dto)
+    [EndpointName("CreateUser")]
+    [EndpointSummary("Create a new user")]
+    [EndpointDescription("Creates a user and returns the location of the newly created resource.")]
+    public IActionResult Create([FromBody, Description("The user details to create")] CreateUserRequestDto dto)
     {
         var user = new Entities.User
         {
@@ -92,12 +114,21 @@ public class UsersController : ApiBaseController
             Email = dto.Email,
             Address = dto.Address,
         };
+
         Users.Add(user);
-        return CreatedAtAction(nameof(GetById), new { id = user.Id }, null);
+
+        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
     }
 
     [HttpPut("{id:guid}")]
-    public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateUserRequestDto dto)
+    [EndpointName("UpdateUser")]
+    [EndpointSummary("Update user")]
+    [EndpointDescription("Updates the details of an existing user.")]
+    public IActionResult Update(
+        [FromRoute, Description("The ID of the user to update")]
+        Guid id,
+        [FromBody, Description("The updated user data")]
+        UpdateUserRequestDto dto)
     {
         var user = Users.FirstOrDefault(x => x.Id == id);
         if (user == null) return NotFound();
@@ -110,7 +141,10 @@ public class UsersController : ApiBaseController
     }
 
     [HttpDelete("{id:guid}")]
-    public IActionResult Delete(Guid id)
+    [EndpointName("DeleteUser")]
+    [EndpointSummary("Delete user")]
+    [EndpointDescription("Removes a user by their unique identifier.")]
+    public IActionResult Delete([FromRoute, Description("The ID of the user to delete")] Guid id)
     {
         var user = Users.FirstOrDefault(x => x.Id == id);
         if (user == null) return NotFound();
