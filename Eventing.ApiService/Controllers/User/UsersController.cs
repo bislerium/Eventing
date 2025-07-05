@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Eventing.ApiService.Controllers.User;
 
+[ApiConventionType(typeof(DefaultApiConventions))]
 public class UsersController : ApiBaseController
 {
     private static readonly List<Entities.User> Users =
@@ -92,7 +93,7 @@ public class UsersController : ApiBaseController
             Address = dto.Address,
         };
         Users.Add(user);
-        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
+        return CreatedAtAction(nameof(GetById), new { id = user.Id }, null);
     }
 
     [HttpPut("{id:guid}")]
