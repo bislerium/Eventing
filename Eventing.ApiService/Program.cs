@@ -20,6 +20,7 @@ app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.MapOpenApi();
 
     const string scalarUiPath = "/api-reference";

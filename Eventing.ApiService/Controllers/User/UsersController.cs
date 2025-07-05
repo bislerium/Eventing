@@ -117,6 +117,6 @@ public class UsersController : ApiBaseController
 
         Users.Remove(user);
 
-        return NoContent();
+        return Ok();
     }
 }
