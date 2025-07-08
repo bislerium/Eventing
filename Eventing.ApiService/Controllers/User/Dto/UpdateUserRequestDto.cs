@@ -7,7 +7,8 @@ public sealed record UpdateUserRequestDto
 {
     [Required]
     [MaxLength(64)]
-    [RegularExpression("^[A-Za-z ]+$")]
+    [RegularExpression("^([A-Z][a-z]+)( [A-Z][a-z]+)*$",
+        ErrorMessage = "The Full Name field is not in a valid format.")]
     [Description("The user's full name, up to 64 characters")]
     public required string Name { get; init; }
 
