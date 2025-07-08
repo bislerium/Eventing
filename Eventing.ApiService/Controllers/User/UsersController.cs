@@ -75,13 +75,7 @@ public sealed class UsersController : ApiBaseController
     [EndpointName("GetAllUsers")]
     [EndpointSummary("Get all users")]
     [EndpointDescription("Returns a list of all users.")]
-    public IEnumerable<UserResponse> GetAll() => Users.Select(x => new UserResponse
-    {
-        Id = x.Id,
-        Name = x.Name,
-        Email = x.Email,
-        Address = x.Address,
-    });
+    public IEnumerable<UserResponse> GetAll() => Users.Select(UserResponse.From);
 
     [HttpGet("{id:guid}")]
     [EndpointName("GetUserById")]
@@ -92,13 +86,7 @@ public sealed class UsersController : ApiBaseController
         var user = Users.FirstOrDefault(x => x.Id == id);
         if (user == null) return NotFound();
 
-        return Ok(new UserResponse
-        {
-            Id = user.Id,
-            Name = user.Name,
-            Email = user.Email,
-            Address = user.Address,
-        });
+        return Ok(UserResponse.From(user));
     }
 
     [HttpPost]
@@ -117,7 +105,7 @@ public sealed class UsersController : ApiBaseController
 
         Users.Add(user);
 
-        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
+        return CreatedAtAction(nameof(GetById), new { id = user.Id }, null);
     }
 
     [HttpPut("{id:guid}")]

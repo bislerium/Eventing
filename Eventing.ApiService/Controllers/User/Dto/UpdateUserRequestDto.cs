@@ -3,22 +3,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Eventing.ApiService.Controllers.User.Dto;
 
-public sealed record UpdateUserRequestDto
-{
+public sealed record UpdateUserRequestDto(
     [Required]
     [MaxLength(64)]
-    [RegularExpression("^([A-Z][a-z]+)( [A-Z][a-z]+)*$",
-        ErrorMessage = "The Full Name field is not in a valid format.")]
-    [Description("The user's full name, up to 64 characters")]
-    public required string Name { get; init; }
+    [RegularExpression("^([A-Z][a-z]+)( [A-Z][a-z]+)*$", ErrorMessage = "The Full Name field is not in a valid format.")]
+    [property: Description("The user's full name, up to 64 characters")]
+    string Name,
 
     [Required]
     [EmailAddress]
-    [Description("The user's email address")]
-    public required string Email { get; init; }
+    [property: Description("The user's email address")]
+    string Email,
 
     [Required]
     [MaxLength(128)]
-    [Description("The user's address, up to 128 characters")]
-    public required string Address { get; init; }
-}
+    [property: Description("The user's address, up to 128 characters")]
+    string Address
+);
