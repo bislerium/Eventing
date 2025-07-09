@@ -1,5 +1,8 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Eventing.ApiService.Data;
 using Eventing.ApiService.Data.Seeders;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -14,14 +17,44 @@ builder.Services.AddProblemDetails();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+});
+
+// https://github.com/dotnet/aspnetcore/issues/57891
+var jsonStringEnumConverter = new JsonStringEnumConverter();
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(jsonStringEnumConverter);
+});
+builder.Services.ConfigureHttpJsonOptions(options => // For OpenApi
+{
+    options.SerializerOptions.Converters.Add(jsonStringEnumConverter);
+});
 
 builder.AddNpgsqlDbContext<EventingDbContext>(connectionName: "eventing-db",
-    configureDbContextOptions: options => options.UseAsyncSeeding(async (context, _, ct) =>
+    configureSettings: settings =>
     {
-        await UserSeeder.SeedAsync(context, ct);
-        await EventSeeder.SeedAsync(context, ct);
-    }));
+        if (builder.Environment.IsDevelopment())
+        {
+            settings.ConnectionString += ";Include Error Detail=true";
+        }
+    },
+    configureDbContextOptions: options =>
+    {
+        if (builder.Environment.IsDevelopment())
+        {
+            options.EnableDetailedErrors()
+                .EnableSensitiveDataLogging();
+        }
+
+        options.UseAsyncSeeding(async (context, _, ct) =>
+        {
+            await UserSeeder.SeedAsync(context, ct);
+            await EventSeeder.SeedAsync(context, ct);
+        });
+    });
 
 var app = builder.Build();
 
