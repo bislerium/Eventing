@@ -7,9 +7,9 @@ namespace Eventing.ApiService.Data.Entities;
 [Table("events")]
 public class Event
 {
-    private const int MaxTitleCharacters = 100;
-    private const int MaxDescriptionCharacters = 1024;
-    private const int MaxLocationCharacters = 256;
+    public const int MaxTitleCharacters = 100;
+    public const int MaxDescriptionCharacters = 1024;
+    public const int MaxLocationCharacters = 256;
     
     public Guid Id { get; set; } = Guid.NewGuid();
     
@@ -19,9 +19,9 @@ public class Event
 
     [MaxLength(MaxDescriptionCharacters)] public string? Description { get; set; }
 
-    [Required] public DateTime StartTime { get; set; }
+    [Required] public required DateTime StartTime { get; set; }
 
-    [Required] public DateTime EndTime { get; set; }
+    [Required] public required DateTime EndTime { get; set; }
 
     [Required] public required LocationType LocationType { get; set; }
 
@@ -29,7 +29,7 @@ public class Event
     [MaxLength(MaxLocationCharacters)]
     public required string Location { get; set; }
 
-    public Guid CreatedBy { get; set; }
+    public required Guid CreatedBy { get; set; }
     [ForeignKey(nameof(CreatedBy))] public User Creator { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
