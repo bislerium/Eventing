@@ -13,6 +13,6 @@ public sealed record UserResponse(
     string Address
 )
 {
-    public static UserResponse From(Entities.User user)
+    public static UserResponse From(Data.Entities.User user)
         => new(user.Id, user.Name, user.Email, user.Address);
 }
