@@ -1,3 +1,6 @@
+using Eventing.ApiService.Data;
+using Eventing.ApiService.Data.Seeders;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +16,13 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddControllers();
 
+builder.AddNpgsqlDbContext<EventingDbContext>(connectionName: "eventing-db",
+    configureDbContextOptions: options => options.UseAsyncSeeding(async (context, _, ct) =>
+    {
+        await UserSeeder.SeedAsync(context, ct);
+        await EventSeeder.SeedAsync(context, ct);
+    }));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,6 +32,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.MapOpenApi();
+
+    app.MapPost("/eventing-db-migrate", (EventingDbContext dbContext) => dbContext.Database.MigrateAsync());
 
     const string scalarUiPath = "/api-reference";
     app.MapScalarApiReference(scalarUiPath,

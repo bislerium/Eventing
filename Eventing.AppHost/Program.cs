@@ -2,7 +2,14 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var cache = builder.AddRedis("cache");
 
-var apiService = builder.AddProject<Projects.Eventing_ApiService>("apiservice");
+var db = builder.AddPostgres("postgres")
+    .WithDataVolume()
+    .WithPgWeb()
+    .AddDatabase("eventing-db");
+
+var apiService = builder.AddProject<Projects.Eventing_ApiService>("apiservice")
+    .WaitFor(db)
+    .WithReference(db);
 
 builder.AddProject<Projects.Eventing_Web>("webfrontend")
     .WithExternalHttpEndpoints()
