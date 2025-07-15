@@ -9,14 +9,15 @@ namespace Eventing.ApiService.Controllers.Event;
 public class EventsController(EventingDbContext dbContext) : ApiBaseController
 {
     [HttpGet]
-    public Task<List<EventResponseDto>> GetAll([FromQuery] string? search)
-        => dbContext.Events.Where(x => search == null || x.Title.Contains(search, StringComparison.CurrentCultureIgnoreCase))
+    public Task<List<EventResponseDto>> GetAllAsync([FromQuery] string? search)
+        => dbContext.Events.Where(x => search == null || x.Title.ToLower() == search.ToLower())
+            .OrderByDescending(x => x.CreatedAt)
             .Select(x => new EventResponseDto(x.Id, x.Title, x.Description, x.StartTime, x.EndTime,
                 x.LocationType, x.Location, x.CreatedBy, x.CreatedAt, x.UpdatedAt))
             .ToListAsync(HttpContext.RequestAborted);
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<EventResponseDto>> GetById([FromRoute] Guid id)
+    public async Task<ActionResult<EventResponseDto>> GetByIdAsync([FromRoute] Guid id)
     {
         var @event = await dbContext.Events
             .Where(x => x.Id == id)
@@ -30,7 +31,7 @@ public class EventsController(EventingDbContext dbContext) : ApiBaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateEventRequestDto dto)
+    public async Task<IActionResult> CreateAsync([FromBody] CreateEventRequestDto dto)
     {
         var @event = new Data.Entities.Event
         {
@@ -47,6 +48,38 @@ public class EventsController(EventingDbContext dbContext) : ApiBaseController
 
         await dbContext.SaveChangesAsync(HttpContext.RequestAborted);
 
-        return CreatedAtAction(nameof(GetById), new { id = @event.Id }, null);
+        return CreatedAtAction(nameof(GetByIdAsync), new { id = @event.Id }, null);
+    }
+    
+    [HttpPut("{id:guid}")]
+
+    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateEventRequestDto dto)
+    {
+        var @event = await dbContext.Events.FindAsync(id, HttpContext.RequestAborted);
+        if (@event is null) return NotFound();
+        
+        @event.Title = dto.Title;
+        @event.Description = dto.Description;
+        @event.StartTime = dto.StartTime;
+        @event.EndTime = dto.EndTime;
+        @event.LocationType = dto.LocationType;
+        @event.Location = dto.Location;
+        @event.UpdatedAt = DateTime.UtcNow;
+        
+        await dbContext.SaveChangesAsync(HttpContext.RequestAborted);
+
+        return NoContent();
+    } 
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
+    {
+        var @event = await dbContext.Events.FirstOrDefaultAsync(x => x.Id == id, HttpContext.RequestAborted);
+        if (@event is null) return NotFound();
+        
+        dbContext.Remove(@event);
+        await dbContext.SaveChangesAsync(HttpContext.RequestAborted);
+        
+        return Ok();
     }
 }
