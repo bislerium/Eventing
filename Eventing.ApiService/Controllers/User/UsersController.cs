@@ -7,7 +7,7 @@ namespace Eventing.ApiService.Controllers.User;
 [ApiConventionType(typeof(DefaultApiConventions))]
 public sealed class UsersController : ApiBaseController
 {
-    private static readonly List<Entities.User> Users =
+    private static readonly List<Data.Entities.User> Users =
     [
         new()
         {
@@ -95,7 +95,7 @@ public sealed class UsersController : ApiBaseController
     [EndpointDescription("Creates a user and returns the location of the newly created resource.")]
     public IActionResult Create([FromBody, Description("The user details to create")] CreateUserRequestDto dto)
     {
-        var user = new Entities.User
+        var user = new Data.Entities.User
         {
             Id = Guid.NewGuid(),
             Name = dto.Name,
