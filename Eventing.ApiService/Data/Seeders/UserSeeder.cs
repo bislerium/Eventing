@@ -7,8 +7,8 @@ public static class UserSeeder
 {
     public static async Task SeedAsync(DbContext dbContext, CancellationToken cancellationToken)
     {
-        // Define users to seed
-        var usersToSeed = new List<User>
+        /*// Define users to seed
+        var usersToSeed = new List<Profile>
         {
             new()
             {
@@ -38,7 +38,7 @@ public static class UserSeeder
         };
 
         // Get IDs of existing users to avoid duplication
-        var existingUserIds = await dbContext.Set<User>()
+        var existingUserIds = await dbContext.Set<Profile>()
             .Where(u => usersToSeed.Select(x => x.Id).Contains(u.Id))
             .Select(u => u.Id)
             .ToListAsync(cancellationToken);
@@ -48,8 +48,8 @@ public static class UserSeeder
 
         if (newUsers.Length > 0)
         {
-            await dbContext.Set<User>().AddRangeAsync(newUsers, cancellationToken);
+            await dbContext.Set<Profile>().AddRangeAsync(newUsers, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
-        }
+        }*/
     }
 }
