@@ -5,32 +5,28 @@ using Eventing.ApiService.Data.Enums;
 namespace Eventing.ApiService.Data.Entities;
 
 [Table("events")]
-public class Event
+public sealed class Event
 {
     public const int MaxTitleCharacters = 100;
     public const int MaxDescriptionCharacters = 1024;
     public const int MaxLocationCharacters = 256;
-    
+
     public Guid Id { get; set; } = Guid.NewGuid();
-    
-    [Required]
-    [MaxLength(MaxTitleCharacters)]
-    public required string Title { get; set; }
+
+    [MaxLength(MaxTitleCharacters)] public string Title { get; set; } = null!;
 
     [MaxLength(MaxDescriptionCharacters)] public string? Description { get; set; }
 
-    [Required] public required DateTime StartTime { get; set; }
+    public DateTime StartTime { get; set; }
 
-    [Required] public required DateTime EndTime { get; set; }
+    public DateTime EndTime { get; set; }
 
-    [Required] public required LocationType LocationType { get; set; }
+    public LocationType LocationType { get; set; }
 
-    [Required]
-    [MaxLength(MaxLocationCharacters)]
-    public required string Location { get; set; }
+    [MaxLength(MaxLocationCharacters)] public string Location { get; set; } = null!;
 
-    public required Guid CreatedBy { get; set; }
-    [ForeignKey(nameof(CreatedBy))] public User Creator { get; set; } = null!;
+    public Guid CreatedBy { get; set; }
+    [ForeignKey(nameof(CreatedBy))] public Profile Creator { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }

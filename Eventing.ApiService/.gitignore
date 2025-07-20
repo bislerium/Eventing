@@ -6,6 +6,9 @@
 # dotenv files
 .env
 
+# Ignore EF Core migrations
+**/Migrations/
+
 # User-specific files
 *.rsuser
 *.suo

@@ -7,7 +7,9 @@ namespace Eventing.ApiService.Data.Entities;
 
 [Table("attendees")]
 [Index(nameof(EventId))]
-public class Attendee
+[Index(nameof(ProfileId))]
+[Index(nameof(ProfileId), nameof(EventId), IsUnique = true)]
+public sealed class Attendee
 {
     public const int MinCommentsCharacters = 50;
     public const int MaxCommentsCharacters = 512;
@@ -17,10 +19,10 @@ public class Attendee
     public Guid EventId { get; set; }
     [ForeignKey(nameof(EventId))] public Event Event { get; set; } = null!;
 
-    public Guid UserId { get; set; }
-    [ForeignKey(nameof(UserId))] public User User { get; set; } = null!;
+    public Guid ProfileId { get; set; }
+    [ForeignKey(nameof(ProfileId))] public Profile Profile { get; set; } = null!;
 
-    public bool IsOrganizer { get; set; } = false;
+    public bool IsOrganizer { get; set; }
 
     public RsvpResponse RsvpResponse { get; set; } = RsvpResponse.Pending;
 

@@ -3,6 +3,7 @@ using Eventing.ApiService.Configuration;
 using Eventing.ApiService.Data;
 using Eventing.ApiService.Data.Seeders;
 using Eventing.ApiService.Services.Jwt;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -56,6 +57,14 @@ builder.AddNpgsqlDbContext<EventingDbContext>(connectionName: "eventing-db",
             await EventSeeder.SeedAsync(context, ct);
         });
     });
+
+builder.Services.AddDataProtection(); // Automatically added with AddAuthentication() call
+
+builder.Services.AddIdentityCore<IdentityUser<Guid>>()
+    .AddSignInManager()
+    .AddRoles<IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<EventingDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddOptionsWithValidateOnStart<JwtSettings>()
     .BindConfiguration(JwtSettings.SectionName)
