@@ -36,7 +36,7 @@ public class EventsController(EventingDbContext dbContext) : ApiBaseController
     [HttpPost]
     [ProducesDefaultResponseType]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<EventResponseDto>> CreateAsync([FromBody] CreateEventRequestDto dto, CancellationToken ct)
     {
         var @event = new Data.Entities.Event
@@ -62,7 +62,7 @@ public class EventsController(EventingDbContext dbContext) : ApiBaseController
     [ProducesDefaultResponseType]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateEventRequestDto dto, CancellationToken ct)
     {
         var @event = await dbContext.Events.FirstOrDefaultAsync(x => x.Id == id, ct);
