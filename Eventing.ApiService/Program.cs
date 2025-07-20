@@ -1,6 +1,8 @@
 using System.Text.Json.Serialization;
+using Eventing.ApiService.Configuration;
 using Eventing.ApiService.Data;
 using Eventing.ApiService.Data.Seeders;
+using Eventing.ApiService.Services.Jwt;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -54,6 +56,12 @@ builder.AddNpgsqlDbContext<EventingDbContext>(connectionName: "eventing-db",
             await EventSeeder.SeedAsync(context, ct);
         });
     });
+
+builder.Services.AddOptionsWithValidateOnStart<JwtSettings>()
+    .BindConfiguration(JwtSettings.SectionName)
+    .ValidateDataAnnotations();
+
+builder.Services.AddSingleton<JwtTokenService>();
 
 var app = builder.Build();
 
