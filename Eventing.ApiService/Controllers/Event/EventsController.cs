@@ -1,12 +1,15 @@
 using Eventing.ApiService.Controllers.Event.Dto;
 using Eventing.ApiService.Data;
+using Eventing.ApiService.Services.CurrentUser;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Eventing.ApiService.Controllers.Event;
 
-public class EventsController(EventingDbContext dbContext) : ApiBaseController
+public class EventsController(EventingDbContext dbContext, CurrentUserService currentUserService) : ApiBaseController
 {
+    [Authorize]
     [HttpGet]
     [ProducesDefaultResponseType]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -16,6 +19,7 @@ public class EventsController(EventingDbContext dbContext) : ApiBaseController
             .Select(x => new EventResponseDto(x.Id, x.Title, x.Description, x.StartTime, x.EndTime,
                 x.LocationType, x.Location, x.CreatedBy, x.CreatedAt, x.UpdatedAt)).ToListAsync(ct);
 
+    [Authorize]
     [HttpGet("{id:guid}")]
     [ProducesDefaultResponseType]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -47,7 +51,7 @@ public class EventsController(EventingDbContext dbContext) : ApiBaseController
             EndTime = dto.EndTime,
             LocationType = dto.LocationType,
             Location = dto.Location,
-            CreatedBy = dto.CreatedBy
+            CreatedBy = currentUserService.UserId
         };
 
         dbContext.Events.Add(@event);

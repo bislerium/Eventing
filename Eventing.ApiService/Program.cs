@@ -2,7 +2,11 @@ using System.Text.Json.Serialization;
 using Eventing.ApiService.Configuration;
 using Eventing.ApiService.Data;
 using Eventing.ApiService.Data.Seeders;
+using Eventing.ApiService.Services.CurrentUser;
 using Eventing.ApiService.Services.Jwt;
+using Eventing.ApiService.Setup;
+using Eventing.ApiService.Setup.OpenApi.Transformers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +22,11 @@ builder.AddServiceDefaults();
 builder.Services.AddProblemDetails();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<BearerSecuritySchemeDocumentTransformer>();
+    options.AddOperationTransformer<BearerSecuritySchemeOperationTransformer>();
+});
 
 builder.Services.AddControllers(options =>
 {
@@ -89,7 +97,10 @@ builder.Services.AddOptionsWithValidateOnStart<JwtSettings>()
     .BindConfiguration(JwtSettings.SectionName)
     .ValidateDataAnnotations();
 
+//builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddSingleton<JwtTokenService>();
+builder.Services.AddScoped<CurrentUserService>();
 
 builder.Services.AddAuthentication()
     .AddJwtBearer(options =>
@@ -138,6 +149,8 @@ if (app.Environment.IsDevelopment())
     app.MapGet("/", () => Results.Redirect(scalarUiPath, permanent: true))
         .ExcludeFromDescription();
 }
+
+//app.MapIdentityApi<>()
 
 app.UseAuthentication();
 

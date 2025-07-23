@@ -8,7 +8,7 @@ namespace Eventing.ApiService.Services.Jwt;
 
 public class JwtTokenService(IOptions<JwtSettings> jwtSettings)
 {
-    public string CreateToken(IEnumerable<Claim>claims)
+    public (string Token, long ExpiresIn) CreateToken(IEnumerable<Claim> claims)
     {
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -22,7 +22,8 @@ public class JwtTokenService(IOptions<JwtSettings> jwtSettings)
             EncryptingCredentials = jwtSettings.Value.EncryptingCredentials
         };
 
-        return new JsonWebTokenHandler()
-            .CreateToken(tokenDescriptor);
+        var token = new JsonWebTokenHandler().CreateToken(tokenDescriptor);
+
+        return (token, jwtSettings.Value.ExpiryInMinutes * 60);
     }
 }
