@@ -1,4 +1,6 @@
 using Eventing.ApiService.Data;
+using Eventing.ApiService.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -15,9 +17,15 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddControllers();
 
-
-
 builder.AddNpgsqlDbContext<EventingDbContext>("eventing-db");
+
+builder.Services.AddIdentity<User,  IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<EventingDbContext>()
+    .AddDefaultTokenProviders()
+    .AddApiEndpoints();
+
+builder.Services.AddAuthentication()
+    .AddJwtBearer();
 
 var app = builder.Build();
 
@@ -41,6 +49,12 @@ if (app.Environment.IsDevelopment())
     app.MapGet("/", () => Results.Redirect(scalarUiPath, permanent: true))
         .ExcludeFromDescription();
 }
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.MapIdentityApi<User>();
 
 app.MapControllers();
 
