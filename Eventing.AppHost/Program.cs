@@ -4,7 +4,7 @@ var cache = builder.AddRedis("cache");
 
 var db = builder.AddPostgres("postgres")
     .WithDataVolume()
-    .WithPgWeb()
+    .WithPgAdmin()
     .AddDatabase("eventing-db");
 
 var apiService = builder.AddProject<Projects.Eventing_ApiService>("apiservice")

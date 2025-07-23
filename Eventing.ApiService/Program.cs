@@ -6,6 +6,7 @@ using Eventing.ApiService.Services.Jwt;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,19 +59,62 @@ builder.AddNpgsqlDbContext<EventingDbContext>(connectionName: "eventing-db",
         });
     });
 
-builder.Services.AddDataProtection(); // Automatically added with AddAuthentication() call
-
 builder.Services.AddIdentityCore<IdentityUser<Guid>>()
     .AddSignInManager()
     .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<EventingDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+    
+    options.SignIn.RequireConfirmedAccount = true;
+    options.SignIn.RequireConfirmedEmail = false;
+    
+    options.Password.RequireDigit = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequiredLength = 10;
+    options.Password.RequiredUniqueChars = 2;
+    
+    // Default Lockout settings.
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+});
+
 builder.Services.AddOptionsWithValidateOnStart<JwtSettings>()
     .BindConfiguration(JwtSettings.SectionName)
     .ValidateDataAnnotations();
 
 builder.Services.AddSingleton<JwtTokenService>();
+
+builder.Services.AddAuthentication()
+    .AddJwtBearer(options =>
+    {
+        var jwtSettings = builder.Configuration
+            .GetRequiredSection(JwtSettings.SectionName)
+            .Get<JwtSettings>()!;
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = jwtSettings.Issuer,
+            ValidAudience = jwtSettings.Audience,
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            RequireSignedTokens = true,
+            RequireExpirationTime = true,
+
+            // Set both keys — for decrypting & validating
+            TokenDecryptionKey = jwtSettings.EncryptingCredentials?.Key,
+            IssuerSigningKey = jwtSettings.SigningCredentials.Key
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -94,6 +138,10 @@ if (app.Environment.IsDevelopment())
     app.MapGet("/", () => Results.Redirect(scalarUiPath, permanent: true))
         .ExcludeFromDescription();
 }
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 
