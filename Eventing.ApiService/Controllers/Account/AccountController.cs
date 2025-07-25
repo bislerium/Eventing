@@ -11,7 +11,6 @@ public class AccountController(
     UserManager<IdentityUser<Guid>> userManager,
     EventingDbContext dbContext,
     SignInManager<IdentityUser<Guid>> signInManager,
-    RoleManager<IdentityRole<Guid>> roleManager,
     JwtTokenService jwtTokenService) : ApiBaseController
 {
     [HttpPost("login")]
@@ -33,14 +32,6 @@ public class AccountController(
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserRequestDto dto)
     {
-        if (!await roleManager.RoleExistsAsync("General"))
-        {
-            await roleManager.CreateAsync(new IdentityRole<Guid>
-            {
-                Name = "General"
-            });
-        }
-
         IdentityUser<Guid> user = dto;
         
         var result = await userManager.CreateAsync(user, dto.Password);

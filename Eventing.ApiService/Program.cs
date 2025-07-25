@@ -4,13 +4,12 @@ using Eventing.ApiService.Data;
 using Eventing.ApiService.Data.Seeders;
 using Eventing.ApiService.Services.CurrentUser;
 using Eventing.ApiService.Services.Jwt;
-using Eventing.ApiService.Setup;
 using Eventing.ApiService.Setup.OpenApi.Transformers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,6 +42,8 @@ builder.Services.ConfigureHttpJsonOptions(options => // For OpenApi
 {
     options.SerializerOptions.Converters.Add(jsonStringEnumConverter);
 });
+
+builder.AddRedisDistributedCache("cache");
 
 builder.AddNpgsqlDbContext<EventingDbContext>(connectionName: "eventing-db",
     configureSettings: settings =>
@@ -97,12 +98,14 @@ builder.Services.AddOptionsWithValidateOnStart<JwtSettings>()
     .BindConfiguration(JwtSettings.SectionName)
     .ValidateDataAnnotations();
 
-//builder.Services.AddHttpContextAccessor();
-
-builder.Services.AddSingleton<JwtTokenService>();
 builder.Services.AddScoped<CurrentUserService>();
+builder.Services.AddSingleton<JwtTokenService>();
 
-builder.Services.AddAuthentication()
+builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, JwtBearerConfigureOptions>();
+builder.Services.AddAuthentication().AddJwtBearer();
+
+
+/*builder.Services.AddAuthentication()
     .AddJwtBearer(options =>
     {
         var jwtSettings = builder.Configuration
@@ -116,14 +119,18 @@ builder.Services.AddAuthentication()
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
+            RequireAudience = true,
             RequireSignedTokens = true,
             RequireExpirationTime = true,
-
+            ValidateTokenReplay = true,
+            TokenReplayCache = new cache();
+            ClockSkew = TimeSpan.FromSeconds(200), // 2 minutes
+            
             // Set both keys — for decrypting & validating
             TokenDecryptionKey = jwtSettings.EncryptingCredentials?.Key,
             IssuerSigningKey = jwtSettings.SigningCredentials.Key
         };
-    });
+    });*/
 
 builder.Services.AddAuthorization();
 

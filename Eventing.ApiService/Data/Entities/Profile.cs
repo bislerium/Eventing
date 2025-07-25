@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Eventing.ApiService.Data.Entities;
 
@@ -8,7 +9,7 @@ namespace Eventing.ApiService.Data.Entities;
 public sealed class Profile
 {
     public const int MaxNameCharacters = 256;
-
+    
     public Guid Id { get; set; } = Guid.NewGuid();
 
     [ForeignKey(nameof(Id))] public IdentityUser<Guid> User { get; set; } = null!;

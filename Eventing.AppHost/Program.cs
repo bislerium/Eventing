@@ -1,6 +1,7 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var cache = builder.AddRedis("cache");
+var cache = builder.AddRedis("cache")
+    .WithRedisCommander();
 
 var db = builder.AddPostgres("postgres")
     .WithDataVolume()
@@ -9,7 +10,9 @@ var db = builder.AddPostgres("postgres")
 
 var apiService = builder.AddProject<Projects.Eventing_ApiService>("apiservice")
     .WaitFor(db)
-    .WithReference(db);
+    .WithReference(db)
+    .WaitFor(cache)
+    .WithReference(cache);
 
 builder.AddProject<Projects.Eventing_Web>("webfrontend")
     .WithExternalHttpEndpoints()
