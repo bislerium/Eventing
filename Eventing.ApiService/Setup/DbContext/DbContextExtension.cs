@@ -1,11 +1,11 @@
 using Eventing.ApiService.Data;
 using Eventing.ApiService.Data.Seeders;
 
-namespace Eventing.ApiService.Setup.NpgsqlDbContext;
+namespace Eventing.ApiService.Setup.DbContext;
 
-public static class NpgsqlDbContextExtension
+public static class DbContextExtension
 {
-    public static void AddXNpgSqlDbContextExtension(this IHostApplicationBuilder builder)
+    public static void AddXDbContextExtension(this IHostApplicationBuilder builder)
     {
         builder.AddNpgsqlDbContext<EventingDbContext>(connectionName: "eventing-db",
             configureSettings: settings =>

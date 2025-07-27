@@ -1,10 +1,10 @@
 using Eventing.ApiService.Data;
 using Eventing.ApiService.Setup;
 using Eventing.ApiService.Setup.Auth;
+using Eventing.ApiService.Setup.DbContext;
 using Eventing.ApiService.Setup.Identity;
 using Eventing.ApiService.Setup.JsonOptions;
 using Eventing.ApiService.Setup.Jwt;
-using Eventing.ApiService.Setup.NpgsqlDbContext;
 using Eventing.ApiService.Setup.OpenApi;
 using Eventing.ApiService.Setup.Scalar;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +28,7 @@ builder.Services.AddXJsonOptions();
 
 builder.AddRedisDistributedCache("cache");
 
-builder.AddXNpgSqlDbContextExtension();
+builder.AddXDbContextExtension();
 
 builder.Services.AddXIdentityCore();
 
