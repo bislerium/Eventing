@@ -22,6 +22,7 @@ builder.Services.AddXOpenApi();
 
 builder.Services.AddControllers(options =>
 {
+    options.SuppressAsyncSuffixInActionNames = false;
     options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
 });
 

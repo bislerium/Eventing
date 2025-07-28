@@ -24,7 +24,7 @@ public class AccountController(
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType<LoginResponseDto>(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
-    public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginRequestDto dto)
+    public async Task<ActionResult<LoginResponseDto>> LoginAsync([FromBody] LoginRequestDto dto)
     {
         var user = await userManager.FindByEmailAsync(dto.Email);
         if (user == null)
@@ -42,7 +42,7 @@ public class AccountController(
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
     [ProducesDefaultResponseType]
-    public async Task<IActionResult> Register([FromBody] RegisterUserRequestDto dto)
+    public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequestDto dto)
     {
         IdentityUser<Guid> user = dto;
 
@@ -59,7 +59,7 @@ public class AccountController(
         return Ok();
     }
 
-    [HttpGet("confirm-email")]
+    [HttpGet("confirm-email", Name = "ConfirmEmail")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -99,7 +99,7 @@ public class AccountController(
         return Ok();
     }
 
-    [HttpGet("confirm-change-email")]
+    [HttpGet("confirm-change-email", Name = "ConfirmChangeEmail")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -146,24 +146,18 @@ public class AccountController(
     {
         var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
         var userId = await userManager.GetUserIdAsync(user);
-        var routeValues = new RouteValueDictionary
-        {
-            ["userId"] = userId,
-            ["code"] = code
-        };
-        var confirmationLink = Url.Action(
-            action: nameof(ConfirmEmailAsync),
-            values: routeValues
-        )!;
+        var confirmationLink = Url.Link(
+            routeName: "ConfirmEmail",
+            values: new { userId, code }
+        );
+        ArgumentNullException.ThrowIfNull(confirmationLink);
+        
         confirmationLink = HtmlEncoder.Default.Encode(confirmationLink);
-
         var email = await userManager.GetEmailAsync(user);
-
         await fluentEmail.To(email)
             .Subject("Confirm Your Email Address")
-            .Body($"Please confirm your email address by <a href='{confirmationLink}'>clicking here</a>.")
+            .Body($"Please confirm your email address by <a href='{confirmationLink}'>clicking here</a>.", true)
             .HighPriority()
             .SendAsync();
     }
@@ -172,24 +166,17 @@ public class AccountController(
     {
         var code = await userManager.GenerateChangeEmailTokenAsync(user, newEmail);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
         var userId = await userManager.GetUserIdAsync(user);
-        var routeValues = new RouteValueDictionary
-        {
-            ["userId"] = userId,
-            ["code"] = code,
-            ["newEmail"] = newEmail
-        };
-        var confirmationLink = Url.Action(
-            action: nameof(ConfirmChangeEmailAsync),
-            values: routeValues
+        var confirmationLink = Url.Link(
+            routeName: "ConfirmChangeEmail",
+            values: new { userId, code, newEmail }
         );
         ArgumentNullException.ThrowIfNull(confirmationLink);
+        
         confirmationLink = HtmlEncoder.Default.Encode(confirmationLink);
-
         await fluentEmail.To(newEmail)
             .Subject("Confirm Your New Email Address")
-            .Body($"Please confirm your new email address by <a href='{confirmationLink}'>clicking here</a>.")
+            .Body($"Please confirm your new email address by <a href='{confirmationLink}'>clicking here</a>.", true)
             .HighPriority()
             .SendAsync();
     }
