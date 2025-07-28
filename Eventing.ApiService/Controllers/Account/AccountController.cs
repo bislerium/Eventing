@@ -1,10 +1,14 @@
+using System.Text;
+using System.Text.Encodings.Web;
 using Eventing.ApiService.Controllers.Account.Dto;
 using Eventing.ApiService.Data;
 using Eventing.ApiService.Data.Entities;
 using Eventing.ApiService.Services.Jwt;
+using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.WebUtilities;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Eventing.ApiService.Controllers.Account;
@@ -13,7 +17,8 @@ public class AccountController(
     UserManager<IdentityUser<Guid>> userManager,
     EventingDbContext dbContext,
     SignInManager<IdentityUser<Guid>> signInManager,
-    JwtTokenService jwtTokenService) : ApiBaseController
+    JwtTokenService jwtTokenService,
+    IFluentEmail fluentEmail) : ApiBaseController
 {
     [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -22,7 +27,8 @@ public class AccountController(
     public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginRequestDto dto)
     {
         var user = await userManager.FindByEmailAsync(dto.Email);
-        if (user == null) return Problem(title: SignInResult.Failed.ToString(), statusCode: StatusCodes.Status401Unauthorized);
+        if (user == null)
+            return Problem(title: SignInResult.Failed.ToString(), statusCode: StatusCodes.Status401Unauthorized);
 
         var result = await signInManager.CheckPasswordSignInAsync(user, dto.Password, true);
         if (!result.Succeeded) return Problem(title: result.ToString(), statusCode: StatusCodes.Status401Unauthorized);
@@ -42,11 +48,83 @@ public class AccountController(
 
         var result = await userManager.CreateAsync(user, dto.Password);
         if (!result.Succeeded) return ValidationProblem(CreateValidationProblemDetails(result.Errors));
-        
+
         await userManager.AddToRoleAsync(user, "General");
 
         dbContext.Set<Profile>().Add(dto);
         await dbContext.SaveChangesAsync();
+
+        await SendConfirmationEmailAsync(user);
+
+        return Ok();
+    }
+
+    [HttpGet("confirm-email")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
+    public async Task<IActionResult> ConfirmEmailAsync(
+        [FromQuery] string userId,
+        [FromQuery] string code)
+    {
+        var user = await userManager.FindByIdAsync(userId);
+        if (user == null) return NotFound();
+
+        try
+        {
+            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+        }
+        catch (FormatException)
+        {
+            return BadRequest();
+        }
+
+        var result = await userManager.ConfirmEmailAsync(user, code);
+
+        if (!result.Succeeded) return Unauthorized();
+
+        return Ok();
+    }
+
+    [HttpPost("resend-confirmation-email")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> ResendConfirmationEmailAsync([FromBody] ResendConfirmationEmailRequestDto dto)
+    {
+        var user = await userManager.FindByEmailAsync(dto.Email);
+        if (user == null || user.EmailConfirmed) return Ok();
+
+        await SendConfirmationEmailAsync(user);
+        return Ok();
+    }
+
+    [HttpGet("confirm-change-email")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
+    public async Task<IActionResult> ConfirmChangeEmailAsync(
+        [FromQuery] string userId,
+        [FromQuery] string code,
+        [FromQuery] string newEmail)
+    {
+        var user = await userManager.FindByIdAsync(userId);
+        if (user == null) return NotFound();
+
+        try
+        {
+            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+        }
+        catch (FormatException)
+        {
+            return BadRequest();
+        }
+
+        var result = await userManager.ChangeEmailAsync(user, newEmail, code);
+
+        if (!result.Succeeded) return Unauthorized();
 
         return Ok();
     }
@@ -61,5 +139,58 @@ public class AccountController(
         }
 
         return ProblemDetailsFactory.CreateValidationProblemDetails(HttpContext, modelState);
+    }
+
+
+    private async Task SendConfirmationEmailAsync(IdentityUser<Guid> user)
+    {
+        var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+        var userId = await userManager.GetUserIdAsync(user);
+        var routeValues = new RouteValueDictionary
+        {
+            ["userId"] = userId,
+            ["code"] = code
+        };
+        var confirmationLink = Url.Action(
+            action: nameof(ConfirmEmailAsync),
+            values: routeValues
+        )!;
+        confirmationLink = HtmlEncoder.Default.Encode(confirmationLink);
+
+        var email = await userManager.GetEmailAsync(user);
+
+        await fluentEmail.To(email)
+            .Subject("Confirm Your Email Address")
+            .Body($"Please confirm your email address by <a href='{confirmationLink}'>clicking here</a>.")
+            .HighPriority()
+            .SendAsync();
+    }
+
+    async Task SendChangeEmailAsync(IdentityUser<Guid> user, string newEmail)
+    {
+        var code = await userManager.GenerateChangeEmailTokenAsync(user, newEmail);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+        var userId = await userManager.GetUserIdAsync(user);
+        var routeValues = new RouteValueDictionary
+        {
+            ["userId"] = userId,
+            ["code"] = code,
+            ["newEmail"] = newEmail
+        };
+        var confirmationLink = Url.Action(
+            action: nameof(ConfirmChangeEmailAsync),
+            values: routeValues
+        );
+        ArgumentNullException.ThrowIfNull(confirmationLink);
+        confirmationLink = HtmlEncoder.Default.Encode(confirmationLink);
+
+        await fluentEmail.To(newEmail)
+            .Subject("Confirm Your New Email Address")
+            .Body($"Please confirm your new email address by <a href='{confirmationLink}'>clicking here</a>.")
+            .HighPriority()
+            .SendAsync();
     }
 }
