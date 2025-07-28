@@ -2,6 +2,7 @@ using Eventing.ApiService.Data;
 using Eventing.ApiService.Setup;
 using Eventing.ApiService.Setup.Auth;
 using Eventing.ApiService.Setup.DbContext;
+using Eventing.ApiService.Setup.Emailing;
 using Eventing.ApiService.Setup.Identity;
 using Eventing.ApiService.Setup.JsonOptions;
 using Eventing.ApiService.Setup.Jwt;
@@ -38,6 +39,15 @@ builder.Services.AddXAuthentication();
 
 builder.Services.AddXAuthorization();
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.AddXTestEmailing();
+}
+else
+{
+    builder.AddXEmailing();
+}
+
 builder.Services.AddXMiscServices();
 
 var app = builder.Build();
@@ -50,7 +60,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
     app.MapOpenApi();
     app.UseXScalar();
-    
+
     app.MapPost("/eventing-db-migrate", (EventingDbContext dbContext) => dbContext.Database.MigrateAsync());
 }
 
