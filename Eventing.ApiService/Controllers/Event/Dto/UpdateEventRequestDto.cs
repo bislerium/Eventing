@@ -12,5 +12,6 @@ public sealed record UpdateEventRequestDto(
     [Required] DateTime EndTime,
     [Required] LocationType LocationType,
     [Required] [MaxLength(Data.Entities.Event.MaxLocationCharacters)]
-    string Location
+    string Location,
+    [Required] bool ShowAttendees
     );

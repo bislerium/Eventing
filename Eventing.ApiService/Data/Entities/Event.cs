@@ -25,10 +25,13 @@ public sealed class Event
 
     [MaxLength(MaxLocationCharacters)] public string Location { get; set; } = null!;
 
+    public bool ShowAttendees { get; set; }
+
     public Guid CreatedBy { get; set; }
     [ForeignKey(nameof(CreatedBy))] public Profile Creator { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
     public DateTime? UpdatedAt { get; set; }
 
     public ICollection<Attendee> Attendees { get; set; } = new List<Attendee>();

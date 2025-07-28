@@ -26,4 +26,8 @@
         <PackageReference Include="Scalar.AspNetCore" Version="2.6.4" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Controllers\Attendee\Dto\" />
+    </ItemGroup>
+
 </Project>

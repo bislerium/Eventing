@@ -14,5 +14,5 @@ public sealed record CreateEventRequestDto(
     [Required] LocationType LocationType,
     [Required] [MaxLength(Data.Entities.Event.MaxLocationCharacters)]
     string Location,
-    [Required] Guid CreatedBy
+    [Required] bool ShowAttendees
 );
