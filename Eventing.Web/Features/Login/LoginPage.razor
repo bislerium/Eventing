@@ -1,5 +1,6 @@
 @page "/login"
 @layout EmptyLayout
+@rendermode InteractiveServer
 @using Eventing.Web.Components.Layout
 
 <FluentEditForm Model="LoginModel" OnValidSubmit="SubmitAsync" FormName="Login">
@@ -19,11 +20,11 @@
             </FluentTextField>
             <FluentValidationMessage For="@(() => LoginModel.Password)"/>
         </div>
+        <div>
+            <FluentCheckbox @bind-Value="@LoginModel.RememberMe">Remember me</FluentCheckbox>
+        </div>
+        <div>
+            <FluentButton Appearance="Appearance.Accent" Type="ButtonType.Submit">Sign In</FluentButton>
+        </div>
     </FluentStack>
-
-    <div class="fluent-field">
-        <FluentCheckbox @bind-Value="@LoginModel.RememberMe">Remember me</FluentCheckbox>
-    </div>
-
-    <FluentButton Appearance="Appearance.Accent" Type="ButtonType.Submit">Sign In</FluentButton>
 </FluentEditForm>
