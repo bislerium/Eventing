@@ -39,10 +39,10 @@ public partial class LoginPage(
             }
 
 
-            navigationManager.NavigateTo("/home");
+            navigationManager.NavigateTo("/home", replace: true);
             return;
         }
 
-        toastService.ShowError("Error confirmation.");
+        toastService.ShowError("Login failed.");
     }
 }
