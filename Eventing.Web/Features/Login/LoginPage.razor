@@ -3,28 +3,32 @@
 @rendermode InteractiveServer
 @using Eventing.Web.Components.Layout
 
-<FluentEditForm Model="LoginModel" OnValidSubmit="SubmitAsync" FormName="Login">
-    <DataAnnotationsValidator/>
-    <FluentStack Orientation="Orientation.Vertical">
-        <div>
-            <FluentTextField @bind-Value="LoginModel.Email" Label="Email" Placeholder="user@email.com" Required="true">
-                <FluentIcon Value="@(new Icons.Regular.Size16.Mail())" Slot="start" Color="Color.Neutral"/>
-            </FluentTextField>
-            <FluentValidationMessage For="@(() => LoginModel.Email)"/>
-        </div>
+<FluentCard>
+    <FluentEditForm Model="LoginModel" OnValidSubmit="SubmitAsync" FormName="Login">
+        <DataAnnotationsValidator/>
+        <FluentStack Orientation="Orientation.Vertical">
+            <div>
+                <FluentTextField @bind-Value="LoginModel.Email" Label="Email" Placeholder="user@email.com"
+                                 Required="true">
+                    <FluentIcon Value="@(new Icons.Regular.Size16.Mail())" Slot="start" Color="Color.Neutral"/>
+                </FluentTextField>
+                <FluentValidationMessage For="@(() => LoginModel.Email)"/>
+            </div>
 
-        <div>
-            <FluentTextField @bind-Value="LoginModel.Password" Label="Password" TextFieldType="TextFieldType.Password"
-                             Required="true">
-                <FluentIcon Value="@(new Icons.Regular.Size16.Password())" Slot="start" Color="@Color.Neutral"/>
-            </FluentTextField>
-            <FluentValidationMessage For="@(() => LoginModel.Password)"/>
-        </div>
-        <div>
-            <FluentCheckbox @bind-Value="@LoginModel.RememberMe">Remember me</FluentCheckbox>
-        </div>
-        <div>
-            <FluentButton Appearance="Appearance.Accent" Type="ButtonType.Submit">Sign In</FluentButton>
-        </div>
-    </FluentStack>
-</FluentEditForm>
+            <div>
+                <FluentTextField @bind-Value="LoginModel.Password" Label="Password"
+                                 TextFieldType="TextFieldType.Password"
+                                 Required="true">
+                    <FluentIcon Value="@(new Icons.Regular.Size16.Password())" Slot="start" Color="@Color.Neutral"/>
+                </FluentTextField>
+                <FluentValidationMessage For="@(() => LoginModel.Password)"/>
+            </div>
+            <div>
+                <FluentCheckbox @bind-Value="@LoginModel.RememberMe">Remember me</FluentCheckbox>
+            </div>
+            <div>
+                <FluentButton Appearance="Appearance.Accent" Type="ButtonType.Submit">Sign In</FluentButton>
+            </div>
+        </FluentStack>
+    </FluentEditForm>
+</FluentCard>

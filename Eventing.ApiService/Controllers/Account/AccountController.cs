@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Eventing.ApiService.Controllers.Account;
 
@@ -22,20 +21,51 @@ public class AccountController(
 {
     [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status423Locked)]
     [ProducesResponseType<LoginResponseDto>(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
     public async Task<ActionResult<LoginResponseDto>> LoginAsync([FromBody] LoginRequestDto dto)
     {
         var user = await userManager.FindByEmailAsync(dto.Email);
         if (user == null)
-            return Problem(title: SignInResult.Failed.ToString(), statusCode: StatusCodes.Status401Unauthorized);
+            return Problem(
+                title: "Authentication failed",
+                detail: "Invalid username or password.",
+                statusCode: StatusCodes.Status401Unauthorized);
 
         var result = await signInManager.CheckPasswordSignInAsync(user, dto.Password, true);
-        if (!result.Succeeded) return Problem(title: result.ToString(), statusCode: StatusCodes.Status401Unauthorized);
+        switch (result)
+        {
+            case { Succeeded: true }:
+                var claimPrincipal = await signInManager.CreateUserPrincipalAsync(user);
+                var (accessToken, expiresIn) = jwtTokenService.CreateToken(claimPrincipal.Claims);
+                return Ok(new LoginResponseDto(accessToken, expiresIn));
 
-        var claimPrincipal = await signInManager.CreateUserPrincipalAsync(user);
-        var (accessToken, expiresIn) = jwtTokenService.CreateToken(claimPrincipal.Claims);
-        return Ok(new LoginResponseDto(accessToken, expiresIn));
+            case { IsLockedOut: true }:
+                return Problem(
+                    title: "Account locked",
+                    detail: "Login temporarily blocked due to failed attempts.",
+                    statusCode: StatusCodes.Status423Locked);
+
+            case { IsNotAllowed: true }:
+                return Problem(
+                    title: "Login not allowed",
+                    detail: "Please confirm your account before login.",
+                    statusCode: StatusCodes.Status403Forbidden);
+
+            case { RequiresTwoFactor: true }:
+                return Problem(
+                    title: "Two-factor required",
+                    detail: "A second authentication factor is needed.",
+                    statusCode: StatusCodes.Status401Unauthorized);
+
+            default:
+                return Problem(
+                    title: "Authentication failed",
+                    detail: "Invalid username or password.",
+                    statusCode: StatusCodes.Status401Unauthorized);
+        }
     }
 
     [HttpPost("register")]

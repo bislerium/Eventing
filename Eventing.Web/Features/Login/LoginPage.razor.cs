@@ -2,6 +2,7 @@ using Eventing.Web.Features.Login.Models;
 using Eventing.Web.Features.Login.Models.Http;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace Eventing.Web.Features.Login;
@@ -43,6 +44,7 @@ public partial class LoginPage(
             return;
         }
 
-        toastService.ShowError("Login failed.");
+        var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        toastService.ShowError(problemDetails!.Detail!);
     }
 }
