@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FluentUI.AspNetCore.Components;
+using static Eventing.Web.Constants;
 
 namespace Eventing.Web.Features.Login;
 
@@ -14,14 +15,15 @@ public partial class LoginPage(
     ProtectedSessionStorage protectedSessionStorage,
     IHttpClientFactory clientFactory) : ComponentBase
 {
-    private LoginModel LoginModel { get; set; } = new();
+    private LoginModel LoginModel { get; } = new();
 
     private async Task SubmitAsync()
     {
         var requestDto = new LoginRequestDto(LoginModel.Email, LoginModel.Password);
         var response = await clientFactory
-            .CreateClient(HttpClientNames.EventingApi)
-            .PostAsJsonAsync("api/account/login", requestDto);
+            .CreateClient(Constants.HttpClients.EventingApi.Name)
+            //.PostAsJsonAsync("api/account/login", requestDto);
+            .PostAsJsonAsync("retry", requestDto);
 
         if (response.IsSuccessStatusCode)
         {
@@ -38,13 +40,19 @@ public partial class LoginPage(
                 await protectedSessionStorage.SetAsync(nameof(LoginResponseDto.AccessToken), content.AccessToken);
                 await protectedSessionStorage.SetAsync(nameof(LoginResponseDto.ExpiresIn), content.ExpiresIn);
             }
-
-
+            
             navigationManager.NavigateTo("/home", replace: true);
             return;
         }
 
-        var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
-        toastService.ShowError(problemDetails!.Detail!);
+        try
+        {
+            var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+            toastService.ShowError(problemDetails?.Detail ?? ErrorMessages.SomethingWentWrong);
+        }
+        catch
+        {
+            // ignored
+        }
     }
 }

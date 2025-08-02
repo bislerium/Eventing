@@ -1,14 +1,17 @@
+using System.Net.Mime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Http.Diagnostics;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.ServiceDiscovery;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 
-namespace Microsoft.Extensions.Hosting;
+namespace Eventing.ServiceDefaults;
 
 // Adds common .NET Aspire services: service discovery, resilience, health checks, and OpenTelemetry.
 // This project should be referenced by each service project in your solution.
@@ -17,20 +20,38 @@ public static class Extensions
 {
     public static TBuilder AddServiceDefaults<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
+        builder.Services.AddRedaction();
+        
         builder.ConfigureOpenTelemetry();
 
         builder.AddDefaultHealthChecks();
 
         builder.Services.AddServiceDiscovery();
 
+        builder.Services
+            .AddHttpLogging(options =>
+            {
+                options.CombineLogs = true;
+                options.LoggingFields = HttpLoggingFields.All;
+            })
+            .AddLatencyContext()
+            .AddHttpClientLatencyTelemetry();
+        
         builder.Services.ConfigureHttpClientDefaults(http =>
         {
+            http.AddExtendedHttpClientLogging(options =>
+            {
+                options.LogBody = true;
+                options.RequestPathParameterRedactionMode = HttpRouteParameterRedactionMode.None;
+            });
+            
             // Turn on resilience by default
             http.AddStandardResilienceHandler();
 
             // Turn on service discovery by default
             http.AddServiceDiscovery();
         });
+
 
         // Uncomment the following to restrict the allowed schemes for service discovery.
         // builder.Services.Configure<ServiceDiscoveryOptions>(options =>

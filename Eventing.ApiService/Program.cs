@@ -8,7 +8,9 @@ using Eventing.ApiService.Setup.JsonOptions;
 using Eventing.ApiService.Setup.Jwt;
 using Eventing.ApiService.Setup.OpenApi;
 using Eventing.ApiService.Setup.Scalar;
+using Eventing.ServiceDefaults;
 using Microsoft.EntityFrameworkCore;
+using static System.Threading.Tasks.Task;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +66,8 @@ if (app.Environment.IsDevelopment())
 
     app.MapPost("/eventing-db-migrate", (EventingDbContext dbContext) => dbContext.Database.MigrateAsync());
 }
+
+app.MapPost("retry",  () => FromResult(TypedResults.InternalServerError()));
 
 //app.MapIdentityApi<>()
 
