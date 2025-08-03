@@ -22,8 +22,7 @@ public partial class LoginPage(
         var requestDto = new LoginRequestDto(LoginModel.Email, LoginModel.Password);
         var response = await clientFactory
             .CreateClient(Constants.HttpClients.EventingApi.Name)
-            //.PostAsJsonAsync("api/account/login", requestDto);
-            .PostAsJsonAsync("retry", requestDto);
+            .PostAsJsonAsync("api/account/login", requestDto);
 
         if (response.IsSuccessStatusCode)
         {
@@ -40,7 +39,7 @@ public partial class LoginPage(
                 await protectedSessionStorage.SetAsync(nameof(LoginResponseDto.AccessToken), content.AccessToken);
                 await protectedSessionStorage.SetAsync(nameof(LoginResponseDto.ExpiresIn), content.ExpiresIn);
             }
-            
+
             navigationManager.NavigateTo("/home", replace: true);
             return;
         }
@@ -52,7 +51,7 @@ public partial class LoginPage(
         }
         catch
         {
-            // ignored
+            toastService.ShowError(ErrorMessages.SomethingWentWrong);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -10,6 +11,8 @@ using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+using Polly;
+using Polly.Fallback;
 
 namespace Eventing.ServiceDefaults;
 
@@ -21,7 +24,7 @@ public static class Extensions
     public static TBuilder AddServiceDefaults<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
         builder.Services.AddRedaction();
-        
+
         builder.ConfigureOpenTelemetry();
 
         builder.AddDefaultHealthChecks();
@@ -36,7 +39,7 @@ public static class Extensions
             })
             .AddLatencyContext()
             .AddHttpClientLatencyTelemetry();
-        
+
         builder.Services.ConfigureHttpClientDefaults(http =>
         {
             http.AddExtendedHttpClientLogging(options =>
@@ -44,7 +47,18 @@ public static class Extensions
                 options.LogBody = true;
                 options.RequestPathParameterRedactionMode = HttpRouteParameterRedactionMode.None;
             });
-            
+
+            // Dunno how it's working. Guess the fallback is added at the end.
+            http.AddResilienceHandler("standard1", (builder1, context) =>
+            {
+                builder1.AddFallback(new FallbackStrategyOptions<HttpResponseMessage>
+                {
+                    Name = "Standard-Fallback",
+                    FallbackAction = _ =>
+                        Outcome.FromResultAsValueTask(new HttpResponseMessage(HttpStatusCode.ServiceUnavailable))
+                });
+            });
+
             // Turn on resilience by default
             http.AddStandardResilienceHandler();
 
