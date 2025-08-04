@@ -1,5 +1,4 @@
 using System.Net;
-using System.Net.Mime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpLogging;
@@ -7,12 +6,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Http.Diagnostics;
+using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using Polly;
 using Polly.Fallback;
+using Polly.Telemetry;
 
 namespace Eventing.ServiceDefaults;
 
@@ -49,14 +50,15 @@ public static class Extensions
             });
 
             // Dunno how it's working. Guess the fallback is added at the end.
-            http.AddResilienceHandler("standard1", (builder1, context) =>
+            http.AddResilienceHandler("standard-fallback", (builder1, context) =>
             {
+                var loggerFactory = context.ServiceProvider.GetRequiredService<ILoggerFactory>();
                 builder1.AddFallback(new FallbackStrategyOptions<HttpResponseMessage>
                 {
-                    Name = "Standard-Fallback",
                     FallbackAction = _ =>
                         Outcome.FromResultAsValueTask(new HttpResponseMessage(HttpStatusCode.ServiceUnavailable))
-                });
+                })
+                .ConfigureTelemetry(loggerFactory);
             });
 
             // Turn on resilience by default
