@@ -13,7 +13,6 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using Polly;
 using Polly.Fallback;
-using Polly.Telemetry;
 
 namespace Eventing.ServiceDefaults;
 
@@ -48,21 +47,25 @@ public static class Extensions
                 options.LogBody = true;
                 options.RequestPathParameterRedactionMode = HttpRouteParameterRedactionMode.None;
             });
-
-            // Dunno how it's working. Guess the fallback is added at the end.
-            /*http.AddResilienceHandler("standard-fallback", (builder1, context) =>
+            
+            http.AddResilienceHandler($"{http.Name}-standard", (builder1, context) =>
             {
+                var options = new HttpStandardResilienceOptions();
+        
                 var loggerFactory = context.ServiceProvider.GetRequiredService<ILoggerFactory>();
                 builder1.AddFallback(new FallbackStrategyOptions<HttpResponseMessage>
-                {
-                    FallbackAction = _ =>
-                        Outcome.FromResultAsValueTask(new HttpResponseMessage(HttpStatusCode.ServiceUnavailable))
-                })
-                .ConfigureTelemetry(loggerFactory);
+                    {
+                        FallbackAction = _ =>
+                            Outcome.FromResultAsValueTask(new HttpResponseMessage(HttpStatusCode.ServiceUnavailable))
+                    })
+                    .AddRateLimiter(options.RateLimiter)
+                    .AddTimeout(options.TotalRequestTimeout)
+                    .AddRetry(options.Retry)
+                    .AddCircuitBreaker(options.CircuitBreaker)
+                    .AddTimeout(options.AttemptTimeout)
+                    .ConfigureTelemetry(loggerFactory)
+                    .Build();
             });
-
-            // Turn on resilience by default
-            http.AddStandardResilienceHandler();*/
 
             // Turn on service discovery by default
             http.AddServiceDiscovery();
@@ -92,7 +95,8 @@ public static class Extensions
             {
                 metrics.AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
-                    .AddRuntimeInstrumentation();
+                    .AddRuntimeInstrumentation()
+                    .AddMeter(nameof(Polly));
             })
             .WithTracing(tracing =>
             {

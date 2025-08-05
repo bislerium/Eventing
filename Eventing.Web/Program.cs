@@ -1,12 +1,7 @@
-using System.Net;
 using Eventing.ServiceDefaults;
 using Eventing.Web;
 using Eventing.Web.Components;
-using Microsoft.Extensions.Http.Resilience;
-using Microsoft.Extensions.Options;
 using Microsoft.FluentUI.AspNetCore.Components;
-using Polly;
-using Polly.Fallback;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,24 +24,6 @@ builder.Services.AddHttpClient(
         // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
         client.BaseAddress = new Uri("https+http://apiservice");
         client.Timeout = Timeout.InfiniteTimeSpan;
-    })
-    .AddResilienceHandler("standard", (builder1, context) =>
-    {
-        var options = new HttpStandardResilienceOptions();
-        
-        var loggerFactory = context.ServiceProvider.GetRequiredService<ILoggerFactory>();
-        builder1.AddFallback(new FallbackStrategyOptions<HttpResponseMessage>
-            {
-                FallbackAction = _ =>
-                    Outcome.FromResultAsValueTask(new HttpResponseMessage(HttpStatusCode.ServiceUnavailable))
-            })
-            .AddRateLimiter(options.RateLimiter)
-            .AddTimeout(options.TotalRequestTimeout)
-            .AddRetry(options.Retry)
-            .AddCircuitBreaker(options.CircuitBreaker)
-            .AddTimeout(options.AttemptTimeout)
-            .ConfigureTelemetry(loggerFactory)
-            .Build();
     });
 
 var app = builder.Build();
