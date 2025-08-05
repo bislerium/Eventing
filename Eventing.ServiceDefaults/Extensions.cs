@@ -50,7 +50,7 @@ public static class Extensions
             });
 
             // Dunno how it's working. Guess the fallback is added at the end.
-            http.AddResilienceHandler("standard-fallback", (builder1, context) =>
+            /*http.AddResilienceHandler("standard-fallback", (builder1, context) =>
             {
                 var loggerFactory = context.ServiceProvider.GetRequiredService<ILoggerFactory>();
                 builder1.AddFallback(new FallbackStrategyOptions<HttpResponseMessage>
@@ -62,7 +62,7 @@ public static class Extensions
             });
 
             // Turn on resilience by default
-            http.AddStandardResilienceHandler();
+            http.AddStandardResilienceHandler();*/
 
             // Turn on service discovery by default
             http.AddServiceDiscovery();
