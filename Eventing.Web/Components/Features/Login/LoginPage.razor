@@ -1,15 +1,16 @@
 @page "/login"
 @layout EmptyLayout
 @rendermode InteractiveServer
-@using Eventing.Web.Components.Layout
 
-<FluentStack HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" Style="height: 100%">
-    <FluentCard>
-        <FluentEditForm Model="LoginModel" OnValidSubmit="SubmitAsync" FormName="Login">
+<FluentStack HorizontalAlignment="HorizontalAlignment.Center"
+             VerticalAlignment="VerticalAlignment.Center"
+             Style="height:100vh;">
+<FluentCard Style="width:auto;" Height="auto">
+        <FluentEditForm Model="LoginModel" OnValidSubmit="SubmitAsync">
             <DataAnnotationsValidator/>
             <FluentStack Orientation="Orientation.Vertical">
                 <div>
-                    <FluentTextField @bind-Value="LoginModel.Email" Label="Email" Placeholder="user@email.com"
+                    <FluentTextField Name="email" @bind-Value="LoginModel.Email" Label="Email" Placeholder="user@email.com"
                                      Required="true">
                         <FluentIcon Value="@(new Icons.Regular.Size16.Mail())" Slot="start" Color="Color.Neutral"/>
                     </FluentTextField>
@@ -17,7 +18,7 @@
                 </div>
 
                 <div>
-                    <FluentTextField @bind-Value="LoginModel.Password" Label="Password"
+                    <FluentTextField Name="password" @bind-Value="LoginModel.Password" Label="Password"
                                      TextFieldType="TextFieldType.Password"
                                      Required="true">
                         <FluentIcon Value="@(new Icons.Regular.Size16.Password())" Slot="start" Color="@Color.Neutral"/>
@@ -28,9 +29,9 @@
                     <FluentCheckbox @bind-Value="@LoginModel.RememberMe">Remember me</FluentCheckbox>
                 </div>
                 <div>
-                    <FluentButton Appearance="Appearance.Accent" Type="ButtonType.Submit">Sign In</FluentButton>
+                    <FluentButton  Appearance="Appearance.Accent" Type="ButtonType.Submit">Sign In</FluentButton>
                 </div>
             </FluentStack>
         </FluentEditForm>
-    </FluentCard>
+</FluentCard>
 </FluentStack>

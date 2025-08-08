@@ -1,12 +1,12 @@
-using Eventing.Web.Features.Login.Models;
-using Eventing.Web.Features.Login.Models.Http;
+using Eventing.Web.Components.Features.Login.Dtos;
+using Eventing.Web.Components.Features.Login.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FluentUI.AspNetCore.Components;
 using static Eventing.Web.Constants;
 
-namespace Eventing.Web.Features.Login;
+namespace Eventing.Web.Components.Features.Login;
 
 public partial class LoginPage(
     NavigationManager navigationManager,

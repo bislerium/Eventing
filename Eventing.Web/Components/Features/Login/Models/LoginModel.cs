@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Eventing.Web.Features.Login.Models;
+namespace Eventing.Web.Components.Features.Login.Models;
 
 public sealed class LoginModel
 {

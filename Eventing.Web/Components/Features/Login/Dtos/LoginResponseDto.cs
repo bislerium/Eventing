@@ -1,4 +1,4 @@
-namespace Eventing.Web.Features.Login.Models.Http;
+namespace Eventing.Web.Components.Features.Login.Dtos;
 
 public sealed record LoginResponseDto(
     string AccessToken,

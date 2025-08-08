@@ -18,7 +18,23 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Components\Pages\Login\" />
+      <_ContentIncludedByDefault Remove="Components\Layout\EmptyLayout.razor" />
+      <_ContentIncludedByDefault Remove="Components\Layout\MainLayout.razor" />
+      <_ContentIncludedByDefault Remove="Components\Layout\NavMenu.razor" />
+      <_ContentIncludedByDefault Remove="Components\Layout\ParentLayout.razor" />
+      <_ContentIncludedByDefault Remove="Features\Login\LoginPage.razor" />
+      <_ContentIncludedByDefault Remove="Layout\EmptyLayout.razor" />
+      <_ContentIncludedByDefault Remove="Layout\MainLayout.razor" />
+      <_ContentIncludedByDefault Remove="Layout\NavMenu.razor" />
+      <_ContentIncludedByDefault Remove="Layout\ParentLayout.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Components\Features\Login\LoginPage.razor" />
+      <AdditionalFiles Include="Components\Layout\EmptyLayout.razor" />
+      <AdditionalFiles Include="Components\Layout\MainLayout.razor" />
+      <AdditionalFiles Include="Components\Layout\NavMenu.razor" />
+      <AdditionalFiles Include="Components\Layout\ParentLayout.razor" />
     </ItemGroup>
 
 </Project>
