@@ -8,8 +8,8 @@ public static class IdentityCoreExtension
     public static void AddXIdentityCore(this IServiceCollection services)
     {
         services.AddIdentityCore<IdentityUser<Guid>>()
-            .AddSignInManager()
             .AddRoles<IdentityRole<Guid>>()
+            .AddSignInManager()
             .AddEntityFrameworkStores<EventingDbContext>()
             .AddDefaultTokenProviders();
 
