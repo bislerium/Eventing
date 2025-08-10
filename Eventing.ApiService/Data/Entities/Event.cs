@@ -20,6 +20,8 @@ public sealed class Event
     public DateTime StartTime { get; set; }
 
     public DateTime EndTime { get; set; }
+    
+    public AccessType AccessType { get; set; }
 
     public LocationType LocationType { get; set; }
 

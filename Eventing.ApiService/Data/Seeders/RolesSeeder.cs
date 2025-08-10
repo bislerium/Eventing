@@ -1,12 +1,25 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Eventing.ApiService.Data.Seeders;
 
-public class RolesSeeder(RoleManager<IdentityRole> roleManager)
+public static class RolesSeeder
 {
-    public async Task SeedAsync()
+    public static async Task SeedAsync(DbContext dbContext, CancellationToken cancellationToken)
     {
-        await roleManager.CreateAsync(new IdentityRole("General"));
-        await roleManager.CreateAsync(new IdentityRole("Admin"));
+        var roleManager = dbContext.GetService<RoleManager<IdentityRole<Guid>>>();
+        var logger = dbContext.GetService<ILoggerFactory>().CreateLogger(nameof(RolesSeeder));
+        
+        logger.LogInformation("Seeding users (Identity User + Profile).");
+        var roles = new[] { "General", "Admin" };
+
+        foreach (var roleName in roles)
+        {
+            if (!await roleManager.RoleExistsAsync(roleName))
+            {
+                await roleManager.CreateAsync(new IdentityRole<Guid>(roleName));
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Eventing.ApiService.Data;
 
-public class EventingDbContext(DbContextOptions options)
+public class EventingDbContext(DbContextOptions<EventingDbContext> options)
     : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>(options)
 {
     public DbSet<Profile> Profiles { get; set; }

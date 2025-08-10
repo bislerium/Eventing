@@ -67,7 +67,7 @@ if (app.Environment.IsDevelopment())
     app.MapPost("/eventing-db-migrate", (EventingDbContext dbContext) => dbContext.Database.MigrateAsync());
 }
 
-app.MapPost("retry",  () => FromResult(TypedResults.InternalServerError()));
+app.MapPost("retry",  TypedResults.InternalServerError);
 
 //app.MapIdentityApi<>()
 

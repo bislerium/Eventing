@@ -25,6 +25,7 @@ public static class DbContextExtension
 
                 options.UseAsyncSeeding(async (context, _, ct) =>
                 {
+                    await RolesSeeder.SeedAsync(context, ct);
                     await UserSeeder.SeedAsync(context, ct);
                     await EventSeeder.SeedAsync(context, ct);
                 });
