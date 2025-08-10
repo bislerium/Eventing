@@ -6,7 +6,7 @@ namespace Eventing.ApiService.Data.Seeders;
 
 public static class EventSeeder
 {
-    public static async Task SeedAsync(DbContext dbContext, CancellationToken cancellationToken)
+    public static async Task SeedAsync(DbContext dbContext)
     {
         // var eventsToSeed = new List<Event>
         // {

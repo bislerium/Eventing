@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Eventing.ApiService.Data.Seeders;
 
 public static class RolesSeeder
 {
-    public static async Task SeedAsync(DbContext dbContext, CancellationToken cancellationToken)
+    public static async Task SeedAsync(IServiceProvider serviceProvider)
     {
-        using var scope = dbContext.GetService<IServiceScopeFactory>().CreateScope();
+        await using var scope = serviceProvider.CreateAsyncScope();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
         var roles = new[] { "General", "Admin" };

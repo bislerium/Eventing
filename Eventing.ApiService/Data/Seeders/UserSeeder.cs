@@ -1,18 +1,18 @@
 using Eventing.ApiService.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Eventing.ApiService.Data.Seeders;
 
 public static class UserSeeder
 {
-    public static async Task SeedAsync(DbContext dbContext, CancellationToken cancellationToken)
+    public static async Task SeedAsync(DbContext dbContext, IServiceProvider serviceProvider)
     {
         const string defaultPassword = "Temp@12345";
 
-        var logger = dbContext.GetService<ILoggerFactory>().CreateLogger(nameof(UserSeeder));
-        var userManager = dbContext.GetService<UserManager<IdentityUser<Guid>>>();
+        await using var scope = serviceProvider.CreateAsyncScope();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser<Guid>>>();
+
         var profiles = dbContext.Set<Profile>();
 
         var usersToCreate = new List<(Guid Id, string Email, string Role, string Name)>
@@ -32,12 +32,10 @@ public static class UserSeeder
             (Guid.Parse("00000000-0000-0000-0000-000000000010"), "irene@example.com", "General", "Irene Thomas"),
         };
 
-        logger.LogInformation("Seeding users (Identity User + Profile).");
-        
         // 2. Create users + profiles
-        foreach (var (id, email, role, _) in usersToCreate)
+        foreach (var (id, email, role, name) in usersToCreate)
         {
-            var isExistingUser = await dbContext.Set<IdentityUser<Guid>>().AnyAsync(x => x.Id == id, cancellationToken);
+            var isExistingUser = await dbContext.Set<IdentityUser<Guid>>().AnyAsync(x => x.Id == id);
             if (isExistingUser) continue;
 
             var user = new IdentityUser<Guid>
@@ -51,25 +49,14 @@ public static class UserSeeder
             var result = await userManager.CreateAsync(user, defaultPassword);
             if (!result.Succeeded)
             {
-                logger.LogError(
-                    "Identity user creation failed. UserId: {UserId}, Errors: {@IdentityErrors}",
-                    id,
-                    result.Errors
-                );
-
+                var errors = string.Join("; ", result.Errors.Select(e => $"{e.Code}: {e.Description}"));
                 throw new InvalidOperationException(
-                    $"Failed to create identity user '{id}'. See logs for details."
+                    $"Failed to create identity user '{id}'. Errors: {errors}"
                 );
             }
 
             await userManager.AddToRoleAsync(user, role);
-        }
 
-        foreach (var (id, _, _, name) in usersToCreate)
-        {
-            var isExistingProfile = await dbContext.Set<Profile>().AnyAsync(x => x.Id == id, cancellationToken);
-            if (isExistingProfile) continue;
-            
             profiles.Add(new Profile
             {
                 Id = id,
@@ -77,6 +64,6 @@ public static class UserSeeder
             });
         }
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync();
     }
 }
