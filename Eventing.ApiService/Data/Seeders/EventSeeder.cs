@@ -8,203 +8,508 @@ public static class EventSeeder
 {
     public static async Task SeedAsync(DbContext dbContext)
     {
-        // var eventsToSeed = new List<Event>
-        // {
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e1111111-1111-1111-1111-111111111111"),
-        //         Title = "Tech Innovators Conference 2025",
-        //         Description = "A multi-day conference featuring talks from leading tech innovators.",
-        //         StartTime = new DateTime(2025, 9, 10, 9, 0, 0, DateTimeKind.Utc),
-        //         EndTime = new DateTime(2025, 9, 12, 17, 0, 0, DateTimeKind.Utc),
-        //         LocationType = LocationType.Physical,
-        //         Location = "Grand Convention Center, New York",
-        //         CreatedBy = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-        //         CreatedAt = DateTime.UtcNow.AddMonths(-3)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e2222222-2222-2222-2222-222222222222"),
-        //         Title = "Monthly Marketing Meetup",
-        //         Description = "Networking event for marketing professionals to share latest trends.",
-        //         StartTime = DateTime.UtcNow.AddDays(7).AddHours(18),
-        //         EndTime = DateTime.UtcNow.AddDays(7).AddHours(20),
-        //         LocationType = LocationType.Virtual,
-        //         Location = "https://meet.google.com/abc-defg-hij",
-        //         CreatedBy = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-        //         CreatedAt = DateTime.UtcNow.AddDays(-40)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e3333333-3333-3333-3333-333333333333"),
-        //         Title = "AI Ethics Webinar",
-        //         Description = "Online seminar discussing ethical considerations in AI development.",
-        //         StartTime = DateTime.UtcNow.AddDays(15).AddHours(15),
-        //         EndTime = DateTime.UtcNow.AddDays(15).AddHours(17),
-        //         LocationType = LocationType.Virtual,
-        //         Location = "https://zoom.us/j/123-4567-890",
-        //         CreatedBy = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-        //         CreatedAt = DateTime.UtcNow.AddMonths(-1)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e4444444-4444-4444-4444-444444444444"),
-        //         Title = "Startup Pitch Night",
-        //         Description = "Local startups pitch their ideas to potential investors.",
-        //         StartTime = DateTime.UtcNow.AddDays(30).AddHours(19),
-        //         EndTime = DateTime.UtcNow.AddDays(30).AddHours(22),
-        //         LocationType = LocationType.Physical,
-        //         Location = "Innovation Hub Auditorium",
-        //         CreatedBy = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-        //         CreatedAt = DateTime.UtcNow.AddDays(-60)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e5555555-5555-5555-5555-555555555555"),
-        //         Title = "Cloud Computing Workshop",
-        //         Description = "Learn the fundamentals of cloud computing.",
-        //         StartTime = DateTime.UtcNow.AddDays(10).AddHours(14),
-        //         EndTime = DateTime.UtcNow.AddDays(10).AddHours(16),
-        //         LocationType = LocationType.Physical,
-        //         Location = "City Library Hall",
-        //         CreatedBy = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-        //         CreatedAt = DateTime.UtcNow.AddDays(-10)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e6666666-6666-6666-6666-666666666666"),
-        //         Title = "Design Thinking Bootcamp",
-        //         Description = "Intensive workshop on design thinking principles.",
-        //         StartTime = DateTime.UtcNow.AddDays(13).AddHours(14),
-        //         EndTime = DateTime.UtcNow.AddDays(13).AddHours(16),
-        //         LocationType = LocationType.Virtual,
-        //         Location = "https://meet.google.com/xyz-abcd-efg",
-        //         CreatedBy = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-        //         CreatedAt = DateTime.UtcNow.AddDays(-5)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e7777777-7777-7777-7777-777777777777"),
-        //         Title = "Cybersecurity Essentials",
-        //         Description = "Seminar on best practices for cybersecurity.",
-        //         StartTime = DateTime.UtcNow.AddDays(16).AddHours(14),
-        //         EndTime = DateTime.UtcNow.AddDays(16).AddHours(16),
-        //         LocationType = LocationType.Physical,
-        //         Location = "Tech Park Conference Room",
-        //         CreatedBy = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-        //         CreatedAt = DateTime.UtcNow.AddDays(-20)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e8888888-8888-8888-8888-888888888888"),
-        //         Title = "Product Management Roundtable",
-        //         Description = "Discussion forum for product managers.",
-        //         StartTime = DateTime.UtcNow.AddDays(19).AddHours(14),
-        //         EndTime = DateTime.UtcNow.AddDays(19).AddHours(16),
-        //         LocationType = LocationType.Virtual,
-        //         Location = "https://zoom.us/j/987-6543-210",
-        //         CreatedBy = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-        //         CreatedAt = DateTime.UtcNow.AddDays(-15)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e9999999-9999-9999-9999-999999999999"),
-        //         Title = "Data Science Seminar",
-        //         Description = "Explore the latest trends in data science.",
-        //         StartTime = DateTime.UtcNow.AddDays(22).AddHours(14),
-        //         EndTime = DateTime.UtcNow.AddDays(22).AddHours(16),
-        //         LocationType = LocationType.Physical,
-        //         Location = "Co-working Space",
-        //         CreatedBy = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-        //         CreatedAt = DateTime.UtcNow.AddDays(-25)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e1010101-1010-1010-1010-101010101010"),
-        //         Title = "Mobile App Dev Sprint",
-        //         Description = "Sprint for mobile app developers.",
-        //         StartTime = DateTime.UtcNow.AddDays(25).AddHours(14),
-        //         EndTime = DateTime.UtcNow.AddDays(25).AddHours(16),
-        //         LocationType = LocationType.Virtual,
-        //         Location = "https://meet.google.com/lmn-opqr-stu",
-        //         CreatedBy = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-        //         CreatedAt = DateTime.UtcNow.AddDays(-30)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e1111112-1111-1111-1111-111111111112"),
-        //         Title = "Blockchain Introduction",
-        //         Description = "Introductory session on blockchain technology.",
-        //         StartTime = DateTime.UtcNow.AddDays(28).AddHours(14),
-        //         EndTime = DateTime.UtcNow.AddDays(28).AddHours(16),
-        //         LocationType = LocationType.Physical,
-        //         Location = "Main Auditorium",
-        //         CreatedBy = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-        //         CreatedAt = DateTime.UtcNow.AddDays(-35)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e1212121-2121-2121-2121-212121212121"),
-        //         Title = "UX/UI Design Meetup",
-        //         Description = "Meetup for UX and UI designers.",
-        //         StartTime = DateTime.UtcNow.AddDays(31).AddHours(14),
-        //         EndTime = DateTime.UtcNow.AddDays(31).AddHours(16),
-        //         LocationType = LocationType.Virtual,
-        //         Location = "https://zoom.us/j/456-7890-123",
-        //         CreatedBy = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-        //         CreatedAt = DateTime.UtcNow.AddDays(-40)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e1313131-3131-3131-3131-313131313131"),
-        //         Title = "Agile Methodology Training",
-        //         Description = "Training session on Agile practices.",
-        //         StartTime = DateTime.UtcNow.AddDays(34).AddHours(14),
-        //         EndTime = DateTime.UtcNow.AddDays(34).AddHours(16),
-        //         LocationType = LocationType.Physical,
-        //         Location = "City Library Hall",
-        //         CreatedBy = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-        //         CreatedAt = DateTime.UtcNow.AddDays(-45)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e1414141-4141-4141-4141-414141414141"),
-        //         Title = "Digital Marketing Webinar",
-        //         Description = "Webinar on digital marketing strategies.",
-        //         StartTime = DateTime.UtcNow.AddDays(37).AddHours(14),
-        //         EndTime = DateTime.UtcNow.AddDays(37).AddHours(16),
-        //         LocationType = LocationType.Virtual,
-        //         Location = "https://meet.google.com/vwx-yzab-cde",
-        //         CreatedBy = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-        //         CreatedAt = DateTime.UtcNow.AddDays(-50)
-        //     },
-        //     new Event
-        //     {
-        //         Id = Guid.Parse("e1515151-5151-5151-5151-515151515151"),
-        //         Title = "Community Hackathon",
-        //         Description = "Local community hackathon event.",
-        //         StartTime = DateTime.UtcNow.AddDays(40).AddHours(9),
-        //         EndTime = DateTime.UtcNow.AddDays(40).AddHours(21),
-        //         LocationType = LocationType.Physical,
-        //         Location = "Innovation Hub Auditorium",
-        //         CreatedBy = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-        //         CreatedAt = DateTime.UtcNow.AddDays(-55)
-        //     }
-        // };
-        //
-        // // Get existing event IDs to avoid duplicates
-        // var existingEventIds = await dbContext.Set<Event>()
-        //     .Where(e => eventsToSeed.Select(ev => ev.Id).Contains(e.Id))
-        //     .Select(e => e.Id)
-        //     .ToListAsync(cancellationToken);
-        //
-        // var newEvents = eventsToSeed.ExceptBy(existingEventIds, x => x.Id).ToArray();
-        //
-        // if (newEvents.Length > 0)
-        // {
-        //     await dbContext.Set<Event>().AddRangeAsync(newEvents, cancellationToken);
-        //     await dbContext.SaveChangesAsync(cancellationToken);
-        // }
+        var eventsToCreate = new List<Event>
+        {
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000001"),
+                Title = "Tech Trends 2025",
+                Description =
+                    "An in-depth seminar discussing the latest technology trends and innovations shaping 2025.",
+                StartTime = DateTime.UtcNow.AddDays(3).AddHours(10),
+                EndTime = DateTime.UtcNow.AddDays(3).AddHours(12),
+                LocationType = LocationType.Virtual,
+                Location = "https://meet.example.com/techtrends",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000002") // Alice
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000002"),
+                Title = "Annual Company Meetup",
+                Description =
+                    "Our yearly gathering for all departments to review milestones and set goals for the upcoming year.",
+                StartTime = DateTime.UtcNow.AddDays(7).AddHours(9),
+                EndTime = DateTime.UtcNow.AddDays(7).AddHours(17),
+                LocationType = LocationType.Physical,
+                Location = "Grand Hall, Downtown Conference Center",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"), // Admin
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000003"),
+                Title = "AI for Beginners",
+                Description = "A workshop introducing artificial intelligence concepts for newcomers.",
+                StartTime = DateTime.UtcNow.AddDays(5).AddHours(14),
+                EndTime = DateTime.UtcNow.AddDays(5).AddHours(16),
+                LocationType = LocationType.Virtual,
+                Location = "https://zoom.example.com/aibeginners",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000003"), // Bob
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000004"),
+                Title = "Team Building Outdoor Retreat",
+                Description = "Fun activities and team-building exercises to strengthen collaboration.",
+                StartTime = DateTime.UtcNow.AddDays(14).AddHours(8),
+                EndTime = DateTime.UtcNow.AddDays(14).AddHours(18),
+                LocationType = LocationType.Physical,
+                Location = "Riverside Adventure Park",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000004"), // Carol
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000005"),
+                Title = "Monthly Sales Review",
+                Description = "A monthly review of sales targets and performance across regions.",
+                StartTime = DateTime.UtcNow.AddDays(2).AddHours(9),
+                EndTime = DateTime.UtcNow.AddDays(2).AddHours(11),
+                LocationType = LocationType.Virtual,
+                Location = "https://teams.example.com/salesreview",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000005"), // David
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000006"),
+                Title = "Cybersecurity Best Practices",
+                Description = "A security awareness session covering best practices and the latest threats.",
+                StartTime = DateTime.UtcNow.AddDays(10).AddHours(15),
+                EndTime = DateTime.UtcNow.AddDays(10).AddHours(17),
+                LocationType = LocationType.Virtual,
+                Location = "https://webinar.example.com/security",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000006"), // Eve
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000007"),
+                Title = "Product Launch: Orion X",
+                Description = "The official launch of our new product line, Orion X, with demos and Q&A.",
+                StartTime = DateTime.UtcNow.AddDays(6).AddHours(11),
+                EndTime = DateTime.UtcNow.AddDays(6).AddHours(13),
+                LocationType = LocationType.Physical,
+                Location = "Innovation Hall, Tech Park",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000007"), // Frank
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000008"),
+                Title = "Remote Work Productivity Tips",
+                Description = "Learn effective strategies to boost productivity while working remotely.",
+                StartTime = DateTime.UtcNow.AddDays(4).AddHours(10),
+                EndTime = DateTime.UtcNow.AddDays(4).AddHours(12),
+                LocationType = LocationType.Virtual,
+                Location = "https://meet.example.com/productivity",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000008"), // Grace
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000009"),
+                Title = "Health and Wellness Fair",
+                Description = "Join us for a day of wellness talks, health checkups, and fitness activities.",
+                StartTime = DateTime.UtcNow.AddDays(12).AddHours(9),
+                EndTime = DateTime.UtcNow.AddDays(12).AddHours(15),
+                LocationType = LocationType.Physical,
+                Location = "City Sports Complex",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000009"), // Henry
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000010"),
+                Title = "Intro to Cloud Computing",
+                Description = "A hands-on session exploring cloud computing basics with AWS and Azure demos.",
+                StartTime = DateTime.UtcNow.AddDays(8).AddHours(14),
+                EndTime = DateTime.UtcNow.AddDays(8).AddHours(17),
+                LocationType = LocationType.Virtual,
+                Location = "https://zoom.example.com/cloudintro",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000010"), // Irene
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000011"),
+                Title = "Sustainability in Business",
+                Description =
+                    "A panel discussion on how businesses can adopt sustainable practices without sacrificing growth.",
+                StartTime = DateTime.UtcNow.AddDays(15).AddHours(10),
+                EndTime = DateTime.UtcNow.AddDays(15).AddHours(12),
+                LocationType = LocationType.Physical,
+                Location = "Green Earth Conference Hall",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000002"), // Alice
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000012"),
+                Title = "Mastering Time Management",
+                Description = "Practical strategies for improving efficiency and work-life balance.",
+                StartTime = DateTime.UtcNow.AddDays(9).AddHours(13),
+                EndTime = DateTime.UtcNow.AddDays(9).AddHours(15),
+                LocationType = LocationType.Virtual,
+                Location = "https://meet.example.com/timemanagement",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000003"), // Bob
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000013"),
+                Title = "Data Science Bootcamp",
+                Description =
+                    "An intensive introduction to data analysis, visualization, and machine learning tools.",
+                StartTime = DateTime.UtcNow.AddDays(20).AddHours(9),
+                EndTime = DateTime.UtcNow.AddDays(20).AddHours(17),
+                LocationType = LocationType.Virtual,
+                Location = "https://zoom.example.com/datasciencebootcamp",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000004"), // Carol
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000014"),
+                Title = "Photography for Beginners",
+                Description = "A hands-on photography workshop covering camera basics and composition techniques.",
+                StartTime = DateTime.UtcNow.AddDays(18).AddHours(10),
+                EndTime = DateTime.UtcNow.AddDays(18).AddHours(14),
+                LocationType = LocationType.Physical,
+                Location = "City Art Center - Studio B",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000005"), // David
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000015"),
+                Title = "Blockchain in Finance",
+                Description = "Exploring the impact of blockchain on the global financial system.",
+                StartTime = DateTime.UtcNow.AddDays(22).AddHours(11),
+                EndTime = DateTime.UtcNow.AddDays(22).AddHours(13),
+                LocationType = LocationType.Virtual,
+                Location = "https://teams.example.com/blockchainfinance",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000006"), // Eve
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000016"),
+                Title = "Marathon Preparation Workshop",
+                Description = "Training tips, nutrition plans, and injury pr()ion for marathon runners.",
+                StartTime = DateTime.UtcNow.AddDays(17).AddHours(8),
+                EndTime = DateTime.UtcNow.AddDays(17).AddHours(10),
+                LocationType = LocationType.Physical,
+                Location = "City Stadium - Training Room",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000007"), // Frank
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000017"),
+                Title = "Public Speaking Masterclass",
+                Description = "Learn to speak confidently in front of any audience with practical exercises.",
+                StartTime = DateTime.UtcNow.AddDays(16).AddHours(14),
+                EndTime = DateTime.UtcNow.AddDays(16).AddHours(17),
+                LocationType = LocationType.Virtual,
+                Location = "https://webinar.example.com/publicspeaking",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000008"), // Grace
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000018"),
+                Title = "Local Farmers’ Market Tour",
+                Description =
+                    "Discover fresh produce, meet local farmers, and learn about sustainable agriculture.",
+                StartTime = DateTime.UtcNow.AddDays(13).AddHours(9),
+                EndTime = DateTime.UtcNow.AddDays(13).AddHours(11),
+                LocationType = LocationType.Physical,
+                Location = "Main Street Farmers' Market",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000009"), // Henry
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000019"),
+                Title = "Coding for Kids",
+                Description = "An introductory coding workshop designed for children aged 8–12.",
+                StartTime = DateTime.UtcNow.AddDays(11).AddHours(10),
+                EndTime = DateTime.UtcNow.AddDays(11).AddHours(12),
+                LocationType = LocationType.Physical,
+                Location = "Community Learning Center - Room 3",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000010"), // Irene
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000020"),
+                Title = "Advanced Excel Tips & Tricks",
+                Description = "Boost your productivity with advanced Excel features and automation tools.",
+                StartTime = DateTime.UtcNow.AddDays(21).AddHours(15),
+                EndTime = DateTime.UtcNow.AddDays(21).AddHours(17),
+                LocationType = LocationType.Virtual,
+                Location = "https://meet.example.com/advancedexcel",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"), // Admin
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000021"),
+                Title = "Leadership Essentials",
+                Description = "Develop the core skills needed to lead teams effectively in any environment.",
+                StartTime = DateTime.UtcNow.AddDays(25).AddHours(9),
+                EndTime = DateTime.UtcNow.AddDays(25).AddHours(12),
+                LocationType = LocationType.Virtual,
+                Location = "https://zoom.example.com/leadershipessentials",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000002"), // Alice
+            },
 
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000022"),
+                Title = "Creative Writing Workshop",
+                Description = "Unlock your creativity with fun exercises and writing prompts.",
+                StartTime = DateTime.UtcNow.AddDays(23).AddHours(14),
+                EndTime = DateTime.UtcNow.AddDays(23).AddHours(17),
+                LocationType = LocationType.Physical,
+                Location = "Library Community Room",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000003"), // Bob
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000023"),
+                Title = "Cloud Security Fundamentals",
+                Description = "An overview of security principles for cloud infrastructure and applications.",
+                StartTime = DateTime.UtcNow.AddDays(28).AddHours(11),
+                EndTime = DateTime.UtcNow.AddDays(28).AddHours(13),
+                LocationType = LocationType.Virtual,
+                Location = "https://teams.example.com/cloudsecurity",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000004"), // Carol
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000024"),
+                Title = "Yoga and Mindfulness",
+                Description = "Start your day with guided yoga and mindfulness meditation.",
+                StartTime = DateTime.UtcNow.AddDays(19).AddHours(7),
+                EndTime = DateTime.UtcNow.AddDays(19).AddHours(8),
+                LocationType = LocationType.Physical,
+                Location = "Wellness Center - Room 1",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000005"), // David
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000025"),
+                Title = "Digital Marketing Strategies",
+                Description = "Learn how to grow your brand with modern digital marketing tactics.",
+                StartTime = DateTime.UtcNow.AddDays(24).AddHours(13),
+                EndTime = DateTime.UtcNow.AddDays(24).AddHours(15),
+                LocationType = LocationType.Virtual,
+                Location = "https://webinar.example.com/digitalmarketing",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000006"), // Eve
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000026"),
+                Title = "Charity Fundraiser Gala",
+                Description = "An elegant evening to raise funds for local community projects.",
+                StartTime = DateTime.UtcNow.AddDays(30).AddHours(18),
+                EndTime = DateTime.UtcNow.AddDays(30).AddHours(22),
+                LocationType = LocationType.Physical,
+                Location = "Grand Ballroom, City Hotel",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000007"), // Frank
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000027"),
+                Title = "Beginner's Guide to Investing",
+                Description = "Financial basics and tips for new investors.",
+                StartTime = DateTime.UtcNow.AddDays(27).AddHours(10),
+                EndTime = DateTime.UtcNow.AddDays(27).AddHours(12),
+                LocationType = LocationType.Virtual,
+                Location = "https://meet.example.com/investing101",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000008"), // Grace
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000028"),
+                Title = "Advanced Excel Techniques",
+                Description = "Take your Excel skills to the next level with macros and pivot tables.",
+                StartTime = DateTime.UtcNow.AddDays(29).AddHours(14),
+                EndTime = DateTime.UtcNow.AddDays(29).AddHours(16),
+                LocationType = LocationType.Virtual,
+                Location = "https://zoom.example.com/advancedexcel",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000009"), // Henry
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000029"),
+                Title = "Cooking Class: Italian Cuisine",
+                Description = "Learn to cook authentic Italian dishes with Chef Maria.",
+                StartTime = DateTime.UtcNow.AddDays(26).AddHours(17),
+                EndTime = DateTime.UtcNow.AddDays(26).AddHours(20),
+                LocationType = LocationType.Physical,
+                Location = "Culinary Arts Kitchen",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000010"), // Irene
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000030"),
+                Title = "Environmental Awareness Campaign",
+                Description = "Join us to discuss ways to reduce our carbon footprint and protect the environment.",
+                StartTime = DateTime.UtcNow.AddDays(31).AddHours(9),
+                EndTime = DateTime.UtcNow.AddDays(31).AddHours(11),
+                LocationType = LocationType.Physical,
+                Location = "Community Center Auditorium",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"), // Admin
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000031"),
+                Title = "Startup Pitch Night",
+                Description = "Entrepreneurs present their ideas to potential investors and mentors.",
+                StartTime = DateTime.UtcNow.AddDays(32).AddHours(18),
+                EndTime = DateTime.UtcNow.AddDays(32).AddHours(21),
+                LocationType = LocationType.Physical,
+                Location = "Innovation Hub Auditorium",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000002"), // Alice
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000032"),
+                Title = "Creative Coding Workshop",
+                Description = "Explore creative coding techniques with hands-on projects.",
+                StartTime = DateTime.UtcNow.AddDays(33).AddHours(10),
+                EndTime = DateTime.UtcNow.AddDays(33).AddHours(13),
+                LocationType = LocationType.Virtual,
+                Location = "https://meet.example.com/creativecoding",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000003"), // Bob
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000033"),
+                Title = "Mental Health Awareness",
+                Description = "A session promoting mental health resources and support.",
+                StartTime = DateTime.UtcNow.AddDays(34).AddHours(14),
+                EndTime = DateTime.UtcNow.AddDays(34).AddHours(16),
+                LocationType = LocationType.Physical,
+                Location = "Wellness Center Conference Room",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000004"), // Carol
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000034"),
+                Title = "Intro to Robotics",
+                Description = "Basics of robotics programming and hardware for beginners.",
+                StartTime = DateTime.UtcNow.AddDays(35).AddHours(9),
+                EndTime = DateTime.UtcNow.AddDays(35).AddHours(12),
+                LocationType = LocationType.Virtual,
+                Location = "https://zoom.example.com/roboticsintro",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000005"), // David
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000035"),
+                Title = "Gardening Club Meetup",
+                Description = "Monthly meetup for gardening enthusiasts to share tips and plants.",
+                StartTime = DateTime.UtcNow.AddDays(36).AddHours(15),
+                EndTime = DateTime.UtcNow.AddDays(36).AddHours(17),
+                LocationType = LocationType.Physical,
+                Location = "Community Garden Center",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000006"), // Eve
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000036"),
+                Title = "Effective Negotiation Skills",
+                Description = "Techniques and strategies for successful negotiations in business.",
+                StartTime = DateTime.UtcNow.AddDays(37).AddHours(13),
+                EndTime = DateTime.UtcNow.AddDays(37).AddHours(16),
+                LocationType = LocationType.Virtual,
+                Location = "https://webinar.example.com/negotiationskills",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000007"), // Frank
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000037"),
+                Title = "Volunteer Training Session",
+                Description = "Training new volunteers for community outreach programs.",
+                StartTime = DateTime.UtcNow.AddDays(38).AddHours(10),
+                EndTime = DateTime.UtcNow.AddDays(38).AddHours(12),
+                LocationType = LocationType.Physical,
+                Location = "Nonprofit HQ - Training Room",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000008"), // Grace
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000038"),
+                Title = "Photography Exhibition Opening",
+                Description = "Opening night for a local photographers’ exhibition.",
+                StartTime = DateTime.UtcNow.AddDays(39).AddHours(19),
+                EndTime = DateTime.UtcNow.AddDays(39).AddHours(21),
+                LocationType = LocationType.Physical,
+                Location = "City Art Gallery",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000009"), // Henry
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000039"),
+                Title = "Beginner Spanish Course",
+                Description = "Learn the basics of Spanish in this introductory language course.",
+                StartTime = DateTime.UtcNow.AddDays(40).AddHours(16),
+                EndTime = DateTime.UtcNow.AddDays(40).AddHours(18),
+                LocationType = LocationType.Virtual,
+                Location = "https://meet.example.com/spanishcourse",
+                ShowAttendees = false,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000010"), // Irene
+            },
+            new()
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000040"),
+                Title = "Climate Change Action Planning",
+                Description = "Community meeting to plan local actions addressing climate change.",
+                StartTime = DateTime.UtcNow.AddDays(41).AddHours(14),
+                EndTime = DateTime.UtcNow.AddDays(41).AddHours(17),
+                LocationType = LocationType.Physical,
+                Location = "Town Hall Meeting Room",
+                ShowAttendees = true,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"), // Admin
+            }
+        };
+
+        // Get existing event IDs to avoid duplicates
+        var existingEventIds = await dbContext.Set<Event>()
+            .Where(e => eventsToCreate.Select(ev => ev.Id).Contains(e.Id))
+            .Select(e => e.Id)
+            .ToListAsync();
+
+        var newEvents = eventsToCreate.ExceptBy(existingEventIds, x => x.Id).ToArray();
+
+        if (newEvents.Length > 0)
+        {
+            await dbContext.Set<Event>().AddRangeAsync(newEvents);
+            await dbContext.SaveChangesAsync();
+        }
     }
 }
