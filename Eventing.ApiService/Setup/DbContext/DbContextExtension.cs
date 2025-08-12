@@ -27,8 +27,11 @@ public static class DbContextExtension
 
             dbContextOptionsBuilder.UseAsyncSeeding(async (context, _, _) =>
             {
-                await RolesSeeder.SeedAsync(serviceProvider);
-                await UserSeeder.SeedAsync(context, serviceProvider);
+                await using var scope = serviceProvider.CreateAsyncScope();
+                var scopedServiceProvider = scope.ServiceProvider;
+
+                await RolesSeeder.SeedAsync(scopedServiceProvider, context);
+                await UserSeeder.SeedAsync(scopedServiceProvider, context);
                 await EventSeeder.SeedAsync(context);
             });
         });

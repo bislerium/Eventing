@@ -1,17 +1,26 @@
 using Eventing.ApiService.Data.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Eventing.ApiService.Data.Seeders;
 
 public static class UserSeeder
 {
-    public static async Task SeedAsync(DbContext dbContext, IServiceProvider serviceProvider)
+    public static async Task SeedAsync(IServiceProvider serviceProvider, DbContext dbContext)
     {
         const string defaultPassword = "Temp@12345";
 
-        await using var scope = serviceProvider.CreateAsyncScope();
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser<Guid>>>();
+        var userStore = ActivatorUtilities
+            .CreateInstance<UserStore<IdentityUser<Guid>, IdentityRole<Guid>, DbContext, Guid>>(
+                serviceProvider,
+                dbContext // explicitly use the DbContext from UseAsyncSeeding
+            );
+
+        var userManager = ActivatorUtilities.CreateInstance<UserManager<IdentityUser<Guid>>>(
+            serviceProvider,
+            userStore
+        );
 
         var profiles = dbContext.Set<Profile>();
 
