@@ -1,40 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
-
     <ItemGroup>
         <ProjectReference Include="..\Eventing.ServiceDefaults\Eventing.ServiceDefaults.csproj"/>
-        <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.12.1" />
-        <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Emoji" Version="4.12.1" />
-        <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.12.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.StackExchange.Redis.OutputCaching" Version="9.4.1" />
+        <PackageReference Include="Aspire.StackExchange.Redis.OutputCaching"/>
+        <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components"/>
+        <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Emoji"/>
+        <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons"/>
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="Components\Layout\EmptyLayout.razor" />
-      <_ContentIncludedByDefault Remove="Components\Layout\MainLayout.razor" />
-      <_ContentIncludedByDefault Remove="Components\Layout\NavMenu.razor" />
-      <_ContentIncludedByDefault Remove="Components\Layout\ParentLayout.razor" />
-      <_ContentIncludedByDefault Remove="Features\Login\LoginPage.razor" />
-      <_ContentIncludedByDefault Remove="Layout\EmptyLayout.razor" />
-      <_ContentIncludedByDefault Remove="Layout\MainLayout.razor" />
-      <_ContentIncludedByDefault Remove="Layout\NavMenu.razor" />
-      <_ContentIncludedByDefault Remove="Layout\ParentLayout.razor" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="Components\Features\Login\LoginPage.razor" />
-      <AdditionalFiles Include="Components\Layout\EmptyLayout.razor" />
-      <AdditionalFiles Include="Components\Layout\MainLayout.razor" />
-      <AdditionalFiles Include="Components\Layout\NavMenu.razor" />
-      <AdditionalFiles Include="Components\Layout\ParentLayout.razor" />
+        <AdditionalFiles Include="Components\Features\Login\LoginPage.razor"/>
+        <AdditionalFiles Include="Components\Layout\EmptyLayout.razor"/>
+        <AdditionalFiles Include="Components\Layout\MainLayout.razor"/>
+        <AdditionalFiles Include="Components\Layout\NavMenu.razor"/>
+        <AdditionalFiles Include="Components\Layout\ParentLayout.razor"/>
     </ItemGroup>
 
 </Project>
