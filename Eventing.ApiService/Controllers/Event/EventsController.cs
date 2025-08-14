@@ -17,10 +17,21 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
         CancellationToken ct)
     {
         var events = await dbContext.Events
+            .Include(x => x.Creator)
             .Where(x => search == null || x.Title.ToLower() == search.ToLower())
             .OrderByDescending(x => x.CreatedAt)
-            .Select(x => new EventResponseDto(x.Id, x.Title, x.Description, x.StartTime, x.EndTime,
-                x.LocationType, x.Location, x.CreatedBy, x.CreatedAt, x.UpdatedAt))
+            .Select(x => new EventResponseDto(
+                x.Id,
+                x.Title,
+                x.Description,
+                x.StartTime,
+                x.EndTime,
+                x.LocationType,
+                x.Location,
+                x.ShowAttendees,
+                new Creator(x.Creator.Id, x.Creator.Name),
+                x.CreatedAt,
+                x.UpdatedAt))
             .ToListAsync(ct);
 
         return Ok(events);
@@ -35,6 +46,7 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
         if (!await EventExistsAsync(eventId, ct)) return NotFound();
 
         var @event = await dbContext.Events
+            .Include(x => x.Creator)
             .Where(x => x.Id == eventId)
             .Select(x => new EventResponseDto(
                 x.Id,
@@ -44,7 +56,8 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
                 x.EndTime,
                 x.LocationType,
                 x.Location,
-                x.CreatedBy,
+                x.ShowAttendees,
+                new Creator(x.Creator.Id, x.Creator.Name),
                 x.CreatedAt,
                 x.UpdatedAt))
             .FirstOrDefaultAsync(ct);
@@ -77,8 +90,22 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
 
         await dbContext.SaveChangesAsync(ct);
 
-        var response = new EventResponseDto(@event.Id, @event.Title, @event.Description, @event.StartTime,
-            @event.EndTime, @event.LocationType, @event.Location, @event.CreatedBy, @event.CreatedAt, @event.UpdatedAt);
+        var creator = await dbContext.Profiles
+            .Select(x => new Creator(x.Id, x.Name))
+            .FirstAsync(x => x.Id == currentUserService.UserId, cancellationToken: ct);
+
+        var response = new EventResponseDto(
+            @event.Id,
+            @event.Title,
+            @event.Description,
+            @event.StartTime,
+            @event.EndTime,
+            @event.LocationType,
+            @event.Location,
+            @event.ShowAttendees,
+            creator,
+            @event.CreatedAt,
+            @event.UpdatedAt);
         return CreatedAtAction(nameof(GetByIdAsync), new { id = @event.Id }, response);
     }
 

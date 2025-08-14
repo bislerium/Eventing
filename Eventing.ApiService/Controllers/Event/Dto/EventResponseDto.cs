@@ -10,7 +10,10 @@ public record EventResponseDto(
     DateTime EndTime,
     LocationType LocationType,
     string Location,
-    Guid CreatedBy,
+    bool ShowAttendees,
+    Creator CreatedBy,
     DateTime CreatedAt,
     DateTime? UpdatedAt
 );
+
+public sealed record Creator(Guid Id, string Name);
