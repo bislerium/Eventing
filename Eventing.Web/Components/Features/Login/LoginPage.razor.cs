@@ -12,7 +12,6 @@ public partial class LoginPage(
     NavigationManager navigationManager,
     IToastService toastService,
     ProtectedLocalStorage protectedLocalStorage,
-    ProtectedSessionStorage protectedSessionStorage,
     IHttpClientFactory clientFactory) : ComponentBase
 {
     private LoginModel LoginModel { get; } = new();
@@ -21,26 +20,20 @@ public partial class LoginPage(
     {
         var requestDto = new LoginRequestDto(LoginModel.Email, LoginModel.Password);
         var response = await clientFactory
-            .CreateClient(Constants.HttpClients.EventingApi.Name)
+            .CreateClient(HttpClients.EventingApi.Name)
             .PostAsJsonAsync("api/account/login", requestDto);
 
         if (response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadFromJsonAsync<LoginResponseDto>();
             ArgumentNullException.ThrowIfNull(content);
-
-            if (LoginModel.RememberMe)
-            {
-                await protectedLocalStorage.SetAsync(nameof(LoginResponseDto.AccessToken), content.AccessToken);
-                await protectedLocalStorage.SetAsync(nameof(LoginResponseDto.ExpiresIn), content.ExpiresIn);
-            }
-            else
-            {
-                await protectedSessionStorage.SetAsync(nameof(LoginResponseDto.AccessToken), content.AccessToken);
-                await protectedSessionStorage.SetAsync(nameof(LoginResponseDto.ExpiresIn), content.ExpiresIn);
-            }
-
-            navigationManager.NavigateTo("/home", replace: true);
+            
+            var rememberMe = LoginModel.RememberMe;
+            
+            // Further to do
+            await protectedLocalStorage.SetAsync(nameof(UserContextKey.AccessToken), content.AccessToken);
+            
+            navigationManager.NavigateTo("/event", replace: true);
             return;
         }
 

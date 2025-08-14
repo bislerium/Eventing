@@ -6,6 +6,7 @@ public static class Constants
     {
         public const string FallBackHeader = "X-FallBack";
     }
+
     public static class HttpClients
     {
         public static class EventingApi
@@ -17,5 +18,12 @@ public static class Constants
     public static class ErrorMessages
     {
         public const string SomethingWentWrong = "Something went wrong.";
+    }
+
+    public enum UserContextKey
+    {
+        RememberMe,
+        AccessToken,
+        ExpiresIn
     }
 }
