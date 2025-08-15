@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Eventing.ApiService.Data.Seeders;
+namespace Eventing.Data.Seeders;
 
 public static class RolesSeeder
 {

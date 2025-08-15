@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace Eventing.ApiService.Data.Entities;
+namespace Eventing.Data.Entities;
 
 [Table("profiles")]
 public sealed class Profile

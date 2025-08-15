@@ -1,4 +1,4 @@
-using Eventing.ApiService.Data;
+using Eventing.Data;
 using Microsoft.AspNetCore.Identity;
 
 namespace Eventing.ApiService.Setup.Identity;

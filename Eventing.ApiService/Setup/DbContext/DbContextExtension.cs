@@ -1,12 +1,12 @@
-using Eventing.ApiService.Data;
-using Eventing.ApiService.Data.Seeders;
+using Eventing.Data;
+using Eventing.Data.Seeders;
 using Microsoft.EntityFrameworkCore;
 
 namespace Eventing.ApiService.Setup.DbContext;
 
 public static class DbContextExtension
 {
-    public static void AddXDbContextExtension(this IHostApplicationBuilder builder)
+    public static void AddXDbContext(this IHostApplicationBuilder builder)
     {
         builder.Services.AddDbContextPool<EventingDbContext>((serviceProvider, dbContextOptionsBuilder) =>
         {

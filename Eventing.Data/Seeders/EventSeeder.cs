@@ -1,8 +1,8 @@
-using Eventing.ApiService.Data.Entities;
-using Eventing.ApiService.Data.Enums;
+using Eventing.Data.Entities;
+using Eventing.Data.Enums;
 using Microsoft.EntityFrameworkCore;
 
-namespace Eventing.ApiService.Data.Seeders;
+namespace Eventing.Data.Seeders;
 
 public static class EventSeeder
 {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using Eventing.ApiService.Data.Entities;
 using Eventing.ApiService.Utils;
+using Eventing.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace Eventing.ApiService.Controllers.Account.Dto;

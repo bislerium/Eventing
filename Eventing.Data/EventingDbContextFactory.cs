@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace Eventing.ApiService.Data;
+namespace Eventing.Data;
 
 public sealed class EventingDbContextFactory : IDesignTimeDbContextFactory<EventingDbContext>
 {

@@ -1,6 +1,6 @@
 using Eventing.ApiService.Controllers.Event.Dto;
-using Eventing.ApiService.Data;
 using Eventing.ApiService.Services.CurrentUser;
+using Eventing.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

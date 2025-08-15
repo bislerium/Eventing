@@ -6,26 +6,21 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Eventing.Data\Eventing.Data.csproj" />
         <ProjectReference Include="..\Eventing.ServiceDefaults\Eventing.ServiceDefaults.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL"/>
         <PackageReference Include="Aspire.StackExchange.Redis.DistributedCaching"/>
         <PackageReference Include="FluentEmail.Smtp"/>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
         <PackageReference Include="Scalar.AspNetCore"/>
     </ItemGroup>
 
     <ItemGroup>
         <Folder Include="Controllers\Attendee\Dto\"/>
+        <Folder Include="Data\" />
     </ItemGroup>
 
 </Project>

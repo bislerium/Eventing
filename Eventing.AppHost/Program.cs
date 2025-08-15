@@ -3,22 +3,27 @@ var builder = DistributedApplication.CreateBuilder(args);
 var cache = builder.AddRedis("cache")
     .WithRedisCommander();
 
-var db = builder.AddPostgres("postgres")
+var eventingDb = builder.AddPostgres("postgres")
     .WithDataVolume()
     .WithPgAdmin()
     .AddDatabase("eventing-db");
 
 var mailPit = builder.AddMailPit("mailpit");
 
-var apiService = builder.AddProject<Projects.Eventing_ApiService>("apiservice")
-    .WaitFor(db)
-    .WithReference(db)
+builder.AddProject<Projects.Eventing_Data_Migrator>("data-migrator")
+    .WithReference(eventingDb)
+    .WaitFor(eventingDb)
+    .WithExplicitStart();
+
+var apiService = builder.AddProject<Projects.Eventing_ApiService>("api-service")
+    .WaitFor(eventingDb)
+    .WithReference(eventingDb)
     .WaitFor(cache)
     .WithReference(cache)
     .WithReference(mailPit)
     .WaitFor(mailPit);
 
-builder.AddProject<Projects.Eventing_Web>("webfrontend")
+builder.AddProject<Projects.Eventing_Web>("web-frontend")
     .WithExternalHttpEndpoints()
     .WithReference(cache)
     .WaitFor(cache)

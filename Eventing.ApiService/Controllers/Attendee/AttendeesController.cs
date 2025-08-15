@@ -1,4 +1,4 @@
-using Eventing.ApiService.Data;
+using Eventing.Data;
 
 namespace Eventing.ApiService.Controllers.Attendee;
 

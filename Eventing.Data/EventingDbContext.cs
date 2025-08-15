@@ -1,9 +1,9 @@
-using Eventing.ApiService.Data.Entities;
+using Eventing.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Eventing.ApiService.Data;
+namespace Eventing.Data;
 
 public class EventingDbContext(DbContextOptions<EventingDbContext> options)
     : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>(options)

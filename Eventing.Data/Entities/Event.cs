@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Eventing.ApiService.Data.Enums;
+using Eventing.Data.Enums;
 
-namespace Eventing.ApiService.Data.Entities;
+namespace Eventing.Data.Entities;
 
 [Table("events")]
 public sealed class Event

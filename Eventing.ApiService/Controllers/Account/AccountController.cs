@@ -1,9 +1,9 @@
 using System.Text;
 using System.Text.Encodings.Web;
 using Eventing.ApiService.Controllers.Account.Dto;
-using Eventing.ApiService.Data;
-using Eventing.ApiService.Data.Entities;
 using Eventing.ApiService.Services.Jwt;
+using Eventing.Data;
+using Eventing.Data.Entities;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

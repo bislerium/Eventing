@@ -1,4 +1,4 @@
-namespace Eventing.ApiService.Data.Enums;
+namespace Eventing.Data.Enums;
 
 public enum AccessType
 {

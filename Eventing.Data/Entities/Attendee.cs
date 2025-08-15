@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Eventing.ApiService.Data.Enums;
+using Eventing.Data.Enums;
 using Microsoft.EntityFrameworkCore;
 
-namespace Eventing.ApiService.Data.Entities;
+namespace Eventing.Data.Entities;
 
 [Table("attendees")]
 [Index(nameof(EventId))]

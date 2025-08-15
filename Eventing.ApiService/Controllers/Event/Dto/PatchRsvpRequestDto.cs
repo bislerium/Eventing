@@ -1,4 +1,4 @@
-using Eventing.ApiService.Data.Enums;
+using Eventing.Data.Enums;
 
 namespace Eventing.ApiService.Controllers.Event.Dto;
 
