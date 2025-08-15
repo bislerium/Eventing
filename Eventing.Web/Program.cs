@@ -1,5 +1,3 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Eventing.ServiceDefaults;
 using Eventing.Web;
 using Eventing.Web.Components;
@@ -20,11 +18,6 @@ builder.Services.AddFluentUIComponents();
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.Configure<JsonSerializerOptions>(options =>
-{
-    options.Converters.Add(new JsonStringEnumConverter());
-});
-
 builder.Services.AddHttpClient(
     name: Constants.HttpClients.EventingApi.Name,
     configureClient: client =>
@@ -33,12 +26,6 @@ builder.Services.AddHttpClient(
         // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
         client.BaseAddress = new Uri("https+http://apiservice");
         client.Timeout = Timeout.InfiniteTimeSpan;
-    });
-
-builder.Services.AddAuthentication()
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/login";
     });
 
 var app = builder.Build();
@@ -59,8 +46,6 @@ app.UseAntiforgery();
 app.UseOutputCache();
 
 app.MapStaticAssets();
-
-app.UseAuthentication();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

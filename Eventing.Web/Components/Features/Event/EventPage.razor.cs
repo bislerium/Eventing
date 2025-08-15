@@ -1,6 +1,4 @@
 using System.Net.Http.Headers;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Eventing.Web.Components.Features.Event.Dtos;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
@@ -8,25 +6,29 @@ using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace Eventing.Web.Components.Features.Event;
 
-public partial class EventPage(IHttpClientFactory clientFactory, IToastService toastService, ProtectedLocalStorage protectedLocalStorage) : ComponentBase
+public partial class EventPage(
+    IHttpClientFactory clientFactory,
+    IToastService toastService,
+    ProtectedLocalStorage protectedLocalStorage) : ComponentBase
 {
-    private bool IsLoading {  get; set; } = true;
+    private bool IsLoading { get; set; } = true;
     private IEnumerable<EventResponseDto> Events { get; set; } = new List<EventResponseDto>();
-    
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            await Task.Delay(2000);
             await FetchEventsAsync();
             StateHasChanged();
         }
     }
-    
+
     private async Task FetchEventsAsync(CancellationToken cancellationToken = default)
     {
         IsLoading = true;
-        
+
         var request = new HttpRequestMessage(HttpMethod.Get, "api/events");
         var token = await protectedLocalStorage.GetAsync<string>(nameof(Constants.UserContextKey.AccessToken));
         request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Value);
@@ -47,8 +49,11 @@ public partial class EventPage(IHttpClientFactory clientFactory, IToastService t
                 Events = content;
             }
         }
-        
+        else
+        {
+            toastService.ShowError(Constants.ErrorMessages.SomethingWentWrong);
+        }
+
         IsLoading = false;
-        
     }
 }
