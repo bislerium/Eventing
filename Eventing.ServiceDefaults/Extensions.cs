@@ -96,8 +96,7 @@ public static class Extensions
                 metrics.AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddRuntimeInstrumentation()
-                    .AddMeter(nameof(Polly))
-                    .AddMeter("Microsoft.EntityFrameworkCore");
+                    .AddMeter(nameof(Polly));
             })
             .WithTracing(tracing =>
             {

@@ -1,24 +1,39 @@
+using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+
 namespace Eventing.Data.Migrator;
 
-public class Worker : BackgroundService
+public class Worker(
+    IServiceProvider serviceProvider,
+    IHostApplicationLifetime hostApplicationLifetime,
+    ILogger<Worker> logger
+) : BackgroundService
 {
-    private readonly ILogger<Worker> _logger;
-
-    public Worker(ILogger<Worker> logger)
-    {
-        _logger = logger;
-    }
+    public const string ActivitySourceName = "Migrations";
+    private static readonly ActivitySource SActivitySource = new(ActivitySourceName);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        using var activity = SActivitySource.StartActivity(ActivityKind.Client);
+        logger.LogInformation("Migrator running at: {time}", DateTimeOffset.UtcNow);
+        var startTimestamp = Stopwatch.GetTimestamp();
+        try
         {
-            if (_logger.IsEnabled(LogLevel.Information))
-            {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            }
-
-            await Task.Delay(1000, stoppingToken);
+            await using var scope = serviceProvider.CreateAsyncScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<EventingDbContext>();
+            await dbContext.Database.MigrateAsync(stoppingToken);
         }
+        catch (Exception ex)
+        {
+            activity?.AddException(ex);
+            activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
+            logger.LogError(ex, "Migrator Failed to complete.");
+            throw;
+        }
+
+        var elapsedMilliseconds = Stopwatch.GetElapsedTime(startTimestamp).Milliseconds;
+        logger.LogInformation("Migrator took {elapsedMilliseconds} milliseconds to complete.", elapsedMilliseconds);
+
+        hostApplicationLifetime.StopApplication();
     }
 }
