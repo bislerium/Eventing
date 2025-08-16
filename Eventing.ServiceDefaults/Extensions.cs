@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Http.Diagnostics;
 using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
@@ -21,6 +22,9 @@ namespace Eventing.ServiceDefaults;
 // To learn more about using this project, see https://aka.ms/dotnet/aspire/service-defaults
 public static class Extensions
 {
+    private const string HealthEndpointPath = "/health";
+    private const string AlivenessEndpointPath = "/alive";
+
     public static TBuilder AddServiceDefaults<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
         builder.Services.AddRedaction();
@@ -37,40 +41,45 @@ public static class Extensions
                 options.CombineLogs = true;
                 options.LoggingFields = HttpLoggingFields.All;
             })
-            .AddLatencyContext()
+            .AddExtendedHttpClientLogging(options =>
+            {
+                options.LogBody = true;
+                options.RequestPathParameterRedactionMode = HttpRouteParameterRedactionMode.None;
+            })
             .AddHttpClientLatencyTelemetry();
 
         builder.Services.ConfigureHttpClientDefaults(http =>
         {
-            http.AddExtendedHttpClientLogging(options =>
+            #region Http Resiliency
+
+            var optionsName = $"{http.Name}-standard";
+            http.Services.AddOptions<HttpStandardResilienceOptions>(optionsName);
+            http.AddResilienceHandler("standard", (builder1, context) =>
             {
-                options.LogBody = true;
-                options.RequestPathParameterRedactionMode = HttpRouteParameterRedactionMode.None;
-            });
-            
-            http.AddResilienceHandler($"{http.Name}-standard", (builder1, context) =>
-            {
-                var options = new HttpStandardResilienceOptions();
-        
+                context.EnableReloads<HttpStandardResilienceOptions>($"{http.Name}-standard");
+                var resilienceOptions = context.ServiceProvider
+                    .GetRequiredService<IOptionsMonitor<HttpStandardResilienceOptions>>().Get(optionsName);
+
                 var loggerFactory = context.ServiceProvider.GetRequiredService<ILoggerFactory>();
                 builder1.AddFallback(new FallbackStrategyOptions<HttpResponseMessage>
                     {
                         FallbackAction = _ =>
                             Outcome.FromResultAsValueTask(new HttpResponseMessage(HttpStatusCode.ServiceUnavailable))
                     })
-                    .AddRateLimiter(options.RateLimiter)
-                    .AddTimeout(options.TotalRequestTimeout)
-                    .AddRetry(options.Retry)
-                    .AddCircuitBreaker(options.CircuitBreaker)
-                    .AddTimeout(options.AttemptTimeout)
+                    .AddRateLimiter(resilienceOptions.RateLimiter)
+                    .AddTimeout(resilienceOptions.TotalRequestTimeout)
+                    .AddRetry(resilienceOptions.Retry)
+                    .AddCircuitBreaker(resilienceOptions.CircuitBreaker)
+                    .AddTimeout(resilienceOptions.AttemptTimeout)
                     .ConfigureTelemetry(loggerFactory)
                     .Build();
             });
 
+            #endregion
+
             // Turn on service discovery by default
             http.AddServiceDiscovery();
         });
-
 
         // Uncomment the following to restrict the allowed schemes for service discovery.
         // builder.Services.Configure<ServiceDiscoveryOptions>(options =>
@@ -84,11 +93,39 @@ public static class Extensions
     public static TBuilder ConfigureOpenTelemetry<TBuilder>(this TBuilder builder)
         where TBuilder : IHostApplicationBuilder
     {
+        // See: https://github.com/dotnet/extensions/tree/main/src/Libraries/Microsoft.Extensions.Telemetry
+
+        builder.Services.AddLatencyContext();
+
+        #region Logging
+
         builder.Logging.AddOpenTelemetry(logging =>
         {
             logging.IncludeFormattedMessage = true;
             logging.IncludeScopes = true;
         });
+
+        // Enable log enrichment.
+        builder.Logging.EnableEnrichment(options =>
+        {
+            options.CaptureStackTraces = true;
+            options.IncludeExceptionMessage = true;
+            options.MaxStackTraceLength = 4096;
+            options.UseFileInfoForStackTraces = true;
+        });
+
+        builder.Services
+            .AddServiceLogEnricher(); // <- This call is required in order for the enricher to be added into the service collection.
+
+        // Add trace-based sampler
+        builder.Logging.AddTraceBasedSampler();
+
+        // Enable log redaction
+        builder.Logging.EnableRedaction();
+
+        #endregion
+
+        #region Tracing & Metrics
 
         builder.Services.AddOpenTelemetry()
             .WithMetrics(metrics =>
@@ -101,11 +138,22 @@ public static class Extensions
             .WithTracing(tracing =>
             {
                 tracing.AddSource(builder.Environment.ApplicationName)
-                    .AddAspNetCoreInstrumentation()
+                    .AddAspNetCoreInstrumentation(options =>
+                        // Exclude health check requests from tracing
+                        options.Filter = context =>
+                            !context.Request.Path.StartsWithSegments(HealthEndpointPath)
+                            && !context.Request.Path.StartsWithSegments(AlivenessEndpointPath)
+                    )
                     // Uncomment the following line to enable gRPC instrumentation (requires the OpenTelemetry.Instrumentation.GrpcNetClient package)
                     //.AddGrpcClientInstrumentation()
                     .AddHttpClientInstrumentation();
             });
+
+        #endregion
+
+
+        // Add latency console data exporter
+        builder.Services.AddConsoleLatencyDataExporter();
 
         builder.AddOpenTelemetryExporters();
 
@@ -149,10 +197,10 @@ public static class Extensions
         if (app.Environment.IsDevelopment())
         {
             // All health checks must pass for app to be considered ready to accept traffic after starting
-            app.MapHealthChecks("/health");
+            app.MapHealthChecks(HealthEndpointPath);
 
             // Only health checks tagged with the "live" tag must pass for app to be considered alive
-            app.MapHealthChecks("/alive", new HealthCheckOptions
+            app.MapHealthChecks(AlivenessEndpointPath, new HealthCheckOptions
             {
                 Predicate = r => r.Tags.Contains("live")
             });

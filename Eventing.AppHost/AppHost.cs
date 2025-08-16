@@ -16,6 +16,7 @@ builder.AddProject<Projects.Eventing_Data_Migrator>("data-migrator")
     .WithExplicitStart();
 
 var apiService = builder.AddProject<Projects.Eventing_ApiService>("api-service")
+    .WithHttpHealthCheck("/health")
     .WaitFor(eventingDb)
     .WithReference(eventingDb)
     .WaitFor(cache)
@@ -25,6 +26,7 @@ var apiService = builder.AddProject<Projects.Eventing_ApiService>("api-service")
 
 builder.AddProject<Projects.Eventing_Web>("web-frontend")
     .WithExternalHttpEndpoints()
+    .WithHttpHealthCheck("/health")
     .WithReference(cache)
     .WaitFor(cache)
     .WithReference(apiService)

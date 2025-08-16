@@ -18,19 +18,18 @@ builder.Services.AddFluentUIComponents();
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddHttpClient(
-    name: Constants.HttpClients.EventingApi.Name,
-    configureClient: client =>
-    {
-        // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
-        // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
-        client.BaseAddress = new Uri("https+http://api-service");
-        client.Timeout = Timeout.InfiniteTimeSpan;
-    });
+builder.Services
+    .AddHttpClient(
+        name: Constants.HttpClients.EventingApi.Name,
+        configureClient: client =>
+        {
+            // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
+            // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
+            client.BaseAddress = new Uri("https+http://api-service");
+            client.Timeout = Timeout.InfiniteTimeSpan;
+        });
 
 var app = builder.Build();
-
-app.UseHttpLogging();
 
 if (!app.Environment.IsDevelopment())
 {

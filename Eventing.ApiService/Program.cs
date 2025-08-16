@@ -62,8 +62,6 @@ if (app.Environment.IsDevelopment())
     app.UseXScalar();
 }
 
-app.MapPost("retry",  TypedResults.InternalServerError);
-
 //app.MapIdentityApi<>()
 
 app.UseAuthentication();
@@ -71,5 +69,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapDefaultEndpoints();
 
 app.Run();
