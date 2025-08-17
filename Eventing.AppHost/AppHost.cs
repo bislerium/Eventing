@@ -5,7 +5,8 @@ var cache = builder.AddRedis("cache")
 
 var eventingDb = builder.AddPostgres("postgres")
     .WithDataVolume()
-    .WithPgAdmin()
+    .WithPgAdmin(configure
+        => configure.WithImageTag("latest"))
     .AddDatabase("eventing-db");
 
 var mailPit = builder.AddMailPit("mailpit");
