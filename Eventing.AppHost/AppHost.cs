@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Hosting;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 var cache = builder.AddRedis("cache")
@@ -24,6 +26,16 @@ var apiService = builder.AddProject<Projects.Eventing_ApiService>("api-service")
     .WithReference(cache)
     .WithReference(mailPit)
     .WaitFor(mailPit);
+
+if (builder.Environment.IsDevelopment())
+{
+    // See: https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/custom-resource-urls#customize-endpoint-url
+    apiService.WithUrlForEndpoint("https", _ => new ResourceUrlAnnotation
+    {
+        Url = "/api-reference",
+        DisplayText = "Scalar (HTTPS)"
+    });
+}
 
 builder.AddProject<Projects.Eventing_Web>("web-frontend")
     .WithExternalHttpEndpoints()
