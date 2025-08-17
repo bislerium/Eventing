@@ -1,23 +1,13 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Eventing.Data.Seeders;
 
 public static class RolesSeeder
 {
-    public static async Task SeedAsync(IServiceProvider serviceProvider, DbContext dbContext)
+    public static async Task SeedAsync(IServiceProvider serviceProvider)
     {
-        var roleStore = ActivatorUtilities.CreateInstance<RoleStore<IdentityRole<Guid>, DbContext, Guid>>(
-            serviceProvider,
-            dbContext // explicitly use the DbContext from UseAsyncSeeding
-        );
-
-        var roleManager = ActivatorUtilities.CreateInstance<RoleManager<IdentityRole<Guid>>>(
-            serviceProvider,
-            roleStore
-        );
+        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
         var roles = new[] { "General", "Admin" };
 

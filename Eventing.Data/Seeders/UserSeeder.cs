@@ -1,6 +1,5 @@
 using Eventing.Data.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,16 +11,7 @@ public static class UserSeeder
     {
         const string defaultPassword = "Temp@12345";
 
-        var userStore = ActivatorUtilities
-            .CreateInstance<UserStore<IdentityUser<Guid>, IdentityRole<Guid>, DbContext, Guid>>(
-                serviceProvider,
-                dbContext // explicitly use the DbContext from UseAsyncSeeding
-            );
-
-        var userManager = ActivatorUtilities.CreateInstance<UserManager<IdentityUser<Guid>>>(
-            serviceProvider,
-            userStore
-        );
+        var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser<Guid>>>();
 
         var profiles = dbContext.Set<Profile>();
 
@@ -66,7 +56,7 @@ public static class UserSeeder
             }
 
             await userManager.AddToRoleAsync(user, role);
-
+            
             profiles.Add(new Profile
             {
                 Id = id,
