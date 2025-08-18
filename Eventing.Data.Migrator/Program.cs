@@ -17,7 +17,8 @@ builder.Services.AddIdentityCore<IdentityUser<Guid>>()
     .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<EventingDbContext>();
 
-builder.AddNpgsqlDbContext<EventingDbContext>("eventing-db");
+builder.AddNpgsqlDbContext<EventingDbContext>("eventing-db",
+    configureSettings: settings => { settings.ConnectionString += ";Include Error Detail=true"; });
 
 var host = builder.Build();
 host.Run();

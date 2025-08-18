@@ -51,6 +51,7 @@ public class Worker(
             await RolesSeeder.SeedAsync(serviceProvider);
             await UserSeeder.SeedAsync(serviceProvider, dbContext);
             await EventSeeder.SeedAsync(dbContext);
+            await AttendeeSeeder.SeedAsync(dbContext);
 
             await dbContext.SaveChangesAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);
