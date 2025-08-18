@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using Eventing.Web.Components.Features.Attendee;
 using Eventing.Web.Components.Features.Event.Dtos;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
@@ -9,11 +10,11 @@ namespace Eventing.Web.Components.Features.Event;
 public partial class EventPage(
     IHttpClientFactory clientFactory,
     IToastService toastService,
+    IDialogService dialogService,
     ProtectedLocalStorage protectedLocalStorage) : ComponentBase
 {
     private bool IsLoading { get; set; } = true;
     private IEnumerable<EventResponseDto> Events { get; set; } = new List<EventResponseDto>();
-
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -55,5 +56,21 @@ public partial class EventPage(
         }
 
         IsLoading = false;
+    }
+    
+    private async Task OpenAttendeesPanelAsync(Guid eventId)
+    {
+        var parameters = new DialogParameters<AttendeesPanel>
+        {
+            Title = "Attendees",
+            Alignment = HorizontalAlignment.Left,
+            Modal = true,
+            ShowDismiss = true,
+            PrimaryAction = null,
+            SecondaryAction = null,
+            ["EventId"] = eventId
+        };
+
+        await dialogService.ShowPanelAsync<AttendeesPanel>(parameters);
     }
 }
