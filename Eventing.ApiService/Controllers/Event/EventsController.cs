@@ -16,9 +16,15 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
     public async Task<ActionResult<IEnumerable<EventResponseDto>>> GetAllAsync([FromQuery] string? search,
         CancellationToken ct)
     {
+        var attendedEventIds = await dbContext.Attendees
+            .Where(x => x.ResponderId == currentUserService.UserId)
+            .Select(x => x.EventId)
+            .ToListAsync(ct);
+
         var events = await dbContext.Events
             .Include(x => x.Creator)
-            .Where(x => search == null || x.Title.ToLower() == search.ToLower())
+            .Where(x => attendedEventIds.Contains(x.Id)
+                        && (search == null || x.Title.ToLower() == search.ToLower()))
             .OrderByDescending(x => x.CreatedAt)
             .Select(x => new EventResponseDto(
                 x.Id,
