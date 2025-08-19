@@ -64,7 +64,7 @@ public partial class EventPage(
         {
             Title = "Attendees",
             Alignment = HorizontalAlignment.Left,
-            Modal = true,
+            Modal = false,
             ShowDismiss = true,
             PrimaryAction = null,
             SecondaryAction = null,

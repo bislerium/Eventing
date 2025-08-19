@@ -7,48 +7,58 @@
 }
 else
 {
-    <div>
-        @foreach (var attendee in Attendees)
-        {
-            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center"
-                         HorizontalAlignment="HorizontalAlignment.SpaceBetween">
-                <FluentPersona Name="@attendee.Responder.Name"
-                               ImageSize="30px"/>
-                @if (attendee.IsOrganizer)
-                {
-                    <FluentBadge Circular=true Appearance="Appearance.Accent">
-                        Organizer
-                    </FluentBadge>
-                }
-                else
-                {
-                    switch (attendee.Response)
-                    {
-                        case RsvpResponse.Pending:
-                            <FluentIcon Id="@attendee.AttendeeId.ToString()" Value="@(new Icons.Filled.Size16.Clock())"
-                                        Color="@Color.Warning"/>
-                            break;
-                        case RsvpResponse.Accepted:
-                            <FluentIcon Id="@attendee.AttendeeId.ToString()"
-                                        Value="@(new Icons.Filled.Size16.CheckmarkCircle())" Color="@Color.Success"/>
-                            break;
-                        case RsvpResponse.Declined:
-                            <FluentIcon Id="@attendee.AttendeeId.ToString()"
-                                        Value="@(new Icons.Filled.Size16.DismissCircle())" Color="@Color.Error"/>
-                            break;
-                        case RsvpResponse.Maybe:
-                            <FluentIcon Id="@attendee.AttendeeId.ToString()"
-                                        Value="@(new Icons.Filled.Size16.QuestionCircle())" Color="@Color.Info"/>
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
+    <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.SpaceBetween"
+                 Style="height: 100vh">
+        <div>
+            @foreach (var attendee in Attendees)
+            {
+                <div>
+                    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center"
+                                 HorizontalAlignment="HorizontalAlignment.SpaceBetween" Style="padding: 10px">
+                        <FluentPersona Name="@attendee.Responder.Name"
+                                       ImageSize="30px"/>
+                        @if (attendee.IsOrganizer)
+                        {
+                            <FluentBadge Circular=true Appearance="Appearance.Accent">
+                                Organizer
+                            </FluentBadge>
+                        }
+                        else
+                        {
+                            switch (attendee.Response)
+                            {
+                                case RsvpResponse.Pending:
+                                    <FluentIcon Id="@attendee.AttendeeId.ToString()"
+                                                Value="@(new Icons.Filled.Size16.Clock())"
+                                                Color="@Color.Warning"/>
+                                    break;
+                                case RsvpResponse.Accepted:
+                                    <FluentIcon Id="@attendee.AttendeeId.ToString()"
+                                                Value="@(new Icons.Filled.Size16.CheckmarkCircle())"
+                                                Color="@Color.Success"/>
+                                    break;
+                                case RsvpResponse.Declined:
+                                    <FluentIcon Id="@attendee.AttendeeId.ToString()"
+                                                Value="@(new Icons.Filled.Size16.DismissCircle())"
+                                                Color="@Color.Error"/>
+                                    break;
+                                case RsvpResponse.Maybe:
+                                    <FluentIcon Id="@attendee.AttendeeId.ToString()"
+                                                Value="@(new Icons.Filled.Size16.QuestionCircle())"
+                                                Color="@Color.Neutral"/>
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
 
-                    <FluentTooltip Anchor="@attendee.AttendeeId.ToString()" Position=TooltipPosition.Right>
-                        @GetTooltip(attendee);
-                    </FluentTooltip>
-                }
-            </FluentStack>
-        }
-    </div>
+                            <FluentTooltip Anchor="@attendee.AttendeeId.ToString()" Position=TooltipPosition.Right>
+                                @GetTooltip(attendee);
+                            </FluentTooltip>
+                        }
+                    </FluentStack>
+                </div>
+            }
+        </div>
+        <RsvpRespondButton RsvpResponse="RsvpResponse.Declined"/>
+    </FluentStack>
 }

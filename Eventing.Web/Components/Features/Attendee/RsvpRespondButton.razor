@@ -1,0 +1,35 @@
+@using Eventing.Web.Components.Features.Attendee.Enum
+<FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Stretch">
+    <FluentButton IconStart="@(new Icons.Regular.Size16.CheckmarkCircle())"
+                  Appearance="@(RsvpResponse == RsvpResponse.Accepted ? Appearance.Accent : null)"
+                  OnClick="@(() => RespondAsync(RsvpResponse.Accepted))">
+        @if (RsvpResponse == RsvpResponse.Accepted)
+        {
+            @nameof(RsvpResponse.Accepted)
+        }
+    </FluentButton>
+    <FluentButton IconStart="@(new Icons.Regular.Size16.DismissCircle())"
+                  Appearance="@(RsvpResponse == RsvpResponse.Declined ? Appearance.Accent : null)"
+                  OnClick="@(() => RespondAsync(RsvpResponse.Declined))">
+        @if (RsvpResponse == RsvpResponse.Declined)
+        {
+            @nameof(RsvpResponse.Declined)
+        }
+    </FluentButton>
+    <FluentButton IconStart="@(new Icons.Regular.Size16.Clock())"
+                  Appearance="@(RsvpResponse == RsvpResponse.Pending ? Appearance.Accent : null)"
+                  OnClick="@(() => RespondAsync(RsvpResponse.Pending))">
+        @if (RsvpResponse == RsvpResponse.Pending)
+        {
+            @nameof(RsvpResponse.Pending)
+        }
+    </FluentButton>
+    <FluentButton IconStart="@(new Icons.Regular.Size16.QuestionCircle())"
+                  Appearance="@(RsvpResponse == RsvpResponse.Maybe ? Appearance.Accent : null)"
+                  OnClick="@(() => RespondAsync(RsvpResponse.Maybe))">
+        @if (RsvpResponse == RsvpResponse.Maybe)
+        {
+            @nameof(RsvpResponse.Maybe)
+        }
+    </FluentButton>
+</FluentStack>
