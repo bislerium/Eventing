@@ -10,6 +10,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Eventing.ApiService\Eventing.ApiService.csproj"/>
         <ProjectReference Include="..\Eventing.Data.Migrator\Eventing.Data.Migrator.csproj" />
+        <ProjectReference Include="..\Eventing.Web\Eventing.Web.csproj" />
     </ItemGroup>
 
     <ItemGroup>

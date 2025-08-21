@@ -5,9 +5,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\Eventing.ServiceDefaults\Eventing.ServiceDefaults.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Aspire.StackExchange.Redis.OutputCaching"/>
+    </ItemGroup>
 </Project>

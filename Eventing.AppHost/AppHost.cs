@@ -37,12 +37,12 @@ if (builder.Environment.IsDevelopment())
     });
 }
 
-// builder.AddProject<Projects.Eventing_Web>("web-frontend")
-//     .WithExternalHttpEndpoints()
-//     .WithHttpHealthCheck("/health")
-//     .WithReference(cache)
-//     .WaitFor(cache)
-//     .WithReference(apiService)
-//     .WaitFor(apiService);
+builder.AddProject<Projects.Eventing_Web>("web-frontend")
+    .WithExternalHttpEndpoints()
+    .WithHttpHealthCheck("/health")
+    .WithReference(cache)
+    .WaitFor(cache)
+    .WithReference(apiService)
+    .WaitFor(apiService);
 
 builder.Build().Run();
