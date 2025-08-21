@@ -9,6 +9,10 @@
         <MudSpacer/>
         <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" OnClick="@ToggleDarkMode"/>
         <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End"/>
+
+        <MudThemeManagerButton OnClick="@(_ => OpenThemeManager(true))"/>
+        <MudThemeManager Open="_themeManagerOpen" OpenChanged="OpenThemeManager" Theme="ThemeManager"
+                         ThemeChanged="UpdateTheme"/>
     </MudAppBar>
     <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu/>
@@ -33,10 +37,17 @@
     [CascadingParameter(Name = "ToggleDarkMode")]
     public Action ToggleDarkMode { get; set; } = null!;
 
+    [CascadingParameter] public ThemeManagerTheme ThemeManager { get; set; } = null!;
+
+    [CascadingParameter] public Action<ThemeManagerTheme> UpdateTheme { get; set; } = null!;
+
     private string DarkLightModeButtonIcon => IsDarkMode switch
     {
         true => Icons.Material.Rounded.AutoMode,
         false => Icons.Material.Outlined.DarkMode,
     };
 
+    private bool _themeManagerOpen;
+
+    void OpenThemeManager(bool value) => _themeManagerOpen = value;
 }
