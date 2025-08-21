@@ -1,0 +1,23 @@
+@inherits LayoutComponentBase
+
+<MudThemeProvider @bind-IsDarkMode="_isDarkMode"/>
+<MudPopoverProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<CascadingValue Name="ToggleDarkMode" Value="ToggleDarkMode">
+    <CascadingValue Name="IsDarkMode" Value="_isDarkMode">
+        @Body
+    </CascadingValue>
+</CascadingValue>
+
+
+@code {
+    private bool _isDarkMode;
+
+    private void ToggleDarkMode()
+    {
+        _isDarkMode = !_isDarkMode;
+    }
+
+}
