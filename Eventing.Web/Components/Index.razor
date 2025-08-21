@@ -1,0 +1,14 @@
+@page "/"
+@layout RootLayout
+@inject NavigationManager NavigationManager;
+
+<MudProgressLinear/>
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        NavigationManager.NavigateTo("/login");
+    }
+}

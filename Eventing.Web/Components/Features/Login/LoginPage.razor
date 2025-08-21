@@ -1,0 +1,46 @@
+@page "/login"
+@layout RootLayout
+
+<PageTitle>Login</PageTitle>
+
+<MudContainer Class="d-flex align-center justify-center" style="height:100vh;">
+    <EditForm Model="LoginModel" OnValidSubmit="LoginAsync">
+        <DataAnnotationsValidator/>
+        <MudCard>
+            <MudCardContent>
+                <MudTextField @bind-Value="LoginModel.Email"
+                              For="@(() => LoginModel.Email)"
+                              Class="mb-1"
+                              Label="Email"
+                              HelperText="Enter your Email"
+                              Clearable="true"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Outlined.Email"/>
+                <MudTextField @bind-Value="LoginModel.Password"
+                              For="@(() => LoginModel.Password)"
+                              Label="Password"
+                              HelperText="Enter your password"
+                              InputType="InputType.Password"
+                              Clearable="true"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Outlined.Password"/>
+            </MudCardContent>
+
+            @if (_loggingIn)
+            {
+                <MudProgressLinear Rounded="true" Indeterminate="true" Color="Color.Primary"/>
+            }
+            else
+            {
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit"
+                               FullWidth="true"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary">
+                        Login
+                    </MudButton>
+                </MudCardActions>
+            }
+        </MudCard>
+    </EditForm>
+</MudContainer>

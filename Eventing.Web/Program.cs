@@ -1,4 +1,5 @@
 using Eventing.ServiceDefaults;
+using Eventing.Web;
 using Eventing.Web.Components;
 using MudBlazor.Services;
 
@@ -18,7 +19,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services
     .AddHttpClient(
-        name: "EventingApi",
+        name: Constants.HttpClients.EventingApi.Name,
         configureClient: client =>
         {
             // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
