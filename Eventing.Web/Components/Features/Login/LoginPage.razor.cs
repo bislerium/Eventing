@@ -35,7 +35,7 @@ public partial class LoginPage(
 
             await protectedLocalStorage.SetAsync("AccessToken", content.AccessToken);
 
-            navigationManager.NavigateTo("/event", replace: true);
+            navigationManager.NavigateTo("/events", replace: true);
         }
         else
         {
