@@ -29,7 +29,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "This topic is highly relevant to my work. I will try my best to attend if possible."
             },
             new()
@@ -70,7 +70,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Declined,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment =
                     "Unfortunately I will be out of town during the meetup, but I’ll review the summary notes later."
             },
@@ -101,7 +101,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment =
                     "The AI workshop sounds useful for me as I am starting in this field, but depends on schedule."
             },
@@ -132,7 +132,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Declined,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment =
                     "I am unable to join due to prior commitments, but I am very interested in the materials shared."
             },
@@ -144,7 +144,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment =
                     "If my project timeline permits, I would love to attend this seminar about technology in 2025."
             },
@@ -186,7 +186,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment =
                     "There is a chance I might need to travel that day, but I hope to make it to the company meetup."
             },
@@ -367,7 +367,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Declined,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "I won’t be able to attend this review, but I’ll read the minutes carefully afterwards."
             },
             new()
@@ -386,7 +386,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment =
                     "Sales reviews give me insight into how our overall company direction impacts individual goals."
             },
@@ -412,7 +412,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "This topic is critical for everyone. I will try to join depending on other responsibilities."
             },
             new()
@@ -423,7 +423,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Cybersecurity awareness is something I want to keep improving. This session will be helpful."
             },
             new()
@@ -434,7 +434,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Declined,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Unfortunately, I cannot attend this security session, but I hope it is recorded."
             },
             new()
@@ -453,7 +453,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Security topics are important for all of us, and I want to keep my knowledge updated."
             },
             new()
@@ -472,7 +472,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "I think this session will be very practical and applicable to our daily work routines."
             },
             new()
@@ -609,7 +609,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to engaging with ()s during the launch activities."
             },
             new()
@@ -628,7 +628,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Will be there to ensure security compliance during the event."
             },
             new()
@@ -670,7 +670,7 @@ public class AttendeeSeeder
                 IsOrganizer = true,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Hosting this to share proven strategies for boosting remote productivity."
             },
             new()
@@ -801,7 +801,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Declined,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Unfortunately I cannot join, but I appreciate the focus on health awareness."
             },
             new()
@@ -812,7 +812,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "I’ll be attending to facilitate some outdoor health challenges."
             },
             new()
@@ -833,7 +833,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Ensuring safety and compliance during the fair, while also joining activities."
             },
             new()
@@ -862,7 +862,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Joining the fair to promote healthy eating habits and share wellness resources."
             },
             // Event: Intro to Cloud Computing
@@ -996,7 +996,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to the discussion and learning practical sustainability methods."
             },
             new()
@@ -1007,7 +1007,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Will try to attend depending on schedule, interested in sustainability."
             },
             new()
@@ -1029,7 +1029,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Happy to attend and contribute insights on sustainable business practices."
             },
             new()
@@ -1048,7 +1048,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Will attend if free, the topic of sustainability is very relevant."
             },
             new()
@@ -1059,7 +1059,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to participating and networking with other ()s."
             },
             new()
@@ -1099,7 +1099,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to learn actionable tips to improve my daily productivity."
             },
             new()
@@ -1110,7 +1110,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend depending on other commitments, very interested in time management."
             },
             new()
@@ -1132,7 +1132,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to applying time management strategies in daily work."
             },
             new()
@@ -1151,7 +1151,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Will try to attend, very keen to improve productivity and efficiency."
             },
             new()
@@ -1162,7 +1162,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to gain practical insights on managing time effectively."
             },
             new()
@@ -1300,7 +1300,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to join and learn photography fundamentals and creative tips."
             },
 
@@ -1332,7 +1332,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to exploring blockchain applications in finance."
             },
             new()
@@ -1343,7 +1343,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend depending on schedule but very interested in blockchain topics."
             },
             new()
@@ -1354,7 +1354,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Declined,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Cannot attend this time but eager to learn from session notes."
             },
             new()
@@ -1365,7 +1365,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to attend and understand the practical applications of blockchain in finance."
             },
             // Event: Marathon Preparation Workshop
@@ -1517,7 +1517,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to visit the market and learn about local farming practices and fresh produce."
             },
             new()
@@ -1528,7 +1528,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend depending on schedule, interested in sustainable agriculture."
             },
             // Event: Coding for Kids
@@ -1638,7 +1638,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to learn new Excel automation features to increase productivity."
             },
             new()
@@ -1649,7 +1649,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend, interested in Excel automation tricks for work."
             },
             new()
@@ -1660,7 +1660,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to Excel tips that will help automate repetitive tasks."
             },
             new()
@@ -1671,7 +1671,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Declined,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Unable to attend but interested in session notes."
             },
 
@@ -1703,7 +1703,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend to enhance leadership skills depending on schedule."
             },
             new()
@@ -1725,7 +1725,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to attend and strengthen leadership capabilities."
             },
             new()
@@ -1736,7 +1736,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend if schedule allows, interested in leadership strategies."
             },
             new()
@@ -1747,7 +1747,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to participate and improve leadership skills for team management."
             },
             // Event: Creative Writing Workshop
@@ -1792,7 +1792,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to learning new writing techniques."
             },
             new()
@@ -1803,7 +1803,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Declined,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Cannot attend but interested in session materials."
             },
 
@@ -1827,7 +1827,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to join and learn cloud security principles."
             },
             new()
@@ -1838,7 +1838,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend, interested in cloud security best practices."
             },
             new()
@@ -1849,7 +1849,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to deepen knowledge on securing cloud infrastructure."
             },
             new()
@@ -1860,7 +1860,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to learning security principles applicable to cloud applications."
             },
             new()
@@ -1871,7 +1871,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend depending on availability, interested in cloud security topics."
             },
             new()
@@ -1928,7 +1928,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend depending on morning schedule."
             },
             new()
@@ -1939,7 +1939,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to mindfulness and yoga session."
             },
             new()
@@ -1950,7 +1950,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to join early morning yoga and mindfulness activities."
             },
             new()
@@ -1961,7 +1961,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend depending on other commitments."
             },
             new()
@@ -1972,7 +1972,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to starting the day with yoga and mindfulness."
             },
 // Event: Digital Marketing Strategies
@@ -2085,7 +2085,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to attend and help raise funds for community projects."
             },
 
@@ -2109,7 +2109,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to learn beginner investment strategies."
             },
             new()
@@ -2120,7 +2120,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend if available, interested in financial basics."
             },
             new()
@@ -2131,7 +2131,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to learning investment tips for beginners."
             },
             new()
@@ -2142,7 +2142,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to understand financial basics and investing tips."
             },
             new()
@@ -2153,7 +2153,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend depending on availability, interested in investment basics."
             },
             new()
@@ -2164,7 +2164,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to beginner investing insights."
             },
             new()
@@ -2175,7 +2175,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to attend and gain basic investing knowledge."
             },
             new()
@@ -2277,7 +2277,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to hands-on cooking experience and Italian recipes."
             },
             new()
@@ -2288,7 +2288,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend if I finish other tasks, interested in Italian cuisine."
             },
 
@@ -2312,7 +2312,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to participating and contributing to environmental initiatives."
             },
             new()
@@ -2323,7 +2323,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to learn about reducing carbon footprint and protecting the environment."
             },
             new()
@@ -2334,7 +2334,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend depending on my schedule, interested in environmental topics."
             },
             new()
@@ -2345,7 +2345,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to taking actionable steps for environmental protection."
             },
             new()
@@ -2356,7 +2356,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to participate and promote environmental awareness."
             },
             new()
@@ -2445,7 +2445,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend depending on schedule, interested in startups."
             },
 
@@ -2469,7 +2469,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to participate in hands-on coding projects."
             },
             new()
@@ -2480,7 +2480,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to learning creative coding techniques."
             },
             new()
@@ -2491,7 +2491,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might join if schedule allows, interested in creative coding."
             },
 
@@ -2515,7 +2515,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to learning about mental health resources."
             },
             new()
@@ -2526,7 +2526,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to participate and support mental health initiatives."
             },
             new()
@@ -2707,7 +2707,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might join depending on schedule."
             },
 // Event: Volunteer Training Session
@@ -2730,7 +2730,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to help with volunteer training."
             },
             new()
@@ -2741,7 +2741,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might attend depending on schedule."
             },
 
@@ -2765,7 +2765,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to the photography exhibition."
             },
             new()
@@ -2776,7 +2776,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might join if available, excited about photography."
             },
 
@@ -2800,7 +2800,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Excited to learn basic Spanish."
             },
             new()
@@ -2811,7 +2811,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might join depending on my schedule."
             },
 
@@ -2835,7 +2835,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Accepted,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Looking forward to contributing to climate action planning."
             },
             new()
@@ -2846,7 +2846,7 @@ public class AttendeeSeeder
                 IsOrganizer = false,
                 RsvpResponse = RsvpResponse.Maybe,
                 RespondedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
                 Comment = "Might participate depending on schedule."
             }
         };
