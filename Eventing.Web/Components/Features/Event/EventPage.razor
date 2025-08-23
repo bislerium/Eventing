@@ -22,9 +22,9 @@ else
                             </CardHeaderContent>
                             <CardHeaderActions>
                                 <MudTooltip Text="Attendees">
-                                <MudIconButton OnClick="@(() => OpenAttendeesDialogAsync(e.Id))"
-                                               Icon="@Icons.Material.Filled.People" Color="Color.Primary"
-                                               Size="Size.Medium"/>
+                                    <MudIconButton OnClick="@(() => OpenAttendeesDialogAsync(e.Id))"
+                                                   Icon="@Icons.Material.Filled.People" Color="Color.Primary"
+                                                   Size="Size.Medium"/>
                                 </MudTooltip>
                             </CardHeaderActions>
                         </MudCardHeader>
@@ -39,15 +39,15 @@ else
                                 <MudText Typo="Typo.caption">
                                     @if (e.StartTime.Date == e.EndTime.Date)
                                     {
-                                        @e.StartTime.ToString("MMM dd, yyyy hh:mm tt")
+                                        @e.StartTime.ToString(Constants.Format.DateTime.MonthDayYearHourMinute)
                                         @(" - ")
-                                        @e.EndTime.ToString("hh:mm tt")
+                                        @e.EndTime.ToString(Constants.Format.DateTime.HourMinute12)
                                     }
                                     else
                                     {
-                                        @e.StartTime
+                                        @e.StartTime.ToString(Constants.Format.DateTime.MonthDayYearHourMinute)
                                         @(" - ")
-                                        @e.EndTime
+                                        @e.EndTime.ToString(Constants.Format.DateTime.MonthDayYearHourMinute)
                                     }
                                 </MudText>
                             </MudStack>
@@ -80,7 +80,7 @@ else
                             <CardHeaderContent>
                                 <MudText Typo="Typo.body1" Class="font-medium">@e.CreatedBy.Name</MudText>
                                 <MudText Typo="Typo.caption"
-                                         Class="text-gray-500">@e.CreatedAt.ToString("MMM dd, yyyy")</MudText>
+                                         Class="text-gray-500">@e.CreatedAt.ToString(Constants.Format.DateTime.MonthDayYear)</MudText>
                             </CardHeaderContent>
                             <CardHeaderActions>
                             </CardHeaderActions>

@@ -1,4 +1,3 @@
-@using Eventing.Web.Components.Features.Attendee.Button
 @using Eventing.Web.Components.Features.Attendee.Enums
 
 <MudDialog Style="max-height: 50vh;">
@@ -20,6 +19,8 @@
 
                     @foreach (var (i, a) in Attendees.Index())
                     {
+                        var hasComment = !string.IsNullOrEmpty(a.Comment);
+
                         <MudPaper Class="pa-2" Elevation="0">
                             <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
                                 <MudStack Row="true" AlignItems="AlignItems.Center">
@@ -27,11 +28,30 @@
                                                Color="@(a.IsOrganizer ? Color.Primary : Color.Secondary)">
                                         @Utils.GetInitials(a.Responder.Name)
                                     </MudAvatar>
-                                    <MudText>@a.Responder.Name</MudText>
+                                    <MudStack Row="false"
+                                              AlignItems="AlignItems.Start"
+                                              Spacing="0">
+                                        <MudText> @a.Responder.Name </MudText>
+                                        @if (a.RespondedAt.HasValue)
+                                        {
+                                            var isUpdatedResponse = a.UpdatedAt.HasValue;
+                                            var respondedAt = a.UpdatedAt ?? a.RespondedAt.Value;
+
+                                            <MudBadge Dot="true"
+                                                      Color="Color.Info"
+                                                      Origin="Origin.CenterRight"
+                                                      Visible="@isUpdatedResponse"
+                                                      BadgeAriaLabel="Update"
+                                                      BadgeClass="ms-2">
+                                                <MudText Typo="Typo.caption">
+                                                    @respondedAt.ToString(Constants.Format.DateTime.MonthDayYearHourMinute)
+                                                </MudText>
+                                            </MudBadge>
+                                        }
+                                    </MudStack>
                                 </MudStack>
                                 <MudStack Row="true" AlignItems="AlignItems.Center">
                                     @{
-                                        var createdAt = $"At {a.RespondedAt}";
                                         (string Icon, Color Color) chipAppearance = a.Response switch
                                         {
                                             RsvpResponse.Pending => (Icons.Material.Filled.Pending, Color.Inherit),
@@ -41,33 +61,31 @@
                                             _ => throw new ArgumentOutOfRangeException()
                                         };
                                     }
-                                    <MudTooltip Text="@createdAt"
-                                                Disabled="@(a.Response == RsvpResponse.Pending)"
-                                                Placement="Placement.Right">
-                                        <MudChip T="string"
-                                                 Icon="@chipAppearance.Icon"
-                                                 Variant="Variant.Text"
-                                                 Color="@chipAppearance.Color">
-                                            @a.Response.ToString()
-                                        </MudChip>
-                                    </MudTooltip>
-                                    <MudTooltip Text="Comment">
+                                    <MudChip T="string"
+                                             Icon="@chipAppearance.Icon"
+                                             Variant="Variant.Text"
+                                             Color="@chipAppearance.Color">
+                                        @a.Response.ToString()
+                                    </MudChip>
+                                    <MudTooltip Text="@(hasComment ? "Comment" : "No Comment")">
                                         <MudIconButton Color="Color.Info"
-                                                       Icon="@(string.IsNullOrEmpty(a.Comment)
-                                                                 ? Icons.Material.Filled.CommentsDisabled
-                                                                 : CommentVisibility[a.AttendeeId]
+                                                       Icon="@(hasComment
+                                                                 ? CommentVisibility[a.AttendeeId]
                                                                      ? Icons.Material.Filled.Comment
-                                                                     : Icons.Material.Outlined.Comment)"
+                                                                     : Icons.Material.Outlined.Comment
+                                                                 : Icons.Material.Filled.CommentsDisabled)"
+                                                       Disabled="@(!hasComment)"
+                                                       Size="Size.Small"
                                                        OnClick="@(() => ToggleComment(a.AttendeeId))"/>
                                     </MudTooltip>
                                 </MudStack>
                             </MudStack>
                         </MudPaper>
 
-                        @if (!string.IsNullOrEmpty(a.Comment))
+                        @if (hasComment)
                         {
                             <MudCollapse Expanded="@CommentVisibility[a.AttendeeId]">
-                                <MudText Align="Align.End">@a.Comment</MudText>
+                                <MudText Class="mx-2 mb-2" Typo="Typo.body2" Align="Align.Justify">@a.Comment</MudText>
                             </MudCollapse>
                         }
 
@@ -80,7 +98,7 @@
             }
         }
     </DialogContent>
-    <DialogActions>
-        <RsvpButton RsvpResponse="RsvpResponse.Pending"/>
-    </DialogActions>
+    @* <DialogActions> *@
+    @*     <RsvpButton RsvpResponse="RsvpResponse.Pending"/> *@
+    @* </DialogActions> *@
 </MudDialog>
