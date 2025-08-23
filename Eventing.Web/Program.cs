@@ -1,7 +1,7 @@
 using Eventing.ServiceDefaults;
 using Eventing.Web;
 using Eventing.Web.Components;
-using Microsoft.FluentUI.AspNetCore.Components;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,13 +10,12 @@ builder.AddServiceDefaults();
 
 builder.AddRedisOutputCache("cache");
 
+// Add MudBlazor services
+builder.Services.AddMudServices();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-
-builder.Services.AddFluentUIComponents();
-
-builder.Services.AddHttpContextAccessor();
 
 builder.Services
     .AddHttpClient(
@@ -31,6 +30,7 @@ builder.Services
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
@@ -45,7 +45,6 @@ app.UseAntiforgery();
 app.UseOutputCache();
 
 app.MapStaticAssets();
-
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 

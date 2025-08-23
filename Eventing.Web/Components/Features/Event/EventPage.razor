@@ -1,83 +1,98 @@
-@page "/event"
+@page "/events"
 @using Eventing.Web.Components.Features.Event.Enums
-@layout EmptyLayout
-@rendermode InteractiveServer
 
-<PageTitle>Event</PageTitle>
+<PageTitle>Events</PageTitle>
 
 @if (IsLoading)
 {
-    <FluentProgress/>
+    <MudProgressLinear Indeterminate="true" Color="Color.Primary"/>
 }
 else
 {
-    <FluentGrid Spacing="3" AdaptiveRendering="true" Justify="JustifyContent.FlexStart" Style="padding: 8px;">
-        @foreach (var e in Events)
-        {
-            <FluentGridItem Id="@e.Id.ToString()" xs="12" sm="6" md="4" lg="3" xl="2">
-                <div @onclick="@(() => OpenAttendeesPanelAsync(e.Id))" style="
-                    background: #fff;
-                    border-radius: 8px;
-                    padding: 12px;
-                    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    height: 100%;
-                    cursor: pointer;">
+    <MudContainer>
+        <MudGrid>
+            @foreach (var e in Events)
+            {
+                <MudItem xs="12" sm="6" md="4" lg="3" xl="2">
+                    <MudCard Class="rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <!-- Top Header -->
+                        <MudCardHeader Class="pb-0">
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6" Class="font-semibold">@e.Title</MudText>
+                            </CardHeaderContent>
+                            <CardHeaderActions>
+                                <MudTooltip Text="Attendees">
+                                    <MudIconButton OnClick="@(() => OpenAttendeesDialogAsync(e.Id))"
+                                                   Icon="@Icons.Material.Filled.People" Color="Color.Primary"
+                                                   Size="Size.Medium"/>
+                                </MudTooltip>
+                            </CardHeaderActions>
+                        </MudCardHeader>
 
-                    <div>
-                        <h3 style="
-                            font-size: 1.1rem;
-                            font-weight: 600;
-                            margin: 0 0 4px;
-                            color: #222;">@e.Title</h3>
-                        <span style="
-                            font-size: 0.85rem;
-                            color: #666;">@e.StartTime.ToString("g") - @e.EndTime.ToString("g")</span>
-                    </div>
+                        <!-- Content -->
+                        <MudCardContent Class="pt-2">
+                            <MudText Typo="Typo.body2" Class="text-gray-700">@e.Description</MudText>
 
-                    <div style="flex-grow: 1;">
-                        <p style="margin: 4px 0; font-size: 0.9rem; color: #444;">@e.Description</p>
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Class="mt-2">
+                                <MudIcon Icon="@Icons.Material.Filled.Event" Color="Color.Primary"
+                                         Size="Size.Small"/>
+                                <MudText Typo="Typo.caption">
+                                    @if (e.StartTime.Date == e.EndTime.Date)
+                                    {
+                                        @e.StartTime.ToString(Constants.Format.DateTime.MonthDayYearHourMinute)
+                                        @(" - ")
+                                        @e.EndTime.ToString(Constants.Format.DateTime.HourMinute12)
+                                    }
+                                    else
+                                    {
+                                        @e.StartTime.ToString(Constants.Format.DateTime.MonthDayYearHourMinute)
+                                        @(" - ")
+                                        @e.EndTime.ToString(Constants.Format.DateTime.MonthDayYearHourMinute)
+                                    }
+                                </MudText>
+                            </MudStack>
 
-                        <FluentStack Direction="Row" Spacing="2" VerticalAlignment="VerticalAlignment.Center">
-                            @if (e.LocationType == LocationType.Virtual)
+                            @if (e.LocationType == LocationType.Physical)
                             {
-                                <FluentAnchor Href="@e.Location" IconStart="@(new Icons.Regular.Size16.Link())">
-                                    @e.Location
-                                </FluentAnchor>
+                                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Class="mt-1">
+                                    <MudIcon Icon="@Icons.Material.Filled.LocationOn" Color="Color.Primary"
+                                             Size="Size.Small"/>
+                                    <MudText Typo="Typo.caption">@e.Location</MudText>
+                                </MudStack>
                             }
                             else
                             {
-                                <FluentIcon Value="@(new Icons.Regular.Size24.Location())"/>
-                                <span style="color: #888;">@e.Location</span>
+                                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Class="mt-1">
+                                    <MudIcon Icon="@Icons.Material.Filled.Link" Color="Color.Primary"
+                                             Size="Size.Small"/>
+                                    <MudLink Href="@e.Location" Target="_blank" Typo="Typo.caption"
+                                             Class="overflow-auto">@e.Location</MudLink>
+                                </MudStack>
                             }
-                        </FluentStack>
-                        <p style="margin: 2px 0; font-size: 0.85rem; color: #555;">
-                            <strong>Show Attendees:</strong> @(e.ShowAttendees ? "Yes" : "No")
-                        </p>
-                        <p style="margin: 2px 0; font-size: 0.75rem; color: #888;">
-                            <FluentStack HorizontalAlignment="HorizontalAlignment.SpaceBetween"
-                                         VerticalAlignment="VerticalAlignment.Center">
-                                <div>
-                                    <FluentPersona Name="@e.CreatedBy.Name"
-                                                   ImageSize="30px">
-                                    </FluentPersona>
-                                </div>
-                                <div>
-                                    @e.CreatedAt
-                                </div>
-                            </FluentStack>
-                        </p>
-                        @if (e.UpdatedAt.HasValue)
-                        {
-                            <p style="margin: 2px 0; font-size: 0.75rem; color: #888;">
-                                Updated at: @e.UpdatedAt
-                            </p>
-                        }
-                    </div>
-                </div>
-            </FluentGridItem>
-        }
-    </FluentGrid>
+                        </MudCardContent>
+                        <MudDivider Class="border-dashed"/>
+                        <MudCardHeader>
+                            <CardHeaderAvatar>
+                                <MudAvatar Size="Size.Medium" Color="Color.Primary" Class="shadow-sm">
+                                    @Utils.GetInitials(e.CreatedBy.Name)
+                                </MudAvatar>
+                            </CardHeaderAvatar>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.body1" Class="font-medium">@e.CreatedBy.Name</MudText>
+                                <MudText Typo="Typo.caption"
+                                         Class="text-gray-500">@e.CreatedAt.ToString(Constants.Format.DateTime.MonthDayYear)</MudText>
+                            </CardHeaderContent>
+                            <CardHeaderActions>
+                            </CardHeaderActions>
+                        </MudCardHeader>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+
+        <MudScrollToTop>
+            <MudFab Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowUpward"
+                    Color="Color.Primary"/>
+        </MudScrollToTop>
+    </MudContainer>
 }

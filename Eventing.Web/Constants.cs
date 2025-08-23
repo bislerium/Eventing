@@ -2,11 +2,6 @@ namespace Eventing.Web;
 
 public static class Constants
 {
-    public static class CustomHeaders
-    {
-        public const string FallBackHeader = "X-FallBack";
-    }
-
     public static class HttpClients
     {
         public static class EventingApi
@@ -20,10 +15,13 @@ public static class Constants
         public const string SomethingWentWrong = "Something went wrong.";
     }
 
-    public enum UserContextKey
+    public static class Format
     {
-        RememberMe,
-        AccessToken,
-        ExpiresIn
+        public static class DateTime
+        {
+            public const string MonthDayYearHourMinute = "MMM dd, yyyy hh:mm tt";
+            public const string HourMinute12 = "hh:mm tt";
+            public const string MonthDayYear = "MMM dd, yyyy"; 
+        }
     }
 }

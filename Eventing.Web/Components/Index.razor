@@ -1,18 +1,14 @@
 @page "/"
-@layout EmptyLayout
-@inject NavigationManager NavigationManager
+@layout RootLayout
+@inject NavigationManager NavigationManager;
 
-<h1>Bishal</h1>
-<div style="width: 300px;display: grid; grid-gap: 12px; grid-auto-flow: column;">
-    <FluentProgressRing></FluentProgressRing>
-</div>
+<MudProgressLinear/>
 
-@code {
-
+@code
+{
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         NavigationManager.NavigateTo("/login");
     }
-
 }

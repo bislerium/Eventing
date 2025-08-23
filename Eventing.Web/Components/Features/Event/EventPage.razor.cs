@@ -1,15 +1,15 @@
 using System.Net.Http.Headers;
-using Eventing.Web.Components.Features.Attendee;
+using Eventing.Web.Components.Features.Attendee.Dialog;
 using Eventing.Web.Components.Features.Event.Dtos;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-using Microsoft.FluentUI.AspNetCore.Components;
+using MudBlazor;
 
 namespace Eventing.Web.Components.Features.Event;
 
 public partial class EventPage(
     IHttpClientFactory clientFactory,
-    IToastService toastService,
+    ISnackbar snackbar,
     IDialogService dialogService,
     ProtectedLocalStorage protectedLocalStorage) : ComponentBase
 {
@@ -31,7 +31,7 @@ public partial class EventPage(
         IsLoading = true;
 
         var request = new HttpRequestMessage(HttpMethod.Get, "api/events");
-        var token = await protectedLocalStorage.GetAsync<string>(nameof(Constants.UserContextKey.AccessToken));
+        var token = await protectedLocalStorage.GetAsync<string>("AccessToken");
         request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Value);
 
         var response = await clientFactory
@@ -43,7 +43,7 @@ public partial class EventPage(
             var content = await response.Content.ReadFromJsonAsync<IEnumerable<EventResponseDto>>(cancellationToken);
             if (content == null)
             {
-                toastService.ShowError(Constants.ErrorMessages.SomethingWentWrong);
+                snackbar.Add(Constants.ErrorMessages.SomethingWentWrong, Severity.Error);
             }
             else
             {
@@ -52,25 +52,26 @@ public partial class EventPage(
         }
         else
         {
-            toastService.ShowError(Constants.ErrorMessages.SomethingWentWrong);
+            snackbar.Add(Constants.ErrorMessages.SomethingWentWrong, Severity.Error);
         }
 
         IsLoading = false;
     }
-    
-    private async Task OpenAttendeesPanelAsync(Guid eventId)
+
+    private Task OpenAttendeesDialogAsync(Guid eventId)
     {
-        var parameters = new DialogParameters<AttendeesPanel>
+        var parameters = new DialogParameters<AttendeesDialog>
         {
-            Title = "Attendees",
-            Alignment = HorizontalAlignment.Left,
-            Modal = false,
-            ShowDismiss = true,
-            PrimaryAction = null,
-            SecondaryAction = null,
-            ["EventId"] = eventId
+            { x => x.EventId, eventId }
+        };
+        var options = new DialogOptions
+        {
+            BackdropClick = true,
+            CloseOnEscapeKey = true,
+            CloseButton = true,
+            FullWidth = true
         };
 
-        await dialogService.ShowPanelAsync<AttendeesPanel>(parameters);
+        return dialogService.ShowAsync<AttendeesDialog>("Attendees", parameters, options);
     }
 }
