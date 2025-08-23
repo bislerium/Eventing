@@ -11,14 +11,14 @@ builder.Services.AddOpenTelemetry()
     .WithTracing(tracing => tracing.AddSource(Worker.ActivitySourceName))
     .WithMetrics(x => x.AddMeter("Microsoft.EntityFrameworkCore"));
 
-builder.Services.AddHostedService<Worker>();
-
 builder.Services.AddIdentityCore<IdentityUser<Guid>>()
     .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<EventingDbContext>();
 
 builder.AddNpgsqlDbContext<EventingDbContext>("eventing-db",
     configureSettings: settings => { settings.ConnectionString += ";Include Error Detail=true"; });
+
+builder.Services.AddHostedService<Worker>();
 
 var host = builder.Build();
 host.Run();
