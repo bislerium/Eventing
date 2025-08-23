@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using Eventing.Web.Components.Features.Attendee.Dialog;
 using Eventing.Web.Components.Features.Event.Dtos;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
@@ -9,6 +10,7 @@ namespace Eventing.Web.Components.Features.Event;
 public partial class EventPage(
     IHttpClientFactory clientFactory,
     ISnackbar snackbar,
+    IDialogService dialogService,
     ProtectedLocalStorage protectedLocalStorage) : ComponentBase
 {
     private bool IsLoading { get; set; } = true;
@@ -54,5 +56,22 @@ public partial class EventPage(
         }
 
         IsLoading = false;
+    }
+
+    private Task OpenAttendeesDialogAsync(Guid eventId)
+    {
+        var parameters = new DialogParameters<AttendeesDialog>
+        {
+            { x => x.EventId, eventId }
+        };
+        var options = new DialogOptions
+        {
+            BackdropClick = true,
+            CloseOnEscapeKey = true,
+            CloseButton = true,
+            FullWidth = true
+        };
+
+        return dialogService.ShowAsync<AttendeesDialog>("Attendees", parameters, options);
     }
 }

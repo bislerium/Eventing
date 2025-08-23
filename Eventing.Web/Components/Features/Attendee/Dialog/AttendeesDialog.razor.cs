@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using MudBlazor;
 
-namespace Eventing.Web.Components.Features.Attendee;
+namespace Eventing.Web.Components.Features.Attendee.Dialog;
 
-public partial class AttendeesPanel(
+public partial class AttendeesDialog(
     IHttpClientFactory clientFactory,
     ProtectedLocalStorage protectedLocalStorage,
     ISnackbar snackbar) : ComponentBase
@@ -18,22 +18,21 @@ public partial class AttendeesPanel(
     protected override async Task OnInitializedAsync()
     {
         await FetchAttendeesAsync();
+        CommentVisibility = Attendees
+            .Where(x => !string.IsNullOrEmpty(x.Comment))
+            .ToDictionary(x => x.AttendeeId, _ => false);
     }
-    
-    [Parameter] public bool Open { get; set; }
-    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
-
-    private async Task SetOpen(bool value)
-    {
-        if (Open != value)
-        {
-            Open = value;
-            await OpenChanged.InvokeAsync(value);
-        }
-    }
-
 
     private IEnumerable<AttendeeResponseDto> Attendees { get; set; } = new List<AttendeeResponseDto>();
+
+    private Dictionary<Guid, bool> CommentVisibility { get; set; } = [];
+
+    private void ToggleComment(Guid attendeeId)
+    {
+        var found = CommentVisibility.TryGetValue(attendeeId, out var isVisible);
+        if (!found) return;
+        CommentVisibility[attendeeId] = !isVisible;
+    }
 
     private async Task FetchAttendeesAsync(CancellationToken cancellationToken = default)
     {

@@ -1,0 +1,86 @@
+@using Eventing.Web.Components.Features.Attendee.Button
+@using Eventing.Web.Components.Features.Attendee.Enums
+
+<MudDialog Style="max-height: 50vh;">
+    <DialogContent>
+        @if (_isLoading)
+        {
+            <MudProgressLinear Indeterminate="true"/>
+        }
+        else
+        {
+            var totalAttendees = Attendees.Count();
+            @if (totalAttendees == 0)
+            {
+                <MudText>No attendees</MudText>
+            }
+            else
+            {
+                <div class="d-flex flex-column gap-1 my-1">
+
+                    @foreach (var (i, a) in Attendees.Index())
+                    {
+                        <MudPaper Class="pa-2" Elevation="0">
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+                                <MudStack Row="true" AlignItems="AlignItems.Center">
+                                    <MudAvatar Size="Size.Medium"
+                                               Color="@(a.IsOrganizer ? Color.Primary : Color.Secondary)">
+                                        @Utils.GetInitials(a.Responder.Name)
+                                    </MudAvatar>
+                                    <MudText>@a.Responder.Name</MudText>
+                                </MudStack>
+                                <MudStack Row="true" AlignItems="AlignItems.Center">
+                                    @{
+                                        var createdAt = $"At {a.RespondedAt}";
+                                        (string Icon, Color Color) chipAppearance = a.Response switch
+                                        {
+                                            RsvpResponse.Pending => (Icons.Material.Filled.Pending, Color.Inherit),
+                                            RsvpResponse.Accepted => (Icons.Material.Filled.CheckCircle, Color.Success),
+                                            RsvpResponse.Declined => (Icons.Material.Filled.Cancel, Color.Error),
+                                            RsvpResponse.Maybe => (Icons.Material.Filled.Help, Color.Warning),
+                                            _ => throw new ArgumentOutOfRangeException()
+                                        };
+                                    }
+                                    <MudTooltip Text="@createdAt"
+                                                Disabled="@(a.Response == RsvpResponse.Pending)"
+                                                Placement="Placement.Right">
+                                        <MudChip T="string"
+                                                 Icon="@chipAppearance.Icon"
+                                                 Variant="Variant.Text"
+                                                 Color="@chipAppearance.Color">
+                                            @a.Response.ToString()
+                                        </MudChip>
+                                    </MudTooltip>
+                                    <MudTooltip Text="Comment">
+                                        <MudIconButton Color="Color.Info"
+                                                       Icon="@(string.IsNullOrEmpty(a.Comment)
+                                                                 ? Icons.Material.Filled.CommentsDisabled
+                                                                 : CommentVisibility[a.AttendeeId]
+                                                                     ? Icons.Material.Filled.Comment
+                                                                     : Icons.Material.Outlined.Comment)"
+                                                       OnClick="@(() => ToggleComment(a.AttendeeId))"/>
+                                    </MudTooltip>
+                                </MudStack>
+                            </MudStack>
+                        </MudPaper>
+
+                        @if (!string.IsNullOrEmpty(a.Comment))
+                        {
+                            <MudCollapse Expanded="@CommentVisibility[a.AttendeeId]">
+                                <MudText Align="Align.End">@a.Comment</MudText>
+                            </MudCollapse>
+                        }
+
+                        @if (i + 1 != totalAttendees)
+                        {
+                            <MudDivider DividerType="DividerType.FullWidth" Class="border-1"/>
+                        }
+                    }
+                </div>
+            }
+        }
+    </DialogContent>
+    <DialogActions>
+        <RsvpButton RsvpResponse="RsvpResponse.Pending"/>
+    </DialogActions>
+</MudDialog>

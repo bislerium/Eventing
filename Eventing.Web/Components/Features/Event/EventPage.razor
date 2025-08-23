@@ -10,7 +10,7 @@
 else
 {
     <MudContainer>
-        <MudGrid id="scroll-to-grid">
+        <MudGrid>
             @foreach (var e in Events)
             {
                 <MudItem xs="12" sm="6" md="4" lg="3" xl="2">
@@ -21,8 +21,11 @@ else
                                 <MudText Typo="Typo.h6" Class="font-semibold">@e.Title</MudText>
                             </CardHeaderContent>
                             <CardHeaderActions>
-                                <MudIconButton Icon="@Icons.Material.Filled.People" Color="Color.Primary"
+                                <MudTooltip Text="Attendees">
+                                <MudIconButton OnClick="@(() => OpenAttendeesDialogAsync(e.Id))"
+                                               Icon="@Icons.Material.Filled.People" Color="Color.Primary"
                                                Size="Size.Medium"/>
+                                </MudTooltip>
                             </CardHeaderActions>
                         </MudCardHeader>
 
@@ -70,7 +73,7 @@ else
                         <MudDivider Class="border-dashed"/>
                         <MudCardHeader>
                             <CardHeaderAvatar>
-                                <MudAvatar Size="Size.Medium" Color="Color.Secondary" Class="shadow-sm">
+                                <MudAvatar Size="Size.Medium" Color="Color.Primary" Class="shadow-sm">
                                     @Utils.GetInitials(e.CreatedBy.Name)
                                 </MudAvatar>
                             </CardHeaderAvatar>
