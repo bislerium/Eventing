@@ -3,6 +3,7 @@
     <PropertyGroup>
         <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
         <OpenApiDocumentsDirectory>./</OpenApiDocumentsDirectory>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,6 +22,12 @@
     <ItemGroup>
         <Folder Include="Controllers\Attendee\Dto\"/>
         <Folder Include="Data\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>
