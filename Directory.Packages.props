@@ -20,7 +20,7 @@
     </PackageVersion>
     <PackageVersion Include="MudBlazor" Version="8.11.0" />
     <PackageVersion Include="MudBlazor.ThemeManager" Version="3.0.0" />
-    <PackageVersion Include="Scalar.AspNetCore" Version="2.6.9" />
+    <PackageVersion Include="Scalar.AspNetCore" Version="2.7.0" />
     <PackageVersion Include="Aspire.Hosting.AppHost" Version="9.4.1" />
     <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="9.4.1" />
     <PackageVersion Include="Aspire.Hosting.Redis" Version="9.4.1" />
