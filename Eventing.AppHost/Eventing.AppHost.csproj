@@ -18,6 +18,7 @@
         <PackageReference Include="Aspire.Hosting.PostgreSQL"/>
         <PackageReference Include="Aspire.Hosting.Redis"/>
         <PackageReference Include="CommunityToolkit.Aspire.Hosting.MailPit"/>
+        <PackageReference Include="CommunityToolkit.Aspire.Hosting.Ngrok" />
     </ItemGroup>
 
 </Project>

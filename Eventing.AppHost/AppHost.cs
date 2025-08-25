@@ -30,14 +30,12 @@ var apiService = builder.AddProject<Projects.Eventing_ApiService>("api-service")
 if (builder.Environment.IsDevelopment())
 {
     // See: https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/custom-resource-urls#customize-endpoint-url
-    apiService.WithUrlForEndpoint("https", _ => new ResourceUrlAnnotation
-    {
-        Url = "/api-reference",
-        DisplayText = "Scalar (HTTPS)"
-    });
+    apiService.WithUrlForEndpoint(
+        "https",
+        _ => new ResourceUrlAnnotation { Url = "/api-reference", DisplayText = "Scalar (HTTPS)", });
 }
 
-builder.AddProject<Projects.Eventing_Web>("web-frontend")
+var webFrontend = builder.AddProject<Projects.Eventing_Web>("web-frontend")
     .WithExternalHttpEndpoints()
     .WithHttpHealthCheck("/health")
     .WithReference(cache)
@@ -45,4 +43,17 @@ builder.AddProject<Projects.Eventing_Web>("web-frontend")
     .WithReference(apiService)
     .WaitFor(apiService);
 
-builder.Build().Run();
+// See:
+// https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-9.0&tabs=windows#secret-manager
+// https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/external-parameters
+// For Ngrok AuthToken, Goto https://dashboard.ngrok.com/get-started/your-authtoken
+var ngrokAuthToken = builder.AddParameter("NgrokAuthToken", secret: true);
+builder.AddNgrok("ngrok")
+    .WithAuthToken(ngrokAuthToken)
+    .WithTunnelEndpoint(apiService, "https")
+    .WithTunnelEndpoint(webFrontend, "https")
+    .WaitFor(apiService)
+    .WaitFor(webFrontend)
+    .WithExplicitStart();
+
+await builder.Build().RunAsync();
