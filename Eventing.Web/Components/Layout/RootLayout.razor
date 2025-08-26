@@ -1,7 +1,46 @@
+@using System.ComponentModel
+@using Eventing.Web.States
 @inherits LayoutComponentBase
+@implements IDisposable
 
+@inject ThemeInfo ThemeInfo
+@inject IWebHostEnvironment WebHostEnvironment
+
+<MudThemeProvider Theme="ThemeInfo.ThemeManager.Theme" @bind-IsDarkMode="ThemeInfo.IsDarkMode"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 <MudPopoverProvider/>
 
-@Body
+<MudLayout>
+    @if (WebHostEnvironment.IsDevelopment())
+    {
+        <MudThemeManagerButton OnClick="@(_ => ThemeInfo.ToggleThemeManager(true))"/>
+        <MudThemeManager Open="ThemeInfo.IsThemeManagerOpen"
+                         OpenChanged="ThemeInfo.ToggleThemeManager"
+                         Theme="ThemeInfo.ThemeManager"
+                         IsDarkMode="ThemeInfo.IsDarkMode"
+                         ThemeChanged="ThemeInfo.UpdateTheme"/>
+    }
+
+    @Body
+</MudLayout>
+
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        ThemeInfo.PropertyChanged += PropertyChangedEventHandler;
+    }
+
+    private void PropertyChangedEventHandler(object? sender, PropertyChangedEventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        ThemeInfo.PropertyChanged -= PropertyChangedEventHandler;
+    }
+
+}

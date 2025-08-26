@@ -1,15 +1,20 @@
-<MudMenuItem Label="Theme" Icon="@ButtonIcon" OnClick="@ToggleDarkMode" AutoClose="false"/>
+@using Eventing.Web.States
+@inject ThemeInfo ThemeInfo
+
+<MudMenuItem Label="@ButtonLabel" Icon="@ButtonIcon" OnClick="@ThemeInfo.ToggleDarkMode" AutoClose="false"/>
 
 @code {
-    [CascadingParameter(Name = "IsDarkMode")]
-    public bool IsDarkMode { get; set; }
 
-    [CascadingParameter(Name = "ToggleDarkMode")]
-    public Action ToggleDarkMode { get; set; } = null!;
-    
-    private string ButtonIcon => IsDarkMode switch
+    private string ButtonIcon => ThemeInfo.IsDarkMode switch
     {
-        true => Icons.Material.Rounded.AutoMode,
-        false => Icons.Material.Outlined.DarkMode,
+        true => Icons.Material.Rounded.DarkMode,
+        false => Icons.Material.Outlined.LightMode,
     };
+
+    private string ButtonLabel => ThemeInfo.IsDarkMode switch
+    {
+        true => "Dark",
+        false => "Light",
+    };
+
 }

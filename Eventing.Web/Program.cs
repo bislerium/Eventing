@@ -1,6 +1,7 @@
 using Eventing.ServiceDefaults;
 using Eventing.Web;
 using Eventing.Web.Components;
+using Eventing.Web.States;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,8 @@ builder.Services.AddMudServices();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddScoped<ThemeInfo>();
 
 builder.Services
     .AddHttpClient(
