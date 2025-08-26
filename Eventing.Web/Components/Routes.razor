@@ -1,6 +1,33 @@
-﻿<Router AppAssembly="typeof(Program).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(RootLayout)"/>
-        <FocusOnNavigate RouteData="routeData" Selector="h1"/>
-    </Found>
-</Router>
+﻿<MudThemeProvider Theme="_themeManager.Theme" @bind-IsDarkMode="_isDarkMode"/>
+
+<CascadingValue Value="_themeManager">
+    <CascadingValue Value="UpdateTheme">
+        <CascadingValue Name="ToggleDarkMode" Value="ToggleDarkMode">
+            <CascadingValue Name="IsDarkMode" Value="_isDarkMode">
+                <Router AppAssembly="typeof(Program).Assembly">
+                    <Found Context="routeData">
+                        <RouteView RouteData="routeData" DefaultLayout="typeof(RootLayout)"/>
+                        <FocusOnNavigate RouteData="routeData" Selector="h1"/>
+                    </Found>
+                </Router>
+            </CascadingValue>
+        </CascadingValue>
+    </CascadingValue>
+</CascadingValue>
+
+@code {
+    private bool _isDarkMode;
+
+    private ThemeManagerTheme _themeManager = new();
+
+    void UpdateTheme(ThemeManagerTheme value)
+    {
+        _themeManager = value;
+    }
+
+    private void ToggleDarkMode()
+    {
+        _isDarkMode = !_isDarkMode;
+    }
+
+}

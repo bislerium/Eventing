@@ -1,0 +1,14 @@
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject NavigationManager NavigationManager
+@inject ProtectedLocalStorage  ProtectedLocalStorage
+
+<MudMenuItem Label="Logout" Icon="@Icons.Material.Filled.Logout" OnClick="@LogoutAsync"/>
+
+@code {
+
+    private async Task LogoutAsync()
+    {
+        await ProtectedLocalStorage.DeleteAsync("AccessToken");
+        NavigationManager.NavigateTo("/login", replace: true);
+    }
+}

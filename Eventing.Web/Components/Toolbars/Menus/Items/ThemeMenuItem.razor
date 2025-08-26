@@ -1,0 +1,15 @@
+<MudMenuItem Label="Theme" Icon="@ButtonIcon" OnClick="@ToggleDarkMode" AutoClose="false"/>
+
+@code {
+    [CascadingParameter(Name = "IsDarkMode")]
+    public bool IsDarkMode { get; set; }
+
+    [CascadingParameter(Name = "ToggleDarkMode")]
+    public Action ToggleDarkMode { get; set; } = null!;
+    
+    private string ButtonIcon => IsDarkMode switch
+    {
+        true => Icons.Material.Rounded.AutoMode,
+        false => Icons.Material.Outlined.DarkMode,
+    };
+}

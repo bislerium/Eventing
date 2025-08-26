@@ -19,4 +19,8 @@
         <PackageReference Include="MudBlazor"/>
         <PackageReference Include="MudBlazor.ThemeManager" />
     </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Components\Toolbars\Buttons\ThemeButton.razor" />
+    </ItemGroup>
 </Project>

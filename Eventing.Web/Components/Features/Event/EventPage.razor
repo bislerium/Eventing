@@ -1,5 +1,6 @@
 @page "/events"
 @using Eventing.Web.Components.Features.Event.Enums
+@using Eventing.Web.Components.Toolbars
 
 <PageTitle>Events</PageTitle>
 
@@ -10,6 +11,7 @@
 else
 {
     <MudContainer>
+        <Toolbar/>
         <MudGrid>
             @foreach (var e in Events)
             {
