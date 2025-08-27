@@ -22,5 +22,29 @@
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Components\Toolbars\Buttons\ThemeButton.razor" />
+      <_ContentIncludedByDefault Remove="Components\Toolbars\Menus\Items\ChangePassword\ChangePasswordMenuItem.razor" />
+      <_ContentIncludedByDefault Remove="Components\Toolbars\Menus\Items\ChangePassword\Dialog\ChangePasswordDialog.razor" />
+      <_ContentIncludedByDefault Remove="Components\Toolbars\Menus\Items\LogoutMenuItem.razor" />
+      <_ContentIncludedByDefault Remove="Components\Toolbars\Menus\Items\ProfileMenuItem.razor" />
+      <_ContentIncludedByDefault Remove="Components\Toolbars\Menus\Items\ThemeMenuItem.razor" />
+      <_ContentIncludedByDefault Remove="Components\Toolbars\Menus\ProfileMenuButton.razor" />
+      <_ContentIncludedByDefault Remove="Components\Toolbars\Toolbar.razor" />
+      <_ContentIncludedByDefault Remove="Components\Features\Event\Toolbar\EventToolbar.razor" />
+      <_ContentIncludedByDefault Remove="Components\Features\Event\Toolbar\Menus\Items\ChangePassword\ChangePasswordMenuItem.razor" />
+      <_ContentIncludedByDefault Remove="Components\Features\Event\Toolbar\Menus\Items\ChangePassword\Dialog\ChangePasswordDialog.razor" />
+      <_ContentIncludedByDefault Remove="Components\Features\Event\Toolbar\Menus\Items\LogoutMenuItem.razor" />
+      <_ContentIncludedByDefault Remove="Components\Features\Event\Toolbar\Menus\Items\ProfileMenuItem.razor" />
+      <_ContentIncludedByDefault Remove="Components\Features\Event\Toolbar\Menus\Items\ThemeMenuItem.razor" />
+      <_ContentIncludedByDefault Remove="Components\Features\Event\Toolbar\Menus\ProfileMenuButton.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Ui\Features\Toolbar\EventToolbar.razor" />
+      <AdditionalFiles Include="Ui\Features\Toolbar\Menus\Items\ChangePassword\ChangePasswordMenuItem.razor" />
+      <AdditionalFiles Include="Ui\Features\Toolbar\Menus\Items\ChangePassword\Dialog\ChangePasswordDialog.razor" />
+      <AdditionalFiles Include="Ui\Features\Toolbar\Menus\Items\LogoutMenuItem.razor" />
+      <AdditionalFiles Include="Ui\Features\Toolbar\Menus\Items\ProfileMenuItem.razor" />
+      <AdditionalFiles Include="Ui\Features\Toolbar\Menus\Items\ThemeMenuItem.razor" />
+      <AdditionalFiles Include="Ui\Features\Toolbar\Menus\ProfileMenuButton.razor" />
     </ItemGroup>
 </Project>

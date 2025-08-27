@@ -1,7 +1,8 @@
 using Eventing.ServiceDefaults;
 using Eventing.Web;
-using Eventing.Web.Components;
 using Eventing.Web.States;
+using Eventing.Web.Ui;
+using MudBlazor;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,14 @@ builder.AddServiceDefaults();
 builder.AddRedisOutputCache("cache");
 
 // Add MudBlazor services
-builder.Services.AddMudServices();
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
+    config.SnackbarConfiguration.HideTransitionDuration = 500;
+    config.SnackbarConfiguration.ShowTransitionDuration = 500;
+    config.SnackbarConfiguration.PreventDuplicates = false;
+    config.SnackbarConfiguration.NewestOnTop = true;
+});
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
