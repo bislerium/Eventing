@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.4.1" />
     <PackageVersion Include="Aspire.StackExchange.Redis.DistributedCaching" Version="9.4.1" />
-    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Ngrok" Version="9.7.0" />
+    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Ngrok" Version="9.7.1" />
     <PackageVersion Include="FluentEmail.Smtp" Version="3.0.2" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
@@ -21,12 +21,12 @@
     </PackageVersion>
     <PackageVersion Include="MudBlazor" Version="8.11.0" />
     <PackageVersion Include="MudBlazor.ThemeManager" Version="3.0.0" />
-    <PackageVersion Include="Scalar.AspNetCore" Version="2.7.0" />
+    <PackageVersion Include="Scalar.AspNetCore" Version="2.7.2" />
     <PackageVersion Include="Aspire.Hosting.AppHost" Version="9.4.1" />
     <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="9.4.1" />
     <PackageVersion Include="Aspire.Hosting.Redis" Version="9.4.1" />
     <PackageVersion Include="Aspire.StackExchange.Redis.OutputCaching" Version="9.4.1" />
-    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.MailPit" Version="9.7.0" />
+    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.MailPit" Version="9.7.1" />
     <PackageVersion Include="Microsoft.Extensions.Compliance.Redaction" Version="9.8.0" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="9.8.0" />
