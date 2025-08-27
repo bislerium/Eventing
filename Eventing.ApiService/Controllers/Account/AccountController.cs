@@ -1,10 +1,12 @@
 using System.Text;
 using System.Text.Encodings.Web;
 using Eventing.ApiService.Controllers.Account.Dto;
+using Eventing.ApiService.Services.CurrentUser;
 using Eventing.ApiService.Services.Jwt;
 using Eventing.Data;
 using Eventing.Data.Entities;
 using FluentEmail.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -15,6 +17,7 @@ namespace Eventing.ApiService.Controllers.Account;
 public class AccountController(
     UserManager<IdentityUser<Guid>> userManager,
     EventingDbContext dbContext,
+    CurrentUserService currentUserService,
     SignInManager<IdentityUser<Guid>> signInManager,
     JwtTokenService jwtTokenService,
     IFluentEmail fluentEmail) : ApiBaseController
@@ -159,6 +162,25 @@ public class AccountController(
         return Ok();
     }
 
+    [Authorize]
+    [HttpPost("change-password")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ChangePasswordAsync([FromBody] ChangePasswordRequestDto dto)
+    {
+        var user = await userManager.FindByIdAsync(currentUserService.UserId.ToString());
+        if (user == null)
+        {
+            return BadRequest("User not found.");
+        }
+
+        var result = await userManager.ChangePasswordAsync(user, dto.OldPassword, dto.NewPassword);
+        return result.Succeeded
+            ? Ok()
+            : ValidationProblem(CreateValidationProblemDetails(result.Errors));
+    }
+
     [HttpPost("forgot-password")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
@@ -212,7 +234,6 @@ public class AccountController(
             : ValidationProblem(CreateValidationProblemDetails(result.Errors));
     }
 
-
     private ValidationProblemDetails CreateValidationProblemDetails(params IEnumerable<IdentityError> errors)
     {
         var modelState = new ModelStateDictionary();
@@ -232,8 +253,7 @@ public class AccountController(
         var userId = await userManager.GetUserIdAsync(user);
         var confirmationLink = Url.Link(
             routeName: "ConfirmEmail",
-            values: new { userId, code }
-        );
+            values: new { userId, code });
         ArgumentNullException.ThrowIfNull(confirmationLink);
 
         confirmationLink = HtmlEncoder.Default.Encode(confirmationLink);
@@ -252,8 +272,7 @@ public class AccountController(
         var userId = await userManager.GetUserIdAsync(user);
         var confirmationLink = Url.Link(
             routeName: "ConfirmChangeEmail",
-            values: new { userId, code, newEmail }
-        );
+            values: new { userId, code, newEmail });
         ArgumentNullException.ThrowIfNull(confirmationLink);
 
         confirmationLink = HtmlEncoder.Default.Encode(confirmationLink);
