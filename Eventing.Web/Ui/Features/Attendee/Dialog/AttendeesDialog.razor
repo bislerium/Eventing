@@ -1,4 +1,6 @@
+@using Eventing.Web.Ui.Features.Attendee.Button
 @using Eventing.Web.Ui.Features.Attendee.Enums
+
 <MudDialog Style="max-height: 50vh;">
     <DialogContent>
         @if (_isLoading)
@@ -24,7 +26,11 @@
                             <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
                                 <MudStack Row="true" AlignItems="AlignItems.Center">
                                     <MudAvatar Size="Size.Medium"
-                                               Color="@(a.IsOrganizer ? Color.Primary : Color.Secondary)">
+                                               Color="@(a.IsOrganizer
+                                                          ? Color.Primary
+                                                          : a.Responder.Me
+                                                              ? Color.Secondary
+                                                              : Color.Tertiary)">
                                         @Utils.GetInitials(a.Responder.Name)
                                     </MudAvatar>
                                     <MudStack Row="false"
@@ -66,6 +72,30 @@
                                              Color="@chipAppearance.Color">
                                         @a.Response.ToString()
                                     </MudChip>
+
+                                    @switch (a)
+                                    {
+                                        case { IsOrganizer: true, Responder.Me: true }:
+                                            <MudTooltip Text="Self Organizer">
+                                                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.EmojiEmotions"
+                                                         Size="Size.Small"/>
+                                            </MudTooltip>
+                                            break;
+                                        case { IsOrganizer: true }:
+                                            <MudTooltip Text="Organizer">
+                                                <MudIcon Color="Color.Primary"
+                                                         Icon="@Icons.Material.Filled.WavingHand"
+                                                         Size="Size.Small"/>
+                                            </MudTooltip>
+                                            break;
+                                        case { Responder.Me: true }:
+                                            <MudTooltip Text="Me">
+                                                <MudIcon Color="Color.Secondary"
+                                                         Icon="@Icons.Material.Filled.FrontHand"
+                                                         Size="Size.Small"/>
+                                            </MudTooltip>
+                                            break;
+                                    }
                                     <MudTooltip Text="@(hasComment ? "Comment" : "No Comment")">
                                         <MudIconButton Color="Color.Info"
                                                        Icon="@(hasComment
@@ -97,7 +127,7 @@
             }
         }
     </DialogContent>
-    @* <DialogActions> *@
-    @*     <RsvpButton RsvpResponse="RsvpResponse.Pending"/> *@
-    @* </DialogActions> *@
+    <DialogActions>
+        <RsvpButton Class="flex-auto" RsvpResponse="RsvpResponse.Accepted"/>
+    </DialogActions>
 </MudDialog>

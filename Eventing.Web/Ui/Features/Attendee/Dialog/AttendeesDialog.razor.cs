@@ -1,4 +1,4 @@
-using Eventing.Web.Ui.Features.Attendee.Dtos;
+using Eventing.Web.Ui.Features.Attendee.Dialog.Dtos;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using MudBlazor;
@@ -13,7 +13,8 @@ public partial class AttendeesDialog(
 {
     private bool _isLoading;
 
-    [Parameter] public Guid EventId { get; set; }
+    [Parameter]
+    public Guid EventId { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

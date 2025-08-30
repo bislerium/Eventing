@@ -1,8 +1,8 @@
-using Eventing.Data.Enums;
+using Eventing.Web.Ui.Features.Event.Enums;
 
-namespace Eventing.ApiService.Controllers.Event.Dto;
+namespace Eventing.Web.Ui.Features.Event.Page.Dtos;
 
-public record EventResponseDto(
+public sealed record EventResponseDto(
     Guid Id,
     string Title,
     string? Description,

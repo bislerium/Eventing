@@ -1,0 +1,11 @@
+@using Eventing.Web.Ui.Features.Event.Toolbar.CreateEvent
+@using Eventing.Web.Ui.Features.Event.Toolbar.ProfileMenu
+@using Eventing.Web.Ui.Features.Event.Toolbar.ToggleEvent
+
+<MudToolBar Class="z-10 fixed" Style="inset: 0; background-color: var(--mud-palette-background)">
+    <CreateEventButton/>
+    <ToggleEventButton/>
+    <MudSpacer/>
+    <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Outlined.Notifications"/>
+    <ProfileMenuButton/>
+</MudToolBar>

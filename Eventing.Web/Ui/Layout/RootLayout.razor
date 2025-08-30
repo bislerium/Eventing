@@ -1,5 +1,5 @@
 @using System.ComponentModel
-@using Eventing.Web.States
+@using Eventing.Web.Ui.Layout.States
 @inherits LayoutComponentBase
 @implements IDisposable
 
@@ -14,6 +14,12 @@
 <MudLayout>
     @if (WebHostEnvironment.IsDevelopment())
     {
+        <!--suppress CssUnusedSymbol -->
+        <style>
+            .mud-thememanager-button {
+                z-index: 10;
+            }
+        </style>
         <MudThemeManagerButton OnClick="@(_ => ThemeInfo.ToggleThemeManager(true))"/>
         <MudThemeManager Open="ThemeInfo.IsThemeManagerOpen"
                          OpenChanged="ThemeInfo.ToggleThemeManager"

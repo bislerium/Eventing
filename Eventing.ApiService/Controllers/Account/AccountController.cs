@@ -32,10 +32,12 @@ public class AccountController(
     {
         var user = await userManager.FindByEmailAsync(dto.Email);
         if (user == null)
+        {
             return Problem(
                 title: "Authentication failed",
                 detail: "Invalid username or password.",
                 statusCode: StatusCodes.Status401Unauthorized);
+        }
 
         var result = await signInManager.CheckPasswordSignInAsync(user, dto.Password, true);
         switch (result)

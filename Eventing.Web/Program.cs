@@ -1,7 +1,7 @@
 using Eventing.ServiceDefaults;
 using Eventing.Web;
-using Eventing.Web.States;
 using Eventing.Web.Ui;
+using Eventing.Web.Ui.Layout.States;
 using MudBlazor;
 using MudBlazor.Services;
 
@@ -21,6 +21,9 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.PreventDuplicates = false;
     config.SnackbarConfiguration.NewestOnTop = true;
 });
+
+// Send all exceptions to the console
+MudGlobal.UnhandledExceptionHandler = Console.WriteLine;
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -45,6 +48,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
+
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -61,4 +65,4 @@ app.MapRazorComponents<App>()
 
 app.MapDefaultEndpoints();
 
-app.Run();
+await app.RunAsync();

@@ -1,6 +1,6 @@
-using Eventing.Data.Enums;
+using Eventing.Web.Ui.Features.Attendee.Enums;
 
-namespace Eventing.ApiService.Controllers.Event.Dto;
+namespace Eventing.Web.Ui.Features.Attendee.Dialog.Dtos;
 
 public sealed record AttendeeResponseDto(
     Guid AttendeeId,

@@ -37,7 +37,8 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
                 x.ShowAttendees,
                 new Creator(x.Creator.Id, x.Creator.Name),
                 x.CreatedAt,
-                x.UpdatedAt))
+                x.UpdatedAt,
+                x.Attendees.Count))
             .ToListAsync(ct);
 
         return Ok(events);
@@ -65,7 +66,8 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
                 x.ShowAttendees,
                 new Creator(x.Creator.Id, x.Creator.Name),
                 x.CreatedAt,
-                x.UpdatedAt))
+                x.UpdatedAt,
+                x.Attendees.Count))
             .FirstOrDefaultAsync(ct);
 
         if (@event is null) return NotFound();
@@ -111,7 +113,8 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
             @event.ShowAttendees,
             creator,
             @event.CreatedAt,
-            @event.UpdatedAt);
+            @event.UpdatedAt,
+            @event.Attendees.Count);
         return CreatedAtAction(nameof(GetByIdAsync), new { id = @event.Id }, response);
     }
 
@@ -181,6 +184,7 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
                             || a.ResponderId == currentUserService.UserId
                         ))
             .OrderByDescending(x => x.IsOrganizer)
+            .ThenByDescending(x => x.ResponderId == currentUserService.UserId)
             .ThenBy(x => x.Responder.Name)
             .Select(x => new AttendeeResponseDto(
                 x.Id,
@@ -191,7 +195,8 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
                 x.UpdatedAt,
                 new AttendeeInfo(
                     x.Responder.Id,
-                    x.Responder.Name)
+                    x.Responder.Name,
+                    x.Responder.Id == currentUserService.UserId)
             ))
             .ToListAsync(ct);
 
@@ -226,7 +231,9 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
         dbContext.Events.AnyAsync(e => e.Id == eventId, ct);
 
     private Task<bool> IsCurrentUserAnAttendeeAsync(Guid eventId, CancellationToken ct) =>
-        dbContext.Attendees.AnyAsync(a =>
+        dbContext.Attendees.AnyAsync(
+            a =>
             a.EventId == eventId &&
-            a.ResponderId == currentUserService.UserId, ct);
+            a.ResponderId == currentUserService.UserId,
+            ct);
 }

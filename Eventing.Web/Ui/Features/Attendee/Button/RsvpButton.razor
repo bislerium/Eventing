@@ -1,5 +1,6 @@
 @using Eventing.Web.Ui.Features.Attendee.Enums
-<MudToggleGroup T="RsvpResponse" @bind-Value="@RsvpResponse" CheckMark="true" Style="width: 22rem">
+
+<MudToggleGroup Style="@Style" Class="@Class" T="RsvpResponse" @bind-Value="@RsvpResponse" CheckMark="true" SelectionMode="SelectionMode.ToggleSelection">
     <MudToggleItem Value="@RsvpResponse.Accepted"
                    SelectedIcon="@Icons.Material.Filled.CheckCircle"
                    UnselectedIcon="@Icons.Material.Outlined.CheckCircle"
@@ -8,7 +9,7 @@
     <MudToggleItem Value="@RsvpResponse.Declined"
                    SelectedIcon="@Icons.Material.Filled.Cancel"
                    UnselectedIcon="@Icons.Material.Outlined.Cancel"
-                   Text="Decline" >
+                   Text="Decline">
     </MudToggleItem>
     <MudToggleItem Value="@RsvpResponse.Maybe"
                    SelectedIcon="@Icons.Material.Filled.Help"
@@ -16,3 +17,9 @@
                    Text="Maybe">
     </MudToggleItem>
 </MudToggleGroup>
+
+@code
+{
+    [Parameter] public string? Style { get; set; }
+    [Parameter] public string? Class { get; set; }
+}
