@@ -1,3 +1,20 @@
+@using Eventing.Web.Ui.Features.Event.Toolbar.CreateEvent.Dialog
+@inject IDialogService DialogService
+
 <MudTooltip Text="Create an event">
-    <MudIconButton Color="Color.Primary" Icon="@Icons.Material.Outlined.Add" Class="mr-5"/>
+    <MudIconButton Color="Color.Primary" Icon="@Icons.Material.Outlined.Add" OnClick="@OpenCreateEventDialog" Class="mr-5"/>
 </MudTooltip>
+
+@code {
+
+    private Task OpenCreateEventDialog()
+    {
+        var options = new DialogOptions
+        {
+            BackdropClick = true, CloseOnEscapeKey = true, CloseButton = true, FullWidth = true,
+        };
+
+        return DialogService.ShowAsync<CreateEventDialog>("Create Event", options);
+    }
+
+}

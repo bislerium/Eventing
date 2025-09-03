@@ -9,6 +9,8 @@ using Eventing.ApiService.Setup.OpenApi;
 using Eventing.ApiService.Setup.Scalar;
 using Eventing.ServiceDefaults;
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire client integrations.

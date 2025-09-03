@@ -1,0 +1,63 @@
+@using Eventing.Web.Ui.Features.Event.Enums
+
+<EditForm Model="@CreateEventModel" OnValidSubmit="@CreateEventAsync">
+    <DataAnnotationsValidator/>
+    <MudCard>
+        <MudCardContent>
+            <MudTextField Label="Title"
+                          @bind-Value="CreateEventModel.Title"
+                          Required="true"
+                          Class="mb-2"/>
+
+            <MudTextField Label="Description"
+                          @bind-Value="CreateEventModel.Description"
+                          Lines="6"
+                          Class="mb-2"/>
+
+            <MudSelect Label="Location type"
+                       @bind-Value="CreateEventModel.LocationType"
+                       Class="mb-2"
+                       Required="true">
+                <MudSelectItem Value="LocationType.Physical">Physical</MudSelectItem>
+                <MudSelectItem Value="LocationType.Virtual">Virtual</MudSelectItem>
+            </MudSelect>
+
+            <MudTextField Label="Location"
+                          Class="mb-2"
+                          @bind-Value="CreateEventModel.Location"/>
+
+            <MudGrid Class="mt-2 mb-2" GutterSize="2">
+                <MudItem xs="12" sm="6">
+                    <MudDatePicker Label="Start date" @bind-Date="CreateEventModel.StartDate" Required="true"/>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTimePicker Label="Start time" @bind-Time="CreateEventModel.StartTime" Required="true"/>
+                </MudItem>
+
+                <MudItem xs="12" sm="6">
+                    <MudDatePicker Label="End date" @bind-Date="CreateEventModel.EndDate" Required="true"/>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTimePicker Label="End time" @bind-Time="CreateEventModel.EndTime" Required="true"/>
+                </MudItem>
+            </MudGrid>
+
+            <MudCheckBox @bind-Value="CreateEventModel.ShowAttendees" Label="Show attendees" Class="mb-4"/>
+
+        </MudCardContent>
+        
+        @if (_isLoading)
+        {
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true"/>
+        }
+        else
+        {
+            <MudCardActions>
+                <MudSpacer/>
+                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Event" Color="Color.Primary"
+                           ButtonType="ButtonType.Submit">Create
+                </MudButton>
+            </MudCardActions>
+        }
+    </MudCard>
+</EditForm>

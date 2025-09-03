@@ -1,6 +1,7 @@
 using Eventing.ApiService.Controllers.Event.Dto;
 using Eventing.ApiService.Services.CurrentUser;
 using Eventing.Data;
+using Eventing.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,8 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
     [HttpGet]
     [ProducesDefaultResponseType]
     [ProducesResponseType<IEnumerable<EventResponseDto>>(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<EventResponseDto>>> GetAllAsync([FromQuery] string? search,
+    public async Task<ActionResult<IEnumerable<EventResponseDto>>> GetAllAsync(
+        [FromQuery] string? search,
         CancellationToken ct)
     {
         var attendedEventIds = await dbContext.Attendees
@@ -79,7 +81,8 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
     [ProducesDefaultResponseType]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<EventResponseDto>> CreateAsync([FromBody] CreateEventRequestDto dto,
+    public async Task<ActionResult<EventResponseDto>> CreateAsync(
+        [FromBody] CreateEventRequestDto dto,
         CancellationToken ct)
     {
         var @event = new Data.Entities.Event
@@ -96,11 +99,22 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
 
         dbContext.Events.Add(@event);
 
+        var attendee = new Data.Entities.Attendee
+        {
+            EventId = @event.Id,
+            ResponderId = @event.CreatedBy,
+            IsOrganizer = true,
+            RsvpResponse = RsvpResponse.Accepted,
+        };
+
+        dbContext.Attendees.Add(attendee);
+
         await dbContext.SaveChangesAsync(ct);
 
         var creator = await dbContext.Profiles
+            .Where(x => x.Id == currentUserService.UserId)
             .Select(x => new Creator(x.Id, x.Name))
-            .FirstAsync(x => x.Id == currentUserService.UserId, cancellationToken: ct);
+            .FirstAsync(cancellationToken: ct);
 
         var response = new EventResponseDto(
             @event.Id,
@@ -115,7 +129,7 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
             @event.CreatedAt,
             @event.UpdatedAt,
             @event.Attendees.Count);
-        return CreatedAtAction(nameof(GetByIdAsync), new { id = @event.Id }, response);
+        return CreatedAtAction(nameof(GetByIdAsync), new { eventId = @event.Id }, response);
     }
 
     [HttpPut("{eventId:guid}")]
@@ -124,7 +138,9 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateAsync([FromRoute] Guid eventId, [FromBody] UpdateEventRequestDto dto,
+    public async Task<IActionResult> UpdateAsync(
+        [FromRoute] Guid eventId,
+        [FromBody] UpdateEventRequestDto dto,
         CancellationToken ct)
     {
         var @event = await dbContext.Events.FirstOrDefaultAsync(x => x.Id == eventId, ct);
@@ -196,8 +212,7 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
                 new AttendeeInfo(
                     x.Responder.Id,
                     x.Responder.Name,
-                    x.Responder.Id == currentUserService.UserId)
-            ))
+                    x.Responder.Id == currentUserService.UserId)))
             .ToListAsync(ct);
 
         return Ok(attendees);
@@ -208,9 +223,11 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
-    public async Task<IActionResult> UpdateAttendeeRsvpResponseAsync([FromRoute] Guid eventId,
+    public async Task<IActionResult> UpdateAttendeeRsvpResponseAsync(
+        [FromRoute] Guid eventId,
         [FromRoute] Guid attendeeId,
-        [FromBody] PatchRsvpRequestDto dto, CancellationToken ct)
+        [FromBody] PatchRsvpRequestDto dto,
+        CancellationToken ct)
     {
         var attendee = await dbContext.Attendees
             .Where(x => x.Id == attendeeId && x.EventId == eventId)
@@ -233,7 +250,7 @@ public class EventsController(EventingDbContext dbContext, CurrentUserService cu
     private Task<bool> IsCurrentUserAnAttendeeAsync(Guid eventId, CancellationToken ct) =>
         dbContext.Attendees.AnyAsync(
             a =>
-            a.EventId == eventId &&
-            a.ResponderId == currentUserService.UserId,
+                a.EventId == eventId &&
+                a.ResponderId == currentUserService.UserId,
             ct);
 }
