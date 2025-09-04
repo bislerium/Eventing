@@ -9,7 +9,10 @@
   <ItemGroup>
     <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.4.2" />
     <PackageVersion Include="Aspire.StackExchange.Redis.DistributedCaching" Version="9.4.2" />
+    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.DbGate" Version="9.7.2" />
     <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Ngrok" Version="9.7.2" />
+    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.PostgreSQL.Extensions" Version="9.7.2" />
+    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Redis.Extensions" Version="9.7.2" />
     <PackageVersion Include="FluentEmail.Smtp" Version="3.0.2" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />

@@ -31,7 +31,7 @@ public static class EmailingExtensions
 
     public static void AddXTestEmailing(this IHostApplicationBuilder builder)
     {
-        var connectionString = builder.Configuration.GetConnectionString("mailpit");
+        var connectionString = builder.Configuration.GetConnectionString("mail-pit");
         ArgumentNullException.ThrowIfNull(connectionString);
 
         var uri = new Uri(connectionString["Endpoint=".Length..]);

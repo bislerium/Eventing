@@ -2,16 +2,18 @@ using Microsoft.Extensions.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+builder.AddDbGate("db-gate");
+
 var cache = builder.AddRedis("cache")
-    .WithRedisCommander();
+    .WithDbGate();
 
-var eventingDb = builder.AddPostgres("postgres")
+var postgres = builder.AddPostgres("postgres")
     .WithDataVolume()
-    .WithPgAdmin(configure
-        => configure.WithImageTag("latest"))
-    .AddDatabase("eventing-db");
+    .WithDbGate();
 
-var mailPit = builder.AddMailPit("mailpit");
+var eventingDb = postgres.AddDatabase("eventing-db");
+
+var mailPit = builder.AddMailPit("mail-pit");
 
 builder.AddProject<Projects.Eventing_Data_Migrator>("data-migrator")
     .WithReference(eventingDb)
@@ -32,7 +34,7 @@ if (builder.Environment.IsDevelopment())
     // See: https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/custom-resource-urls#customize-endpoint-url
     apiService.WithUrlForEndpoint(
         "https",
-        _ => new ResourceUrlAnnotation { Url = "/api-reference", DisplayText = "Scalar (HTTPS)", });
+        _ => new ResourceUrlAnnotation { Url = "/api-reference", DisplayText = "Scalar (HTTPS)" });
 }
 
 var webFrontend = builder.AddProject<Projects.Eventing_Web>("web-frontend")

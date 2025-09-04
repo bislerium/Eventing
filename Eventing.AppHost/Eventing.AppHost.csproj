@@ -17,8 +17,11 @@
         <PackageReference Include="Aspire.Hosting.AppHost"/>
         <PackageReference Include="Aspire.Hosting.PostgreSQL"/>
         <PackageReference Include="Aspire.Hosting.Redis"/>
+        <PackageReference Include="CommunityToolkit.Aspire.Hosting.DbGate" />
         <PackageReference Include="CommunityToolkit.Aspire.Hosting.MailPit"/>
         <PackageReference Include="CommunityToolkit.Aspire.Hosting.Ngrok" />
+        <PackageReference Include="CommunityToolkit.Aspire.Hosting.PostgreSQL.Extensions" />
+        <PackageReference Include="CommunityToolkit.Aspire.Hosting.Redis.Extensions" />
     </ItemGroup>
 
 </Project>
