@@ -1,5 +1,6 @@
 using Eventing.ApiService.Setup;
 using Eventing.ApiService.Setup.Auth;
+using Eventing.ApiService.Setup.DataProtection;
 using Eventing.ApiService.Setup.DbContext;
 using Eventing.ApiService.Setup.Emailing;
 using Eventing.ApiService.Setup.Identity;
@@ -7,7 +8,9 @@ using Eventing.ApiService.Setup.JsonOptions;
 using Eventing.ApiService.Setup.Jwt;
 using Eventing.ApiService.Setup.OpenApi;
 using Eventing.ApiService.Setup.Scalar;
+using Eventing.ApiService.Setup.TickerQ;
 using Eventing.ServiceDefaults;
+using TickerQ.DependencyInjection;
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -41,6 +44,8 @@ builder.Services.AddXAuthentication();
 
 builder.Services.AddXAuthorization();
 
+// builder.Services.AddXDataProtection();
+
 if (builder.Environment.IsDevelopment())
 {
     builder.AddXTestEmailing();
@@ -49,6 +54,8 @@ else
 {
     builder.AddXEmailing();
 }
+
+builder.Services.AddXTickerQ();
 
 builder.Services.AddXMiscServices();
 
@@ -65,6 +72,8 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.MapIdentityApi<>()
+
+app.UseTickerQ();
 
 app.UseAuthentication();
 

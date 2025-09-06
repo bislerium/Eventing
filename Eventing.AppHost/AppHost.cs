@@ -29,6 +29,11 @@ var apiService = builder.AddProject<Projects.Eventing_ApiService>("api-service")
     .WithReference(mailPit)
     .WaitFor(mailPit);
 
+// See: https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/custom-resource-urls#customize-endpoint-url
+apiService.WithUrlForEndpoint(
+    "https",
+    _ => new ResourceUrlAnnotation { Url = "/tickerq-dashboard", DisplayText = "TickerQ (HTTPS)" });
+
 if (builder.Environment.IsDevelopment())
 {
     // See: https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/custom-resource-urls#customize-endpoint-url
