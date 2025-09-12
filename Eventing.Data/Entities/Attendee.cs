@@ -17,9 +17,11 @@ public sealed class Attendee
     public Guid Id { get; set; } = Guid.NewGuid();
 
     public Guid EventId { get; set; }
+
     [ForeignKey(nameof(EventId))] public Event Event { get; set; } = null!;
 
     public Guid ResponderId { get; set; }
+
     [ForeignKey(nameof(ResponderId))] public Profile Responder { get; set; } = null!;
 
     public bool IsOrganizer { get; set; }
@@ -27,7 +29,7 @@ public sealed class Attendee
     public RsvpResponse RsvpResponse { get; set; } = RsvpResponse.Pending;
 
     public DateTime? RespondedAt { get; set; }
-    
+
     public DateTime? UpdatedAt { get; set; }
 
     [MinLength(MinCommentsCharacters)]

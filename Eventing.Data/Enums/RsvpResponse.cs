@@ -5,5 +5,5 @@ public enum RsvpResponse
     Pending,
     Accepted,
     Declined,
-    Maybe
+    Maybe,
 }
