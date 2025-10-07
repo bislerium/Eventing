@@ -1,3 +1,4 @@
+using Aspire.Hosting.DevTunnels;
 using Microsoft.Extensions.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
@@ -50,17 +51,28 @@ var webFrontend = builder.AddProject<Projects.Eventing_Web>("web-frontend")
     .WithReference(apiService)
     .WaitFor(apiService);
 
-// See:
-// https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-9.0&tabs=windows#secret-manager
-// https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/external-parameters
-// For Ngrok AuthToken, Goto https://dashboard.ngrok.com/get-started/your-authtoken
-var ngrokAuthToken = builder.AddParameter("NgrokAuthToken", secret: true);
-builder.AddNgrok("ngrok")
-    .WithAuthToken(ngrokAuthToken)
-    .WithTunnelEndpoint(apiService, "https")
-    .WithTunnelEndpoint(webFrontend, "https")
-    .WaitFor(apiService)
-    .WaitFor(webFrontend)
+builder.AddDevTunnel(
+        name: "web-app-tunnel",
+        tunnelId: "web-app-tunnel-shared",
+        options: new DevTunnelOptions
+        {
+            AllowAnonymous = true,
+            Description = "Shared web-application tunnel",
+            Labels = ["eventing", "web-app"],
+        })
+    .WithReference(webFrontend)
+    .WithExplicitStart();
+
+builder.AddDevTunnel(
+        name: "web-api-tunnel",
+        tunnelId: "web-api-tunnel-shared",
+        options: new DevTunnelOptions
+        {
+            AllowAnonymous = true,
+            Description = "Shared web-api tunnel",
+            Labels = ["eventing", "web-api"],
+        })
+    .WithReference(apiService)
     .WithExplicitStart();
 
 await builder.Build().RunAsync();

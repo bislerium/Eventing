@@ -7,10 +7,10 @@
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     </PropertyGroup>
     <ItemGroup>
+        <PackageVersion Include="Aspire.Hosting.DevTunnels" Version="9.5.1-preview.1.25502.11"/>
         <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.5.1"/>
         <PackageVersion Include="Aspire.StackExchange.Redis.DistributedCaching" Version="9.5.1"/>
         <PackageVersion Include="CommunityToolkit.Aspire.Hosting.DbGate" Version="9.8.0"/>
-        <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Ngrok" Version="9.8.0"/>
         <PackageVersion Include="CommunityToolkit.Aspire.Hosting.PostgreSQL.Extensions" Version="9.8.0"/>
         <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Redis.Extensions" Version="9.8.0"/>
         <PackageVersion Include="FluentEmail.Smtp" Version="3.0.2"/>

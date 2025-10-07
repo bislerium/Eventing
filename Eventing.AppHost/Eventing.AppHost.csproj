@@ -9,19 +9,19 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Eventing.ApiService\Eventing.ApiService.csproj"/>
-        <ProjectReference Include="..\Eventing.Data.Migrator\Eventing.Data.Migrator.csproj" />
-        <ProjectReference Include="..\Eventing.Web\Eventing.Web.csproj" />
+        <ProjectReference Include="..\Eventing.Data.Migrator\Eventing.Data.Migrator.csproj"/>
+        <ProjectReference Include="..\Eventing.Web\Eventing.Web.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Aspire.Hosting.AppHost"/>
+        <PackageReference Include="Aspire.Hosting.DevTunnels"/>
         <PackageReference Include="Aspire.Hosting.PostgreSQL"/>
         <PackageReference Include="Aspire.Hosting.Redis"/>
-        <PackageReference Include="CommunityToolkit.Aspire.Hosting.DbGate" />
+        <PackageReference Include="CommunityToolkit.Aspire.Hosting.DbGate"/>
         <PackageReference Include="CommunityToolkit.Aspire.Hosting.MailPit"/>
-        <PackageReference Include="CommunityToolkit.Aspire.Hosting.Ngrok" />
-        <PackageReference Include="CommunityToolkit.Aspire.Hosting.PostgreSQL.Extensions" />
-        <PackageReference Include="CommunityToolkit.Aspire.Hosting.Redis.Extensions" />
+        <PackageReference Include="CommunityToolkit.Aspire.Hosting.PostgreSQL.Extensions"/>
+        <PackageReference Include="CommunityToolkit.Aspire.Hosting.Redis.Extensions"/>
     </ItemGroup>
 
 </Project>
